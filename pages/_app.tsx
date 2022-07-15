@@ -3,7 +3,7 @@ import { AppProps } from "next/app";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@css/theme";
 import { GlobalStyle } from "@css/GlobalStyle";
-import { NextPageWithLayout } from "../src/type/page";
+import { NextPageWithLayout } from "@type/page";
 
 interface AppPropsWithLayout extends AppProps {
     Component: NextPageWithLayout;
