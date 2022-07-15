@@ -1,16 +1,16 @@
 export const theme = {
     //region Color
-    gray50: "#ffffff",
-    gray75: "#fafafa",
-    gray100: "#f5f5f5",
-    gray200: "#eaeaea",
-    gray300: "#e1e1e1",
+    gray900: "#ffffff",
+    gray800: "#fafafa",
+    gray700: "#f5f5f5",
+    gray600: "#eaeaea",
+    gray500: "#e1e1e1",
     gray400: "#cacaca",
-    gray500: "#b3b3b3",
-    gray600: "#8e8e8e",
-    gray700: "#6e6e6e",
-    gray800: "#4b4b4b",
-    gray900: "#2c2c2c",
+    gray300: "#b3b3b3",
+    gray200: "#8e8e8e",
+    gray100: "#6e6e6e",
+    gray75: "#4b4b4b",
+    gray50: "#2c2c2c",
     //endregion
 
     //region Breakpoints

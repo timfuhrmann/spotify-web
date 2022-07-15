@@ -1,6 +1,7 @@
 import React from "react";
+import { NextPageWithLayout } from "@type/page";
 
-const Home: React.FC = () => {
+const Home: NextPageWithLayout = () => {
     return <div>home</div>;
 };
 

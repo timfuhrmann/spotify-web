@@ -1,0 +1,23 @@
+import { COOKIES_ACCESS_TOKEN } from "@lib/api/auth/cookie";
+import { NextRequest } from "next/server";
+
+export const config = {
+    runtime: "experimental-edge",
+};
+
+export default async function handler(req: NextRequest) {
+    const access_token = req.cookies.get(COOKIES_ACCESS_TOKEN);
+
+    if (access_token) {
+        return new Response(JSON.stringify({ access_token }), {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+    } else {
+        return new Response(null, {
+            status: 401,
+        });
+    }
+}
