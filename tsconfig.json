@@ -17,6 +17,7 @@
         "incremental": true,
         "paths": {
             "@css/*": ["src/css/*"],
+            "@icon/*": ["src/icon/*"],
             "@lib/*": ["src/lib/*"],
             "@type/*": ["src/type/*"],
         }
