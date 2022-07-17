@@ -6,6 +6,7 @@ const Home: NextPageWithLayout = () => {
     return <div>home</div>;
 };
 
+// eslint-disable-next-line react/display-name
 Home.getLayout = page => {
     return <PrimaryLayout>{page}</PrimaryLayout>;
 };

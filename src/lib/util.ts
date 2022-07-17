@@ -8,10 +8,6 @@ export const getAppUrl = () => {
     return variable;
 };
 
-export const getImageUrlFromArtist = (artist: Pick<SpotifyApi.ArtistObjectFull, "images">) => {
-    return artist.images[0].url;
-};
-
-export const getImageUrlFromAlbum = (album: Pick<SpotifyApi.AlbumObjectSimplified, "images">) => {
-    return album.images[0].url;
+export const formatNumber = (number: number): string => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
