@@ -27,7 +27,8 @@ export const configSpotify = {
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 };
 
-export const SPOTIFY_SCOPES = "streaming user-read-email user-read-private user-top-read";
+export const SPOTIFY_SCOPES =
+    "streaming user-read-email playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private user-library-modify user-library-read";
 
 const SPOTIFY_AUTHORIZATION =
     "Basic " + btoa(configSpotify.clientId + ":" + configSpotify.clientSecret);

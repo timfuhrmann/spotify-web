@@ -1,8 +1,8 @@
 export const theme = {
     //region Color
-    black: "#191414",
-    gray50: "#252525",
-    gray75: "#2f2f2f",
+    black: "#000",
+    gray50: "#121212",
+    gray75: "#181818",
     gray100: "#323232",
     gray200: "#3e3e3e",
     gray300: "#4a4a4a",
@@ -15,7 +15,9 @@ export const theme = {
 
     primary100: "#1fdf64",
     primary200: "#1db954",
-    primary400: "#169c46",
+    primary300: "#169c46",
+
+    likedSongsGradient: "linear-gradient(135deg, #450af5, #c4efd9)",
     //endregion
 
     //region Breakpoints
@@ -37,6 +39,13 @@ export const theme = {
         l: "calc(100vw - 12rem)",
         xl: "calc(100vw - 19rem)",
         xxl: "125rem",
+    },
+    //endregion
+
+    //region Sizes
+    sizes: {
+        headerHeight: "6.4rem",
+        playlistTrackHeight: "5.6rem",
     },
     //endregion
 };
