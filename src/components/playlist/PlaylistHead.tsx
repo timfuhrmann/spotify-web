@@ -24,7 +24,10 @@ const HeadCover = styled.div`
     box-shadow: 0 0.4rem 6rem rgba(0, 0, 0, 0.5);
 `;
 
-const HeadGroup = styled.div``;
+const HeadGroup = styled.div`
+    flex: 1;
+    min-width: 0;
+`;
 
 const HeadOverline = styled.div`
     ${text("textXs", "bold")};
@@ -34,6 +37,9 @@ const HeadOverline = styled.div`
 const HeadName = styled.div`
     ${text("display3Xl", "black")};
     margin-bottom: 1.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const HeadDescription = styled.div`

@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-export interface Session {
+export interface Session extends SpotifyApi.CurrentUsersProfileResponse {
     access_token: string;
 }
 

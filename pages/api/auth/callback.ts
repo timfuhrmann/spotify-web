@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSpotifyAccessToken } from "@lib/api/auth/accessToken";
+import { getSpotifyAccessToken } from "@lib/api/auth/access-token";
 import { setAuthCookies } from "@lib/api/auth/cookie";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

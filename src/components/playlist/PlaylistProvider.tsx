@@ -29,17 +29,13 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
 }) => {
     const { access_token } = useSession();
     const { playlists, refetch } = useRootPlaylists();
-    const [isFollowing, setIsFollowing] = useState(
-        playlists ? playlists.map(({ id }) => id).includes(playlist.id) : false
-    );
 
-    useEffect(() => {
+    const isFollowing = useMemo(() => {
         if (!playlists) {
-            setIsFollowing(false);
-            return;
+            return false;
         }
 
-        setIsFollowing(playlists.map(({ id }) => id).includes(playlist.id));
+        return playlists.map(({ id }) => id).includes(playlist.id);
     }, [playlists, playlist]);
 
     const tracks = useMemo<SafeTrack[]>(() => {
@@ -47,13 +43,11 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     }, [playlist]);
 
     const handleFollowPlaylist = async () => {
-        setIsFollowing(true);
         await followPlaylist(access_token, playlist.id);
         refetch();
     };
 
     const handleUnfollowPlaylist = async () => {
-        setIsFollowing(false);
         await unfollowPlaylist(access_token, playlist.id);
         refetch();
     };

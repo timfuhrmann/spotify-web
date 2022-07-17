@@ -38,7 +38,7 @@ export const Playlist: React.FC<PlaylistProps> = props => {
             <PlaylistWrapper>
                 <PlaylistHead {...playlist} />
                 <PlaylistBody>
-                    <PlaylistControls />
+                    <PlaylistControls owner={playlist.owner} />
                     <PlaylistTrackList />
                 </PlaylistBody>
             </PlaylistWrapper>
