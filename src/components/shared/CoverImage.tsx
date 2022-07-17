@@ -17,7 +17,7 @@ interface CoverImageProps {
 }
 
 export const CoverImage: React.FC<CoverImageProps> = ({ alt, images, onLoad }) => {
-    const image = getImageFromImageObject(images);
+    const image = getImageFromImageObject(images, images.length - 1);
 
     const handleLoad = (event: React.SyntheticEvent<HTMLImageElement, Event>): void => {
         const target = event.target as HTMLImageElement;

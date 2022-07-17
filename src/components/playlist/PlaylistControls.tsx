@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { PlayButton } from "../shared/PlayButton";
-import { SafeTrack, usePlaylist } from "./PlaylistProvider";
+import { usePlaylist } from "./PlaylistProvider";
 import { FollowHeart } from "@icon/FollowHeart";
 import { UnfollowHeart } from "@icon/UnfollowHeart";
 import { useSession } from "@lib/context/session";
+import { hover } from "@css/helper";
 
 const ControlsWrapper = styled.div`
     display: flex;
@@ -12,8 +13,24 @@ const ControlsWrapper = styled.div`
     padding: 0 3.2rem 2.4rem;
 `;
 
-const ControlsFollow = styled.button<{ $active: boolean }>`
-    color: ${p => (p.$active ? p.theme.primary200 : p.theme.gray700)};
+const ControlsButton = styled.button``;
+
+const ControlsFollow = styled(FollowHeart)`
+    width: 3.2rem;
+    color: ${p => p.theme.gray700};
+
+    ${p => hover`
+        color: ${p.theme.gray900};
+    `};
+`;
+
+const ControlsUnfollow = styled(UnfollowHeart)`
+    width: 3.2rem;
+    color: ${p => p.theme.primary200};
+
+    ${p => hover`
+        color: ${p.theme.primary100};
+    `};
 `;
 
 export const PlaylistControls: React.FC<Pick<SpotifyApi.PlaylistObjectFull, "owner">> = ({
@@ -26,13 +43,12 @@ export const PlaylistControls: React.FC<Pick<SpotifyApi.PlaylistObjectFull, "own
         <ControlsWrapper>
             <PlayButton />
             {session && session.id !== owner.id && (
-                <ControlsFollow
+                <ControlsButton
                     type="button"
                     aria-label={isFollowing ? "Unfollow" : "Follow"}
-                    $active={isFollowing}
                     onClick={isFollowing ? handleUnfollowPlaylist : handleFollowPlaylist}>
-                    {isFollowing ? <UnfollowHeart width="32" /> : <FollowHeart width="32" />}
-                </ControlsFollow>
+                    {isFollowing ? <ControlsUnfollow /> : <ControlsFollow />}
+                </ControlsButton>
             )}
         </ControlsWrapper>
     );

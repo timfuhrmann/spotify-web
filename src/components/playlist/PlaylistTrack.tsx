@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { PlaylistTrackAlbum } from "./PlaylistTrackAlbum";
 import { PlaylistTrackTitle } from "./PlaylistTrackTitle";
 import { text } from "@css/helper/typography";
-import { SafeTrack } from "./PlaylistProvider";
 import { dateToTimeString, msToMinutesAndSeconds } from "@lib/time";
 
 const TrackWrapper = styled.button`
@@ -46,11 +45,15 @@ const TrackDuration = styled.div`
     height: 100%;
 `;
 
-interface TrackProps extends SafeTrack {
+interface TrackProps extends SpotifyApi.PlaylistTrackObject {
     index: number;
 }
 
-export const PlaylistTrack: React.FC<TrackProps> = ({ index, track, added_at }) => {
+export const PlaylistTrack: React.FC<Ensure<TrackProps, "track">> = ({
+    index,
+    track,
+    added_at,
+}) => {
     const { name, album, artists, explicit, duration_ms } = track;
 
     return (
