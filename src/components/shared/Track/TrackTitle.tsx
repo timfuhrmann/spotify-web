@@ -59,7 +59,7 @@ interface PlaylistTrackTitleProps
     hideArtists?: boolean;
 }
 
-export const PlaylistTrackTitle: React.FC<PlaylistTrackTitleProps> = ({
+export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
     name,
     album,
     artists,
@@ -69,7 +69,7 @@ export const PlaylistTrackTitle: React.FC<PlaylistTrackTitleProps> = ({
     return (
         <TitleWrapper>
             <TitleCover>
-                <CoverImage alt={name} images={album.images} />
+                <CoverImage alt={name} images={album.images} sizes="40px" />
             </TitleCover>
             <TitleFrame>
                 <TitleName>{name}</TitleName>

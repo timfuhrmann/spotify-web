@@ -21,7 +21,7 @@ const AlbumName = styled.a`
     `};
 `;
 
-export const PlaylistTrackAlbum: React.FC<SpotifyApi.AlbumObjectSimplified> = ({ id, name }) => {
+export const TrackAlbum: React.FC<SpotifyApi.AlbumObjectSimplified> = ({ id, name }) => {
     return (
         <AlbumWrapper>
             <Link href={"/album/" + id} label={name}>

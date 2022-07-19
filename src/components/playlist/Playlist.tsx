@@ -1,30 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { PlaylistHead } from "./PlaylistHead";
 import { PlaylistProvider } from "./PlaylistProvider";
-import { PlaylistTracks } from "./PlaylistTracks";
-import { PlaylistControls } from "./PlaylistControls";
+import { ListHead } from "../shared/ListHead/ListHead";
+import { PlaylistBody } from "./PlaylistBody";
+import { PlaylistHeadFooter } from "./PlaylistHeadFooter";
 
 const PlaylistWrapper = styled.div``;
-
-const PlaylistBody = styled.div`
-    position: relative;
-    padding: 2.4rem 0;
-    background-color: ${p => p.theme.gray50};
-    isolation: isolate;
-
-    &::before {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 25rem;
-        background-color: var(--dominant-color, ${p => p.theme.gray50});
-        background-image: linear-gradient(rgba(0, 0, 0, 0.7) 0%, ${p => p.theme.gray50} 100%);
-    }
-`;
 
 export interface PlaylistProps {
     playlist: SpotifyApi.PlaylistObjectFull;
@@ -36,11 +17,20 @@ export const Playlist: React.FC<PlaylistProps> = props => {
     return (
         <PlaylistProvider {...props}>
             <PlaylistWrapper>
-                <PlaylistHead {...playlist} />
-                <PlaylistBody>
-                    <PlaylistControls owner={playlist.owner} />
-                    <PlaylistTracks />
-                </PlaylistBody>
+                <ListHead
+                    overline="Playlist"
+                    name={playlist.name}
+                    images={playlist.images}
+                    description={playlist.description}
+                    renderFooter={
+                        <PlaylistHeadFooter
+                            owner={playlist.owner}
+                            followers={playlist.followers}
+                            totalTracks={playlist.tracks.total}
+                        />
+                    }
+                />
+                <PlaylistBody owner={playlist.owner} />
             </PlaylistWrapper>
         </PlaylistProvider>
     );

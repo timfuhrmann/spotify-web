@@ -98,8 +98,8 @@ export const NavigationList: React.FC = () => {
                     </ListAnchor>
                 </ListItem>
                 <ListItem>
-                    <Link href="/collection/tracks" label="Liked Songs">
-                        <ListAnchor $active={asPath === "/collection/tracks"}>
+                    <Link href="/library/tracks" label="Liked Songs">
+                        <ListAnchor $active={asPath === "/library/tracks"}>
                             <ListHeart>
                                 <Heart width="12" />
                             </ListHeart>

@@ -1,8 +1,8 @@
 import React from "react";
-import { PlaylistTrackTitle } from "../playlist/PlaylistTrackTitle";
-import { PlaylistTrackAlbum } from "../playlist/PlaylistTrackAlbum";
-import { dateToTimeString, msToMinutesAndSeconds } from "@lib/time";
 import styled from "styled-components";
+import { TrackTitle } from "./TrackTitle";
+import { TrackAlbum } from "./TrackAlbum";
+import { dateToTimeString, msToMinutesAndSeconds } from "@lib/time";
 import { Play } from "@icon/Play";
 import { text } from "@css/helper/typography";
 import { hover } from "@css/helper";
@@ -16,7 +16,9 @@ const TrackPlay = styled(Play)`
 
 const TrackNumber = styled.span``;
 
-const TrackButton = styled.button``;
+const TrackButton = styled.button`
+    display: flex;
+`;
 
 const TrackWrapper = styled.div`
     display: grid;
@@ -112,6 +114,7 @@ interface TrackProps extends SpotifyApi.TrackObjectFull {
     index: number;
     isSaved: boolean;
     addedAt?: string;
+    hideArtists?: boolean;
     onSaveTrack: () => void;
     onRemoveTrack: () => void;
 }
@@ -136,8 +139,8 @@ export const Track: React.FC<TrackProps> = ({
                 <TrackNumber>{index + 1}</TrackNumber>
                 <TrackPlay />
             </TrackIndex>
-            <PlaylistTrackTitle name={name} album={album} artists={artists} explicit={explicit} />
-            <PlaylistTrackAlbum {...album} />
+            <TrackTitle name={name} album={album} artists={artists} explicit={explicit} />
+            <TrackAlbum {...album} />
             {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
             <TrackDuration>
                 {isSaved ? (

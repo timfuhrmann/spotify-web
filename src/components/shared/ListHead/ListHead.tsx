@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { square } from "@css/helper";
 import { text } from "@css/helper/typography";
-import { formatNumber } from "@lib/util";
 import { CoverImage } from "../CoverImage";
 import { HeaderSpacer } from "../../layout/HeaderSpacer";
 
@@ -36,77 +35,59 @@ const HeadOverline = styled.div`
 
 const HeadName = styled.div`
     ${text("display3Xl", "black")};
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.8rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 `;
 
 const HeadDescription = styled.div`
     margin-bottom: 0.6rem;
     ${text("textMd")};
     color: ${p => p.theme.gray700};
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 `;
 
 const HeadInfo = styled.div`
     ${text("textSm")};
 `;
 
-const HeadUser = styled.span`
-    ${text("textSm", "bold")};
-`;
-
-const HeadFollowers = styled.span``;
-
-const HeadSongs = styled.span``;
-
 interface PlaylistHeadProps {
     overline: string;
     name: string;
     images: SpotifyApi.ImageObject[];
-    owner: SpotifyApi.UserObjectPublic;
-    totalTracks: number;
     description?: string | null;
-    year?: string | null;
-    followers?: number | null;
+    renderFooter?: React.ReactNode;
 }
 
-export const TrackListHead: React.FC<PlaylistHeadProps> = ({
+export const ListHead: React.FC<PlaylistHeadProps> = ({
     overline,
     name,
     images,
-    owner,
-    totalTracks,
     description,
-    year,
-    followers,
+    renderFooter,
 }) => {
     return (
         <HeadWrapper>
             <HeaderSpacer />
             <HeadInner>
                 <HeadCover>
-                    <CoverImage images={images} alt={name} />
+                    <CoverImage images={images} alt={name} sizes="300px" />
                 </HeadCover>
                 <HeadGroup>
                     <HeadOverline>{overline}</HeadOverline>
                     <HeadName>{name}</HeadName>
-                    {description && <HeadDescription>{description}</HeadDescription>}
-                    <HeadInfo>
-                        <HeadUser>{owner.display_name}</HeadUser> &#183;{" "}
-                        {followers && (
-                            <React.Fragment>
-                                <HeadFollowers>{formatNumber(followers)} likes</HeadFollowers>{" "}
-                                &#183;{" "}
-                            </React.Fragment>
-                        )}
-                        {year && (
-                            <React.Fragment>
-                                <HeadFollowers>{year}</HeadFollowers> &#183;{" "}
-                            </React.Fragment>
-                        )}
-                        <HeadSongs>{totalTracks} songs</HeadSongs>
-                    </HeadInfo>
+                    {description && (
+                        <HeadDescription dangerouslySetInnerHTML={{ __html: description }} />
+                    )}
+                    {renderFooter && <HeadInfo>{renderFooter}</HeadInfo>}
                 </HeadGroup>
             </HeadInner>
         </HeadWrapper>

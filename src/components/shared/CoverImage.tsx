@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
-import { square } from "@css/helper";
-import Image from "next/image";
-import { getImageFromImageObject } from "@lib/image";
+import { fillParent, square } from "@css/helper";
+import { useIntersection } from "next/dist/client/use-intersection";
 
 const CoverWrapper = styled.div`
     position: relative;
@@ -10,35 +9,57 @@ const CoverWrapper = styled.div`
     background-color: ${p => p.theme.gray200};
 `;
 
+const Image = styled.img`
+    ${fillParent};
+    object-fit: cover;
+    object-position: center;
+`;
+
+const emptyDataURL =
+    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
 interface CoverImageProps {
     images: SpotifyApi.ImageObject[];
-    onLoad?: (target: HTMLImageElement) => void;
     alt?: string;
+    sizes?: string;
 }
 
-export const CoverImage: React.FC<CoverImageProps> = ({ alt, images, onLoad }) => {
-    const image = getImageFromImageObject(images, images.length - 1);
+export const CoverImage: React.FC<CoverImageProps> = ({ alt, sizes, images }) => {
+    const [setIntersection, isIntersected] = useIntersection<HTMLImageElement>({
+        rootMargin: "300px",
+    });
 
-    const handleLoad = (event: React.SyntheticEvent<HTMLImageElement, Event>): void => {
-        const target = event.target as HTMLImageElement;
+    const srcSet = useMemo<string>(() => {
+        return images
+            .filter(image => image.width !== null)
+            .map(image => `${image.url} ${image.width}w`)
+            .join(",");
+    }, [images]);
 
-        if (onLoad && target.complete && target.style.visibility !== "hidden") {
-            onLoad(target);
-        }
+    let imgAttributes: {
+        src: string;
+        alt: string | undefined;
+        srcSet: string | undefined;
+        sizes: string | undefined;
+    } = {
+        src: emptyDataURL,
+        alt: undefined,
+        srcSet: undefined,
+        sizes: undefined,
     };
+
+    if (isIntersected) {
+        imgAttributes = {
+            alt,
+            src: images[0].url,
+            srcSet,
+            sizes,
+        };
+    }
 
     return (
         <CoverWrapper>
-            {image && (
-                <Image
-                    src={image}
-                    alt={alt}
-                    layout="fill"
-                    objectFit="cover"
-                    unoptimized
-                    onLoad={handleLoad}
-                />
-            )}
+            <Image decoding="async" ref={setIntersection} {...imgAttributes} />
         </CoverWrapper>
     );
 };

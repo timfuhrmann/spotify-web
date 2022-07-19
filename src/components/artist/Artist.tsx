@@ -1,10 +1,13 @@
 import React from "react";
-import { ArtistHead } from "./ArtistHead";
+import { ListHead } from "../shared/ListHead/ListHead";
+import styled from "styled-components";
+
+const ArtistWrapper = styled.div``;
 
 export const Artist: React.FC<SpotifyApi.ArtistObjectFull> = ({ name, images }) => {
     return (
-        <div style={{ minHeight: "200vh" }}>
-            <ArtistHead name={name} images={images} />
-        </div>
+        <ArtistWrapper>
+            <ListHead overline="Artist" name={name} images={images} />
+        </ArtistWrapper>
     );
 };

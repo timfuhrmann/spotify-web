@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
-import { PlaylistTrack } from "./PlaylistTrack";
 import { usePlaylist } from "./PlaylistProvider";
 import { PlaylistTracksHead } from "./PlaylistTracksHead";
 import { getMainScrollStage } from "@lib/util";
+import { Track } from "../shared/Track/Track";
 
 const TracksWrapper = styled.div``;
 
@@ -17,7 +17,16 @@ const TracksList = styled.div<{ $totalTracks: number }>`
 `;
 
 export const PlaylistTracks: React.FC = () => {
-    const { tracks, total, savedTracks, fetchNextPage, isLoading, hasNextPage } = usePlaylist();
+    const {
+        tracks,
+        total,
+        savedTracks,
+        isLoading,
+        hasNextPage,
+        fetchNextPage,
+        handleSaveTrack,
+        handleRemoveTrack,
+    } = usePlaylist();
 
     const handleLoadMore = () => {
         if (isLoading || !hasNextPage) {
@@ -38,14 +47,20 @@ export const PlaylistTracks: React.FC = () => {
                         threshold={1500}
                         useWindow={false}
                         getScrollParent={getMainScrollStage}>
-                        {tracks.map((item, index) => (
-                            <PlaylistTrack
-                                key={index}
-                                index={index}
-                                saved={savedTracks[index]}
-                                {...item}
-                            />
-                        ))}
+                        {tracks.map(
+                            ({ track, added_at }, index) =>
+                                track && (
+                                    <Track
+                                        key={index}
+                                        index={index}
+                                        isSaved={savedTracks[index]}
+                                        addedAt={added_at}
+                                        onSaveTrack={() => handleSaveTrack(track.id, index)}
+                                        onRemoveTrack={() => handleRemoveTrack(track.id, index)}
+                                        {...track}
+                                    />
+                                )
+                        )}
                     </InfiniteScroll>
                 </TracksList>
             </TracksBody>
