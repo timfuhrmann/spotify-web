@@ -44,7 +44,7 @@ export const PrimaryLayout: React.FC<PropsWithChildren> = ({ children }) => {
                 <LayoutNavigation>
                     <Navigation />
                 </LayoutNavigation>
-                <LayoutMain key={asPath} className="custom-scrollbar">
+                <LayoutMain key={asPath} className="custom-scrollbar main-scrollbar">
                     <Header />
                     {children}
                 </LayoutMain>

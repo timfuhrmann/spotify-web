@@ -1,17 +1,21 @@
 import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import { PlaylistProps } from "./Playlist";
-import { followPlaylist, getPlaylistTracks, unfollowPlaylist } from "@lib/api/playlist";
+import { getPlaylistTracks, PLAYLIST_TRACKS_OFFSET } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
 import { useRootPlaylists } from "@lib/context/root-playlists";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
+import { removeTracks, saveTracks } from "@lib/api/track";
 
 interface PlaylistContextData {
     isFollowing: boolean;
     tracks: SpotifyApi.PlaylistTrackObject[];
-    totalTracks: number;
+    total: number;
+    savedTracks: boolean[];
     isLoading: boolean;
     hasNextPage: boolean;
     fetchNextPage: () => void;
+    handleSaveTrack: (id: string, index: number) => Promise<void>;
+    handleRemoveTrack: (id: string, index: number) => Promise<void>;
     handleFollowPlaylist: () => Promise<void>;
     handleUnfollowPlaylist: () => Promise<void>;
 }
@@ -23,50 +27,50 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     children,
 }) => {
     const { access_token } = useSession();
-    const { playlists, refetch } = useRootPlaylists();
+    const { playlists, handleFollowPlaylist, handleUnfollowPlaylist } = useRootPlaylists();
+
+    const isFollowing = playlists ? !!playlists.find(({ id }) => id === playlist.id) : false;
 
     const {
-        data: infinitePages,
-        fetchNextPage,
-        hasNextPage,
         isLoading,
-    } = useInfiniteQuery(
-        ["playlist-tracks", playlist.id, access_token],
-        ({ pageParam = 0 }) => getPlaylistTracks(access_token, playlist.id, pageParam),
-        {
-            getNextPageParam: (data, allPages) => {
-                const lastPage = allPages[allPages.length - 1];
-                return lastPage && lastPage.total > lastPage.offset + lastPage.limit
-                    ? allPages.length
-                    : null;
-            },
-        }
-    );
+        tracksPages,
+        savedTracks,
+        hasNextPage,
+        fetchNextPage,
+        addSavedTrackToCache,
+        removeSavedTrackFromCache,
+    } = useInfiniteTracks<SpotifyApi.PlaylistTrackResponse>({
+        key: "playlist-tracks",
+        id: playlist.id,
+        initialTracks: playlist.tracks,
+        limit: PLAYLIST_TRACKS_OFFSET,
+        queryFn: ({ pageParam = 1 }) => getPlaylistTracks(access_token, playlist.id, pageParam),
+        idsFn: page => page.items.flatMap(item => (item.track ? item.track.id : [])),
+        getNextPageParam: (data, allPages) => {
+            const lastPage = allPages[allPages.length - 1];
 
-    const isFollowing = useMemo(() => {
-        if (!playlists) {
-            return false;
-        }
-
-        return playlists.map(({ id }) => id).includes(playlist.id);
-    }, [playlists, playlist]);
+            return lastPage && playlist.tracks.total > lastPage.offset + lastPage.limit
+                ? allPages.length
+                : null;
+        },
+    });
 
     const tracks = useMemo<SpotifyApi.PlaylistTrackObject[]>(() => {
-        if (!infinitePages) {
-            return playlist.tracks.items.slice(0, 50).filter(({ track }) => !!track);
+        if (!tracksPages) {
+            return playlist.tracks.items;
         }
 
-        return infinitePages.pages.flatMap(page => (page ? page.items : []));
-    }, [playlist, infinitePages]);
+        return tracksPages.pages.flatMap(page => (page ? page.items : []));
+    }, [playlist, tracksPages]);
 
-    const handleFollowPlaylist = async () => {
-        await followPlaylist(access_token, playlist.id);
-        refetch();
+    const handleSaveTrack = async (id: string, index: number) => {
+        addSavedTrackToCache(index);
+        saveTracks(access_token, [id]);
     };
 
-    const handleUnfollowPlaylist = async () => {
-        await unfollowPlaylist(access_token, playlist.id);
-        refetch();
+    const handleRemoveTrack = async (id: string, index: number) => {
+        removeSavedTrackFromCache(index);
+        removeTracks(access_token, [id]);
     };
 
     return (
@@ -74,12 +78,15 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
             value={{
                 isFollowing,
                 tracks,
-                totalTracks: playlist.tracks.total,
-                hasNextPage: hasNextPage || false,
+                total: playlist.tracks.total,
+                savedTracks,
+                handleSaveTrack,
+                handleRemoveTrack,
                 isLoading,
                 fetchNextPage,
-                handleFollowPlaylist,
-                handleUnfollowPlaylist,
+                hasNextPage: hasNextPage || false,
+                handleFollowPlaylist: () => handleFollowPlaylist(playlist),
+                handleUnfollowPlaylist: () => handleUnfollowPlaylist(playlist.id),
             }}>
             {children}
         </PlaylistContext.Provider>

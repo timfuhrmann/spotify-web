@@ -11,3 +11,11 @@ export const getAppUrl = () => {
 export const formatNumber = (number: number): string => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
+
+export const getMainScrollStage = (): HTMLElement | null => {
+    if (typeof window === "undefined") {
+        return null;
+    }
+
+    return document.querySelector(".main-scrollbar .os-viewport");
+};

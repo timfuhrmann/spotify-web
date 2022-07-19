@@ -6,7 +6,10 @@ export const queryClient = new QueryClient();
 
 const client = axios.create({ baseURL: configSpotify.host });
 
-export const request = (access_token: string, options: AxiosRequestConfig) => {
+export const request = <T = unknown>(
+    access_token: string,
+    options: AxiosRequestConfig
+): Promise<T> => {
     client.defaults.headers.common.Authorization = `Bearer ${access_token}`;
     return client(options).then(response => response.data);
 };

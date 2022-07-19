@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { PlaylistHead } from "./PlaylistHead";
 import { PlaylistProvider } from "./PlaylistProvider";
-import { PlaylistTrackList } from "./PlaylistTrackList";
+import { PlaylistTracks } from "./PlaylistTracks";
 import { PlaylistControls } from "./PlaylistControls";
 
 const PlaylistWrapper = styled.div``;
 
 const PlaylistBody = styled.div`
     position: relative;
-    padding-top: 2.4rem;
+    padding: 2.4rem 0;
     background-color: ${p => p.theme.gray50};
     isolation: isolate;
 
@@ -39,7 +39,7 @@ export const Playlist: React.FC<PlaylistProps> = props => {
                 <PlaylistHead {...playlist} />
                 <PlaylistBody>
                     <PlaylistControls owner={playlist.owner} />
-                    <PlaylistTrackList />
+                    <PlaylistTracks />
                 </PlaylistBody>
             </PlaylistWrapper>
         </PlaylistProvider>

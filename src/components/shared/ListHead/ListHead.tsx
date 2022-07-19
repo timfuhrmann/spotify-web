@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { square } from "@css/helper";
-import { CoverImage } from "../shared/CoverImage";
-import { HeaderSpacer } from "../layout/HeaderSpacer";
 import { text } from "@css/helper/typography";
 import { formatNumber } from "@lib/util";
+import { CoverImage } from "../CoverImage";
+import { HeaderSpacer } from "../../layout/HeaderSpacer";
 
 const HeadWrapper = styled.div`
     padding-bottom: 2.4rem;
@@ -15,7 +15,7 @@ const HeadWrapper = styled.div`
 const HeadInner = styled.div`
     display: flex;
     align-items: flex-end;
-    gap: 3.2rem;
+    gap: 2.4rem;
     padding: 0 3.2rem;
 `;
 
@@ -60,13 +60,26 @@ const HeadFollowers = styled.span``;
 
 const HeadSongs = styled.span``;
 
-export const PlaylistHead: React.FC<SpotifyApi.PlaylistObjectFull> = ({
+interface PlaylistHeadProps {
+    overline: string;
+    name: string;
+    images: SpotifyApi.ImageObject[];
+    owner: SpotifyApi.UserObjectPublic;
+    totalTracks: number;
+    description?: string | null;
+    year?: string | null;
+    followers?: number | null;
+}
+
+export const TrackListHead: React.FC<PlaylistHeadProps> = ({
+    overline,
     name,
-    description,
     images,
-    followers,
-    tracks,
     owner,
+    totalTracks,
+    description,
+    year,
+    followers,
 }) => {
     return (
         <HeadWrapper>
@@ -76,13 +89,23 @@ export const PlaylistHead: React.FC<SpotifyApi.PlaylistObjectFull> = ({
                     <CoverImage images={images} alt={name} />
                 </HeadCover>
                 <HeadGroup>
-                    <HeadOverline>Playlist</HeadOverline>
+                    <HeadOverline>{overline}</HeadOverline>
                     <HeadName>{name}</HeadName>
                     {description && <HeadDescription>{description}</HeadDescription>}
                     <HeadInfo>
                         <HeadUser>{owner.display_name}</HeadUser> &#183;{" "}
-                        <HeadFollowers>{formatNumber(followers.total)} likes</HeadFollowers> &#183;{" "}
-                        <HeadSongs>{tracks.total} songs</HeadSongs>
+                        {followers && (
+                            <React.Fragment>
+                                <HeadFollowers>{formatNumber(followers)} likes</HeadFollowers>{" "}
+                                &#183;{" "}
+                            </React.Fragment>
+                        )}
+                        {year && (
+                            <React.Fragment>
+                                <HeadFollowers>{year}</HeadFollowers> &#183;{" "}
+                            </React.Fragment>
+                        )}
+                        <HeadSongs>{totalTracks} songs</HeadSongs>
                     </HeadInfo>
                 </HeadGroup>
             </HeadInner>

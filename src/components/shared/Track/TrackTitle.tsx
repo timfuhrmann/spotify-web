@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { CoverImage } from "../shared/CoverImage";
+import { CoverImage } from "../CoverImage";
 import { hover, square } from "@css/helper";
 import { text } from "@css/helper/typography";
-import { Explicit } from "../shared/Explicit";
+import { Explicit } from "../Explicit";
 
 const TitleWrapper = styled.div`
     display: flex;
@@ -54,9 +54,18 @@ const TitleArtist = styled.a`
     `};
 `;
 
-export const PlaylistTrackTitle: React.FC<
-    Pick<SpotifyApi.TrackObjectFull, "name" | "album" | "artists" | "explicit">
-> = ({ name, album, artists, explicit }) => {
+interface PlaylistTrackTitleProps
+    extends Pick<SpotifyApi.TrackObjectFull, "name" | "album" | "artists" | "explicit"> {
+    hideArtists?: boolean;
+}
+
+export const PlaylistTrackTitle: React.FC<PlaylistTrackTitleProps> = ({
+    name,
+    album,
+    artists,
+    explicit,
+    hideArtists,
+}) => {
     return (
         <TitleWrapper>
             <TitleCover>
@@ -66,16 +75,18 @@ export const PlaylistTrackTitle: React.FC<
                 <TitleName>{name}</TitleName>
                 <TitleFooter>
                     {explicit && <Explicit />}
-                    <TitleArtists>
-                        {artists.map((artist, index) => (
-                            <React.Fragment key={artist.id}>
-                                <Link href={"/artist/" + artist.id} passHref>
-                                    <TitleArtist>{artist.name}</TitleArtist>
-                                </Link>
-                                {index < artists.length - 1 && ", "}
-                            </React.Fragment>
-                        ))}
-                    </TitleArtists>
+                    {!hideArtists && (
+                        <TitleArtists>
+                            {artists.map((artist, index) => (
+                                <React.Fragment key={artist.id}>
+                                    <Link href={"/artist/" + artist.id} passHref>
+                                        <TitleArtist>{artist.name}</TitleArtist>
+                                    </Link>
+                                    {index < artists.length - 1 && ", "}
+                                </React.Fragment>
+                            ))}
+                        </TitleArtists>
+                    )}
                 </TitleFooter>
             </TitleFrame>
         </TitleWrapper>
