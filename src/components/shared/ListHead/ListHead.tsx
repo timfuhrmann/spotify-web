@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { square } from "@css/helper";
 import { text } from "@css/helper/typography";
-import { CoverImage } from "../CoverImage";
+import { SpotifyImage } from "@lib/image";
 import { HeaderSpacer } from "../../layout/HeaderSpacer";
 
 const HeadWrapper = styled.div`
@@ -79,7 +79,7 @@ export const ListHead: React.FC<PlaylistHeadProps> = ({
             <HeaderSpacer />
             <HeadInner>
                 <HeadCover>
-                    <CoverImage images={images} alt={name} sizes="300px" />
+                    <SpotifyImage images={images} alt={name} sizes="300px" priority />
                 </HeadCover>
                 <HeadGroup>
                     <HeadOverline>{overline}</HeadOverline>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { CoverImage } from "../CoverImage";
+import { SpotifyImage } from "@lib/image";
 import { hover, square } from "@css/helper";
 import { text } from "@css/helper/typography";
 import { Explicit } from "../Explicit";
@@ -69,7 +69,7 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
     return (
         <TitleWrapper>
             <TitleCover>
-                <CoverImage alt={name} images={album.images} sizes="40px" />
+                <SpotifyImage alt={name} images={album.images} sizes="40px" />
             </TitleCover>
             <TitleFrame>
                 <TitleName>{name}</TitleName>
