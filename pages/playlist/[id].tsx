@@ -14,8 +14,10 @@ const Playlist: NextPageWithLayout = () => {
 
     const { id } = query;
 
-    const { data: playlist } = useQuery(["playlist", id, access_token], () =>
-        getPlaylist(access_token, id && typeof id === "string" ? id : null)
+    const { data: playlist } = useQuery(
+        ["playlist", id, access_token],
+        () => getPlaylist(access_token, id && typeof id === "string" ? id : null),
+        { enabled: !!access_token && !!id && typeof id === "string" }
     );
 
     useDominantColor(playlist ? playlist.images : null);

@@ -115,8 +115,8 @@ interface TrackProps extends SpotifyApi.TrackObjectFull {
     isSaved: boolean;
     addedAt?: string;
     hideArtists?: boolean;
-    onSaveTrack: () => void;
-    onRemoveTrack: () => void;
+    onSaveTrack?: () => void;
+    onRemoveTrack?: () => void;
 }
 
 export const Track: React.FC<TrackProps> = ({

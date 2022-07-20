@@ -3,7 +3,7 @@ import { PlaylistProps } from "./Playlist";
 import { getPlaylistTracks, PLAYLIST_TRACKS_OFFSET } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
 import { useRootPlaylists } from "@lib/context/root-playlists";
-import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
+import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { removeTracks, saveTracks } from "@lib/api/track";
 
 interface PlaylistContextData {
@@ -39,9 +39,8 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         fetchNextPage,
         addSavedTrackToCache,
         removeSavedTrackFromCache,
-    } = useInfiniteTracks<SpotifyApi.PlaylistTrackResponse>({
-        key: "playlist-tracks",
-        id: playlist.id,
+    } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.PlaylistTrackResponse>({
+        key: ["playlist-tracks"],
         initialTracks: playlist.tracks,
         limit: PLAYLIST_TRACKS_OFFSET,
         queryFn: ({ pageParam = 1 }) => getPlaylistTracks(access_token, playlist.id, pageParam),
@@ -83,8 +82,8 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
                 handleSaveTrack,
                 handleRemoveTrack,
                 isLoading,
+                hasNextPage,
                 fetchNextPage,
-                hasNextPage: hasNextPage || false,
                 handleFollowPlaylist: () => handleFollowPlaylist(playlist),
                 handleUnfollowPlaylist: () => handleUnfollowPlaylist(playlist.id),
             }}>

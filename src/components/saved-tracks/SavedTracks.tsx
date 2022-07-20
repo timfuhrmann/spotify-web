@@ -3,6 +3,7 @@ import { SavedTracksProvider } from "./SavedTracksProvider";
 import { ListHead } from "../shared/ListHead/ListHead";
 import { SavedTracksHeadFooter } from "./SavedTracksHeadFooter";
 import { useDominantColor } from "@lib/hook/useDominantColor";
+import { SavedTracksBody } from "./SavedTracksBody";
 
 const images = [
     {
@@ -22,17 +23,22 @@ const images = [
     },
 ];
 
-export const SavedTracks: React.FC = () => {
+export interface SavedTracksProps {
+    initialTracks: SpotifyApi.UsersSavedTracksResponse;
+}
+
+export const SavedTracks: React.FC<SavedTracksProps> = props => {
     useDominantColor(images);
 
     return (
-        <SavedTracksProvider>
+        <SavedTracksProvider {...props}>
             <ListHead
                 overline="Playlist"
                 name="Liked Songs"
                 images={images}
                 renderFooter={<SavedTracksHeadFooter />}
             />
+            <SavedTracksBody />
         </SavedTracksProvider>
     );
 };

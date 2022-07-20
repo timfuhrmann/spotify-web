@@ -37,6 +37,7 @@ interface ListControlsProps {
     isFollowing?: boolean;
     onFollow?: () => void;
     onUnfollow?: () => void;
+    hideFollow?: boolean;
 }
 
 export const ListControls: React.FC<ListControlsProps> = ({
@@ -44,13 +45,14 @@ export const ListControls: React.FC<ListControlsProps> = ({
     isFollowing,
     onFollow,
     onUnfollow,
+    hideFollow,
 }) => {
     const { session } = useSession();
 
     return (
         <ControlsWrapper>
             <PlayButton />
-            {(!owner || (session && session.id !== owner.id)) && (
+            {(!owner || (session && session.id !== owner.id)) && !hideFollow && (
                 <React.Fragment>
                     {isFollowing ? (
                         <ControlsButton

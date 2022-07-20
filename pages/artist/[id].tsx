@@ -14,8 +14,10 @@ const Artist: NextPageWithLayout = () => {
 
     const { id } = query;
 
-    const { data: artist } = useQuery(["artist", id, access_token], () =>
-        getArtist(access_token, id && typeof id === "string" ? id : null)
+    const { data: artist } = useQuery(
+        ["artist", id, access_token],
+        () => getArtist(access_token, id && typeof id === "string" ? id : null),
+        { enabled: !!access_token && !!id && typeof id === "string" }
     );
 
     useDominantColor(artist ? artist.images : null);

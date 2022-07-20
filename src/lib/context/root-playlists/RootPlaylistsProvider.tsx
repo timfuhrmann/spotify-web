@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from "react";
+import cloneDeep from "lodash.clonedeep";
 import { RootPlaylistsContext } from "@lib/context/root-playlists/index";
 import { useSession } from "@lib/context/session";
 import { useQuery } from "react-query";
@@ -30,13 +31,14 @@ export const RootPlaylistsProvider: React.FC<PropsWithChildren> = ({ children })
                     return data;
                 }
 
-                const index = data.findIndex(item => item.id === playlist.id);
+                const newData = cloneDeep(data);
+                const index = newData.findIndex(item => item.id === playlist.id);
 
                 if (index === -1) {
-                    data.unshift(playlist);
+                    newData.unshift(playlist);
                 }
 
-                return data;
+                return newData;
             }
         );
     };
@@ -49,13 +51,14 @@ export const RootPlaylistsProvider: React.FC<PropsWithChildren> = ({ children })
                     return data;
                 }
 
-                const index = data.findIndex(playlist => playlist.id === id);
+                const newData = cloneDeep(data);
+                const index = newData.findIndex(playlist => playlist.id === id);
 
                 if (index > -1) {
-                    data.splice(index, 1);
+                    newData.splice(index, 1);
                 }
 
-                return data;
+                return newData;
             }
         );
     };
