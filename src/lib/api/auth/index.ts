@@ -10,15 +10,16 @@ export interface SpotifyAuth {
 export const getSpotifyToken = async (
     params: Record<string, string> = { grant_type: "client_credentials" }
 ) => {
-    const { data } = await axios.post<SpotifyAuth>("https://accounts.spotify.com/api/token", null, {
-        params,
+    return fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        body: new URLSearchParams(params),
         headers: {
             Authorization: SPOTIFY_AUTHORIZATION,
             "Content-Type": "application/x-www-form-urlencoded",
         },
-    });
-
-    return data;
+    })
+        .then(res => res.json())
+        .catch(console.error);
 };
 
 export const configSpotify = {

@@ -10,3 +10,10 @@ export const getSpotifyAccessToken = async (code: string) => {
         code,
     });
 };
+
+export const getRefreshedSpotifyAccessToken = async (refresh_token: string) => {
+    return getSpotifyToken({
+        grant_type: "refresh_token",
+        refresh_token,
+    });
+};
