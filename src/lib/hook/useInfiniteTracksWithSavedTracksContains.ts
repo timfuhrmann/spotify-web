@@ -25,7 +25,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
     });
 
     const { data: savedTracksPages, fetchNextPage: fetchNextSavedTracksPage } = useInfiniteQuery(
-        ["saved-tracks-contains", ...key, access_token],
+        ["saved-tracks-contains", key, access_token],
         async ({ pageParam = 0 }) => {
             const ids = idsFromInfinitePages(pageParam);
 
@@ -66,7 +66,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
 
     const writeToSavedTracksCache = (value: boolean, index: number) => {
         return queryClient.setQueryData<InfiniteData<boolean[] | undefined> | undefined>(
-            ["saved-tracks-contains", ...key, access_token],
+            ["saved-tracks-contains", key, access_token],
             data => {
                 if (!data) {
                     return data;

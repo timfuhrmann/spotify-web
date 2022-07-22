@@ -10,7 +10,7 @@ import { useEffect, useMemo } from "react";
 import { queryClient } from "@lib/api";
 
 export interface InfiniteTracksOptions<T> {
-    key: string[];
+    key: string;
     queryFn: QueryFunction<T | undefined>;
     getNextPageParam: GetNextPageParamFunction<T | undefined>;
     initialTracks: T;
@@ -30,7 +30,7 @@ export const useInfiniteTracks = <T>({
         hasNextPage,
         isLoading,
         isFetching,
-    } = useInfiniteQuery([...key, access_token], queryFn, {
+    } = useInfiniteQuery([key, access_token], queryFn, {
         cacheTime: 0,
         getNextPageParam,
         initialData: {
@@ -45,7 +45,7 @@ export const useInfiniteTracks = <T>({
         ) => InfiniteData<T | undefined> | undefined
     ) => {
         return queryClient.setQueryData<InfiniteData<T | undefined> | undefined>(
-            [...key, access_token],
+            [key, access_token],
             data => updater(data)
         );
     };

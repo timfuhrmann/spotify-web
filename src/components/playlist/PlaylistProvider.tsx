@@ -8,8 +8,8 @@ import { removeTracks, saveTracks } from "@lib/api/track";
 
 interface PlaylistContextData {
     isFollowing: boolean;
-    tracks: SpotifyApi.PlaylistTrackObject[];
     total: number;
+    tracks: SpotifyApi.PlaylistTrackObject[];
     savedTracks: boolean[];
     isLoading: boolean;
     hasNextPage: boolean;
@@ -40,7 +40,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         addSavedTrackToCache,
         removeSavedTrackFromCache,
     } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.PlaylistTrackResponse>({
-        key: ["playlist-tracks"],
+        key: "playlist-tracks",
         initialTracks: playlist.tracks,
         limit: PLAYLIST_TRACKS_OFFSET,
         queryFn: ({ pageParam = 1 }) => getPlaylistTracks(access_token, playlist.id, pageParam),
@@ -62,22 +62,22 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         return tracksPages.pages.flatMap(page => (page ? page.items : []));
     }, [playlist, tracksPages]);
 
-    const handleSaveTrack = async (id: string, index: number) => {
+    const handleSaveTrack = async (id: string, index: number): Promise<void> => {
         addSavedTrackToCache(index);
-        saveTracks(access_token, [id]);
+        return saveTracks(access_token, [id]);
     };
 
-    const handleRemoveTrack = async (id: string, index: number) => {
+    const handleRemoveTrack = async (id: string, index: number): Promise<void> => {
         removeSavedTrackFromCache(index);
-        removeTracks(access_token, [id]);
+        return removeTracks(access_token, [id]);
     };
 
     return (
         <PlaylistContext.Provider
             value={{
                 isFollowing,
-                tracks,
                 total: playlist.tracks.total,
+                tracks,
                 savedTracks,
                 handleSaveTrack,
                 handleRemoveTrack,

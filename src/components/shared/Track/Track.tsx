@@ -8,6 +8,7 @@ import { text } from "@css/helper/typography";
 import { hover } from "@css/helper";
 import { FollowHeart } from "@icon/FollowHeart";
 import { UnfollowHeart } from "@icon/UnfollowHeart";
+import { TrackGrid } from "@css/helper/track";
 
 const TrackPlay = styled(Play)`
     display: none;
@@ -20,16 +21,7 @@ const TrackButton = styled.button`
     display: flex;
 `;
 
-const TrackWrapper = styled.div`
-    display: grid;
-    height: ${p => p.theme.sizes.playlistTrackHeight};
-    padding: 0 1.6rem;
-    grid-gap: 1.8rem;
-    grid-template-columns: [index] 1.6rem [title] 6fr [album] 4fr [time] 3fr [duration] minmax(
-            12rem,
-            1fr
-        );
-
+const TrackWrapper = styled(TrackGrid)`
     border-radius: 0.4rem;
     color: ${p => p.theme.gray700};
     ${text("textSm")};
@@ -110,9 +102,14 @@ const TrackRemove = styled(UnfollowHeart)`
     `};
 `;
 
-interface TrackProps extends SpotifyApi.TrackObjectFull {
+interface TrackProps {
     index: number;
+    name: string;
+    artists: SpotifyApi.ArtistObjectSimplified[];
+    explicit: boolean;
+    duration_ms: number;
     isSaved: boolean;
+    album?: SpotifyApi.AlbumObjectSimplified;
     addedAt?: string;
     hideArtists?: boolean;
     onSaveTrack?: () => void;
@@ -134,13 +131,13 @@ export const Track: React.FC<TrackProps> = ({
     const buttonSaveLabel = isSaved ? "Remove from library" : "Add to library";
 
     return (
-        <TrackWrapper>
+        <TrackWrapper role="row" aria-rowindex={index}>
             <TrackIndex>
                 <TrackNumber>{index + 1}</TrackNumber>
                 <TrackPlay />
             </TrackIndex>
             <TrackTitle name={name} album={album} artists={artists} explicit={explicit} />
-            <TrackAlbum {...album} />
+            {album && <TrackAlbum {...album} />}
             {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
             <TrackDuration>
                 {isSaved ? (

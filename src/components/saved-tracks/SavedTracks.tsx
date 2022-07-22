@@ -3,7 +3,10 @@ import { SavedTracksProvider } from "./SavedTracksProvider";
 import { ListHead } from "../shared/ListHead/ListHead";
 import { SavedTracksHeadFooter } from "./SavedTracksHeadFooter";
 import { useDominantColor } from "@lib/hook/useDominantColor";
-import { SavedTracksBody } from "./SavedTracksBody";
+import { ListBody } from "../shared/ListBody";
+import { ListControls } from "../shared/ListControls/ListControls";
+import { SavedTracksList } from "./SavedTracksList";
+import styled from "styled-components";
 
 const images = [
     {
@@ -38,7 +41,10 @@ export const SavedTracks: React.FC<SavedTracksProps> = props => {
                 images={images}
                 renderFooter={<SavedTracksHeadFooter />}
             />
-            <SavedTracksBody />
+            <ListBody>
+                <ListControls hideFollow />
+                <SavedTracksList />
+            </ListBody>
         </SavedTracksProvider>
     );
 };

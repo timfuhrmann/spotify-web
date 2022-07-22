@@ -24,7 +24,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
 
     const { isLoading, tracksPages, hasNextPage, fetchNextPage, writeToTracksCache } =
         useInfiniteTracks<SpotifyApi.UsersSavedTracksResponse>({
-            key: ["saved-tracks-list"],
+            key: "saved-tracks-list",
             initialTracks,
             queryFn: ({ pageParam = 1 }) => getSavedTracks(access_token, pageParam),
             getNextPageParam: (data, allPages) => {
@@ -78,8 +78,8 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
     return (
         <SavedTracksContext.Provider
             value={{
-                tracks,
                 total: initialTracks.total,
+                tracks,
                 isLoading,
                 hasNextPage,
                 fetchNextPage,

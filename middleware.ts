@@ -25,6 +25,10 @@ const handleRefreshAccessToken = async (
     try {
         const auth = await getRefreshedSpotifyAccessToken(refresh_token);
 
+        if (!auth || !auth.access_token) {
+            return;
+        }
+
         res.cookies.set(COOKIES_ACCESS_TOKEN, auth.refresh_token, getCookieSetOptions());
         res.cookies.set(
             COOKIES_ACCESS_TOKEN,

@@ -1,7 +1,5 @@
-import React from "react";
-import { ListControls } from "../shared/ListControls/ListControls";
+import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
-import { SavedTracksList } from "./SavedTracksList";
 
 const BodyWrapper = styled.div`
     position: relative;
@@ -22,11 +20,6 @@ const BodyWrapper = styled.div`
     }
 `;
 
-export const SavedTracksBody: React.FC = () => {
-    return (
-        <BodyWrapper>
-            <ListControls hideFollow />
-            <SavedTracksList />
-        </BodyWrapper>
-    );
+export const ListBody: React.FC<PropsWithChildren> = ({ children }) => {
+    return <BodyWrapper>{children}</BodyWrapper>;
 };

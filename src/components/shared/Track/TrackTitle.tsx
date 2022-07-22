@@ -54,8 +54,11 @@ const TitleArtist = styled.a`
     `};
 `;
 
-interface PlaylistTrackTitleProps
-    extends Pick<SpotifyApi.TrackObjectFull, "name" | "album" | "artists" | "explicit"> {
+interface PlaylistTrackTitleProps {
+    name: string;
+    artists: SpotifyApi.ArtistObjectSimplified[];
+    explicit: boolean;
+    album?: SpotifyApi.AlbumObjectSimplified;
     hideArtists?: boolean;
 }
 
@@ -68,9 +71,11 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
 }) => {
     return (
         <TitleWrapper>
-            <TitleCover>
-                <SpotifyImage alt={name} images={album.images} sizes="40px" />
-            </TitleCover>
+            {album && (
+                <TitleCover>
+                    <SpotifyImage alt={name} images={album.images} sizes="40px" />
+                </TitleCover>
+            )}
             <TitleFrame>
                 <TitleName>{name}</TitleName>
                 <TitleFooter>

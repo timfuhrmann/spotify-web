@@ -33,21 +33,21 @@ export const getSavedTracksContains = async (
 export const saveTracks = async (
     access_token: string | null,
     ids: string[] | null
-): Promise<string[] | undefined> => {
+): Promise<void> => {
     if (!access_token || !ids) {
         return;
     }
 
-    return request(access_token, { url: "/me/tracks", data: { ids: ids }, method: "PUT" });
+    return request(access_token, { url: "/me/tracks", data: { ids }, method: "PUT" });
 };
 
 export const removeTracks = async (
     access_token: string | null,
     ids: string[] | null
-): Promise<string[] | undefined> => {
+): Promise<void> => {
     if (!access_token || !ids) {
         return;
     }
 
-    return request(access_token, { url: "/me/tracks", data: { ids: ids }, method: "DELETE" });
+    return request(access_token, { url: "/me/tracks", data: { ids }, method: "DELETE" });
 };

@@ -14,7 +14,7 @@ export const theme = {
     gray900: "#ffffff",
 
     primary100: "#1fdf64",
-    primary200: "#1db954",
+    primary200: "#1ed760",
     primary300: "#169c46",
 
     likedSongsGradient: "linear-gradient(135deg, #450af5, #c4efd9)",

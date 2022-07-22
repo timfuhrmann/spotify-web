@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { text } from "@css/helper/typography";
-import { formatNumber } from "@lib/util";
+import { formatNumber } from "@lib/format";
+import { getTotalSongsString } from "@lib/util";
 
 const HeadUser = styled.span`
     ${text("textSm", "bold")};
@@ -25,7 +26,7 @@ export const PlaylistHeadFooter: React.FC<PlaylistHeadFooterProps> = ({
         <React.Fragment>
             <HeadUser>{owner.display_name}</HeadUser> &#183;{" "}
             <HeadFollowers>{formatNumber(followers.total)} likes</HeadFollowers> &#183;{" "}
-            <HeadSongs>{totalTracks} songs</HeadSongs>
+            <HeadSongs>{getTotalSongsString(totalTracks)}</HeadSongs>
         </React.Fragment>
     );
 };

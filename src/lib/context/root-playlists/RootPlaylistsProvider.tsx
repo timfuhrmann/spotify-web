@@ -13,12 +13,12 @@ export const RootPlaylistsProvider: React.FC<PropsWithChildren> = ({ children })
         getRootPlaylists(access_token)
     );
 
-    const handleFollowPlaylist = (playlist: SpotifyApi.PlaylistObjectSimplified) => {
+    const handleFollowPlaylist = (playlist: SpotifyApi.PlaylistObjectSimplified): Promise<void> => {
         addPlaylistToCache(playlist);
         return followPlaylist(access_token, playlist.id);
     };
 
-    const handleUnfollowPlaylist = (id: string) => {
+    const handleUnfollowPlaylist = (id: string): Promise<void> => {
         removePlaylistFromCache(id);
         return unfollowPlaylist(access_token, id);
     };

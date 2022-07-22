@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { text } from "@css/helper/typography";
 import { useSession } from "@lib/context/session";
 import { useSavedTracks } from "./SavedTracksProvider";
+import { getTotalSongsString } from "@lib/util";
 
 const HeadUser = styled.span`
     ${text("textSm", "bold")};
@@ -21,7 +22,7 @@ export const SavedTracksHeadFooter: React.FC = () => {
                     <HeadUser>{session.display_name}</HeadUser> &#183;{" "}
                 </React.Fragment>
             )}
-            <HeadSongs>{total} songs</HeadSongs>
+            <HeadSongs>{getTotalSongsString(total)}</HeadSongs>
         </React.Fragment>
     );
 };
