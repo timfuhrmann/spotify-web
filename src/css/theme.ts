@@ -44,8 +44,8 @@ export const theme = {
 
     //region Sizes
     sizes: {
-        headerHeight: "6.4rem",
-        playlistTrackHeight: "5.6rem",
+        headerHeight: 64,
+        playlistTrackHeight: 56,
     },
     //endregion
 };

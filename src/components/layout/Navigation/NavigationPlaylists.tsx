@@ -5,6 +5,7 @@ import { text } from "@css/helper/typography";
 import { hover } from "@css/helper";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useRootPlaylists } from "@lib/context/root-playlists";
+import { useRouter } from "next/router";
 
 const PlaylistsWrapper = styled.div`
     position: relative;
@@ -26,10 +27,10 @@ const PlaylistsStage = styled(OverlayScrollbarsComponent)`
     height: 100%;
 `;
 
-const PlaylistsItem = styled.a`
+const PlaylistsItem = styled.a<{ $active: boolean }>`
     display: block;
     padding: 0.6rem 2.4rem;
-    color: ${p => p.theme.gray700};
+    color: ${p => (p.$active ? p.theme.gray900 : p.theme.gray700)};
     ${text("textSm")};
 
     ${p => hover`
@@ -42,6 +43,7 @@ const PlaylistsItem = styled.a`
 `;
 
 export const NavigationPlaylists: React.FC = () => {
+    const { asPath } = useRouter();
     const { playlists } = useRootPlaylists();
 
     return (
@@ -50,7 +52,9 @@ export const NavigationPlaylists: React.FC = () => {
                 <PlaylistsStage className="custom-scrollbar">
                     {playlists.map(playlist => (
                         <Link key={playlist.id} href={"/playlist/" + playlist.id} passHref>
-                            <PlaylistsItem>{playlist.name}</PlaylistsItem>
+                            <PlaylistsItem $active={asPath.includes("/playlist/" + playlist.id)}>
+                                {playlist.name}
+                            </PlaylistsItem>
                         </Link>
                     ))}
                 </PlaylistsStage>

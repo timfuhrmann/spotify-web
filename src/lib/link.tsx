@@ -6,6 +6,7 @@ interface LabeledLink extends Omit<LinkProps, "href" | "passHref"> {
     label: string;
     href: string;
     title?: string;
+    className?: string;
 }
 
 export const Link: React.FC<PropsWithChildren<LabeledLink>> = ({
@@ -13,6 +14,7 @@ export const Link: React.FC<PropsWithChildren<LabeledLink>> = ({
     href,
     title,
     children,
+    className,
     ...linkProps
 }) => {
     const { asPath } = useRouter();
@@ -29,6 +31,7 @@ export const Link: React.FC<PropsWithChildren<LabeledLink>> = ({
         "aria-current": asPath === href ? "page" : undefined,
         "aria-label": label,
         title,
+        className,
     };
 
     return (

@@ -19,7 +19,7 @@ const ListWrapper = styled.div`
 `;
 
 const ListGrid = styled.div<{ $columns: 3 | 5; $rows: number }>`
-    min-height: ${p => `calc(${p.$rows} * ${p.theme.sizes.playlistTrackHeight})`};
+    min-height: ${p => `calc(${p.$rows} * ${p.theme.sizes.playlistTrackHeight / 10}rem)`};
 
     ${TrackGrid} {
         grid-template-columns: ${p => getGridTemplateColumns(p.$columns)};

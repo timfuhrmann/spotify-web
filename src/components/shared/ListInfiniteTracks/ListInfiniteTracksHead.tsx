@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { text } from "@css/helper/typography";
 import { getMainScrollStage } from "@lib/util";
 import { Clock } from "@icon/Clock";
@@ -8,7 +8,7 @@ import { TrackGrid } from "@css/helper/track";
 const HeadWrapper = styled.div<{ $stuck: boolean }>`
     position: sticky;
     z-index: 1;
-    top: 0;
+    top: ${p => p.theme.sizes.headerHeight / 10}rem;
     padding: 0 3.2rem;
     margin: 0 -3.2rem 1.6rem;
     border-bottom: 0.1rem solid ${p => (p.$stuck ? p.theme.gray200 : "transparent")};
@@ -48,6 +48,7 @@ interface TracksHeadProps {
 }
 
 export const ListInfiniteTracksHead: React.FC<TracksHeadProps> = ({ columns }) => {
+    const theme = useTheme();
     const headRef = useRef<HTMLDivElement | null>(null);
     const [stuck, setStuck] = useState<boolean>(false);
 
@@ -65,9 +66,9 @@ export const ListInfiniteTracksHead: React.FC<TracksHeadProps> = ({ columns }) =
 
             const { top } = headRef.current.getBoundingClientRect();
 
-            if (top <= 0 && !stuck) {
+            if (top <= theme.sizes.headerHeight && !stuck) {
                 setStuck(true);
-            } else if (top > 0 && stuck) {
+            } else if (top > theme.sizes.headerHeight && stuck) {
                 setStuck(false);
             }
         };

@@ -42,6 +42,10 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({ images, alt, sizes, pr
         );
     }, [images]);
 
+    if (!images[0]) {
+        return null;
+    }
+
     const imgAttributes = isVisible
         ? {
               src: images[0].url,

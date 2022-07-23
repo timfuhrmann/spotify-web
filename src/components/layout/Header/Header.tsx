@@ -1,12 +1,69 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigation } from "@lib/context/navigation";
+import { ChevronRight } from "@icon/ChevronRight";
+import { fillParent } from "@css/helper";
+import { HeaderUser } from "./HeaderUser";
 
 const HeaderWrapper = styled.header`
-    position: absolute;
-    top: 0;
-    height: ${p => p.theme.sizes.headerHeight};
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.4rem;
+    height: 100%;
+    padding: 0 3.2rem;
+
+    &::after {
+        content: "";
+        ${fillParent};
+        z-index: -1;
+        background-color: var(--dominant-color, ${p => p.theme.gray50});
+        opacity: var(--scroll, 0);
+    }
+`;
+
+const HeaderControls = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    pointer-events: auto;
+`;
+
+const HeaderButton = styled.button`
+    display: inline-flex;
+    padding: 0.4rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+`;
+
+const HeaderForth = styled(ChevronRight)`
+    width: 2.2rem;
+`;
+
+const HeaderBack = styled(HeaderForth)`
+    transform: scale(-1);
 `;
 
 export const Header: React.FC = () => {
-    return <HeaderWrapper />;
+    const { hasBack, hasForth, navigateBack, navigateForth } = useNavigation();
+
+    return (
+        <HeaderWrapper>
+            <HeaderControls>
+                <HeaderButton type="button" onClick={navigateBack} disabled={!hasBack}>
+                    <HeaderBack />
+                </HeaderButton>
+                <HeaderButton type="button" onClick={navigateForth} disabled={!hasForth}>
+                    <HeaderForth />
+                </HeaderButton>
+            </HeaderControls>
+            <HeaderUser />
+        </HeaderWrapper>
+    );
 };
