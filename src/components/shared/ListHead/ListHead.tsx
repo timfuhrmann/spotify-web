@@ -4,6 +4,7 @@ import { square } from "@css/helper";
 import { text } from "@css/helper/typography";
 import { SpotifyImage } from "@lib/image";
 import { HeaderSpacer } from "../../layout/HeaderSpacer";
+import { content } from "@css/helper/content";
 
 const HeadWrapper = styled.div`
     padding-bottom: 2.4rem;
@@ -19,7 +20,7 @@ const HeadInner = styled.div`
     display: flex;
     align-items: flex-end;
     gap: 2.4rem;
-    padding: 0 3.2rem;
+    ${content()};
 `;
 
 const HeadCover = styled.div`

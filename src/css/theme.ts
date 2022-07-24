@@ -33,12 +33,12 @@ export const theme = {
 
     //region Content Width
     contentWidth: {
-        intrinsic: "calc(100vw - 3.2rem)",
-        s: "calc(100vw - 3.2rem)",
-        m: "calc(100vw - 12rem)",
-        l: "calc(100vw - 12rem)",
-        xl: "calc(100vw - 19rem)",
-        xxl: "125rem",
+        intrinsic: "calc(100% - 6.4rem)",
+        s: "calc(100% - 6.4rem)",
+        m: "calc(100% - 6.4rem)",
+        l: "calc(100% - 6.4rem)",
+        xl: "calc(100% - 6.4rem)",
+        xxl: "calc(100% - 6.4rem)",
     },
     //endregion
 

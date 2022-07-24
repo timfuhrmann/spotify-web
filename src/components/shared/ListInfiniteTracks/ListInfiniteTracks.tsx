@@ -1,9 +1,10 @@
-import React, { ComponentProps, PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import { getMainScrollStage } from "@lib/util";
 import { ListInfiniteTracksHead } from "./ListInfiniteTracksHead";
 import { TrackGrid } from "@css/helper/track";
+import { content } from "@css/helper/content";
 
 const getGridTemplateColumns = (columns: 3 | 5) => {
     switch (columns) {
@@ -15,7 +16,7 @@ const getGridTemplateColumns = (columns: 3 | 5) => {
 };
 
 const ListWrapper = styled.div`
-    padding: 0 3.2rem;
+    ${content()}
 `;
 
 const ListGrid = styled.div<{ $columns: 3 | 5; $rows: number }>`

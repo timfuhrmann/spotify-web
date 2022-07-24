@@ -7,12 +7,7 @@ import { HeaderUser } from "./HeaderUser";
 
 const HeaderWrapper = styled.header`
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2.4rem;
     height: 100%;
-    padding: 0 3.2rem;
 
     &::after {
         content: "";
@@ -21,6 +16,16 @@ const HeaderWrapper = styled.header`
         background-color: var(--dominant-color, ${p => p.theme.gray50});
         opacity: var(--scroll, 0);
     }
+`;
+
+const HeaderInner = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.4rem;
+    height: 100%;
+    max-width: ${p => p.theme.contentWidth.intrinsic};
+    margin: 0 auto;
 `;
 
 const HeaderControls = styled.div`
@@ -55,15 +60,17 @@ export const Header: React.FC = () => {
 
     return (
         <HeaderWrapper>
-            <HeaderControls>
-                <HeaderButton type="button" onClick={navigateBack} disabled={!hasBack}>
-                    <HeaderBack />
-                </HeaderButton>
-                <HeaderButton type="button" onClick={navigateForth} disabled={!hasForth}>
-                    <HeaderForth />
-                </HeaderButton>
-            </HeaderControls>
-            <HeaderUser />
+            <HeaderInner>
+                <HeaderControls>
+                    <HeaderButton type="button" onClick={navigateBack} disabled={!hasBack}>
+                        <HeaderBack />
+                    </HeaderButton>
+                    <HeaderButton type="button" onClick={navigateForth} disabled={!hasForth}>
+                        <HeaderForth />
+                    </HeaderButton>
+                </HeaderControls>
+                <HeaderUser />
+            </HeaderInner>
         </HeaderWrapper>
     );
 };

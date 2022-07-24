@@ -7,6 +7,12 @@ export const content = (only?: Breakpoint[]) => css`
     ${p => handleContent(p.theme.contentWidth, only)};
 `;
 
+const contentCss = (width: string) => css`
+    max-width: min(${width}, 160rem);
+    margin-left: auto;
+    margin-right: auto;
+`;
+
 const handleContent = (contentWidth: ContentWidth, only?: Breakpoint[]) => {
     const keys = only || breakpoints().keys;
 
@@ -21,15 +27,11 @@ const handleContent = (contentWidth: ContentWidth, only?: Breakpoint[]) => {
             ${breakpoint === "s" &&
             contentWidth["intrinsic"] &&
             `${breakpoints().max("s")} {
-                    max-width: ${contentWidth["intrinsic"]};
-                    margin-left: auto;
-                    margin-right: auto;
+                   ${contentCss(contentWidth["intrinsic"])}
             }`}
 
             ${breakpoints().min(breakpoint)} {
-                max-width: ${content};
-                margin-left: auto;
-                margin-right: auto;
+                ${contentCss(content)}
             }
         `;
     });

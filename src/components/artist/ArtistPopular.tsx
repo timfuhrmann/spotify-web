@@ -4,9 +4,10 @@ import { TrackGrid } from "@css/helper/track";
 import { Track } from "../shared/Track/Track";
 import { useArtist } from "./ArtistProvider";
 import { text } from "@css/helper/typography";
+import { content } from "@css/helper/content";
 
 const PopularWrapper = styled.div`
-    padding: 0 3.2rem;
+    ${content()};
 `;
 
 const PopularHeadline = styled.h2`

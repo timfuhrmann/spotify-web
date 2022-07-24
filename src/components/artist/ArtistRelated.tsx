@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { ListEntries } from "../shared/ListEntries/ListEntries";
 import { useArtist } from "./ArtistProvider";
+import { content } from "@css/helper/content";
 
 const DiscographyWrapper = styled.div`
-    padding: 0 3.2rem;
+    ${content()};
 `;
 
 export const ArtistRelated: React.FC = () => {

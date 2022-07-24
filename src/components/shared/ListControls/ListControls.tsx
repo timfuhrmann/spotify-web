@@ -5,11 +5,13 @@ import { FollowHeart } from "@icon/FollowHeart";
 import { hover, square } from "@css/helper";
 import { UnfollowHeart } from "@icon/UnfollowHeart";
 import { useSession } from "@lib/context/session";
+import { content } from "@css/helper/content";
 
 const ControlsWrapper = styled.div`
     display: flex;
     gap: 3.2rem;
-    padding: 0 3.2rem 2.4rem;
+    ${content()};
+    padding-bottom: 2.4rem;
 `;
 
 const ControlsButton = styled.button``;
