@@ -4,8 +4,6 @@ import { usePlaylist } from "./PlaylistProvider";
 import { Track } from "../shared/Track/Track";
 import { ListInfiniteTracks } from "../shared/ListInfiniteTracks/ListInfiniteTracks";
 
-const TracksWrapper = styled.div``;
-
 export const PlaylistTracks: React.FC = () => {
     const {
         tracks,
@@ -27,27 +25,25 @@ export const PlaylistTracks: React.FC = () => {
     };
 
     return (
-        <TracksWrapper>
-            <ListInfiniteTracks
-                columns={5}
-                rows={total}
-                loadMore={handleLoadMore}
-                hasMore={hasNextPage}>
-                {tracks.map(
-                    ({ track, added_at }, index) =>
-                        track && (
-                            <Track
-                                key={index}
-                                index={index}
-                                isSaved={savedTracks[index]}
-                                addedAt={added_at}
-                                onSaveTrack={() => handleSaveTrack(track.id, index)}
-                                onRemoveTrack={() => handleRemoveTrack(track.id, index)}
-                                {...track}
-                            />
-                        )
-                )}
-            </ListInfiniteTracks>
-        </TracksWrapper>
+        <ListInfiniteTracks
+            columns={5}
+            rows={total}
+            loadMore={handleLoadMore}
+            hasMore={hasNextPage}>
+            {tracks.map(
+                ({ track, added_at }, index) =>
+                    track && (
+                        <Track
+                            key={index}
+                            index={index}
+                            isSaved={savedTracks[index]}
+                            addedAt={added_at}
+                            onSaveTrack={() => handleSaveTrack(track.id, index)}
+                            onRemoveTrack={() => handleRemoveTrack(track.id, index)}
+                            {...track}
+                        />
+                    )
+            )}
+        </ListInfiniteTracks>
     );
 };

@@ -26,7 +26,7 @@ export const SavedTracksList: React.FC = () => {
                 loadMore={handleLoadMore}
                 hasMore={hasNextPage}>
                 {tracks.map(
-                    ({ track, added_at, ...rest }, index) =>
+                    ({ track, added_at }, index) =>
                         track && (
                             <Track
                                 key={index}

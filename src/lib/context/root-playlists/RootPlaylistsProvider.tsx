@@ -26,12 +26,12 @@ export const RootPlaylistsProvider: React.FC<PropsWithChildren> = ({ children })
     const addPlaylistToCache = (playlist: SpotifyApi.PlaylistObjectSimplified) => {
         return queryClient.setQueryData<SpotifyApi.PlaylistObjectSimplified[] | undefined>(
             ["root-playlists", access_token],
-            data => {
-                if (!data) {
-                    return data;
+            cachedData => {
+                if (!cachedData) {
+                    return;
                 }
 
-                const newData = cloneDeep(data);
+                const newData = cloneDeep(cachedData);
                 const index = newData.findIndex(item => item.id === playlist.id);
 
                 if (index === -1) {
@@ -46,12 +46,12 @@ export const RootPlaylistsProvider: React.FC<PropsWithChildren> = ({ children })
     const removePlaylistFromCache = (id: string) => {
         return queryClient.setQueryData<SpotifyApi.PlaylistObjectSimplified[] | undefined>(
             ["root-playlists", access_token],
-            data => {
-                if (!data) {
-                    return data;
+            cachedData => {
+                if (!cachedData) {
+                    return;
                 }
 
-                const newData = cloneDeep(data);
+                const newData = cloneDeep(cachedData);
                 const index = newData.findIndex(playlist => playlist.id === id);
 
                 if (index > -1) {

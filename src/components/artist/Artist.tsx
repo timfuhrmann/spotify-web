@@ -1,15 +1,26 @@
 import React from "react";
-import styled from "styled-components";
 import { ListHead } from "../shared/ListHead/ListHead";
-import { ListBody } from "../shared/ListBody";
+import { formatNumber } from "@lib/format";
+import { ArtistProvider } from "./ArtistProvider";
+import { ArtistBody } from "./ArtistBody";
 
-const ArtistWrapper = styled.div``;
+export interface ArtistProps {
+    artist: SpotifyApi.ArtistObjectFull;
+    topTracks: SpotifyApi.TrackObjectFull[];
+}
 
-export const Artist: React.FC<SpotifyApi.ArtistObjectFull> = ({ name, images }) => {
+export const Artist: React.FC<ArtistProps> = props => {
+    const { name, images, followers } = props.artist;
+
     return (
-        <ArtistWrapper>
-            <ListHead overline="Artist" name={name} images={images} />
-            <ListBody />
-        </ArtistWrapper>
+        <ArtistProvider {...props}>
+            <ListHead
+                overline="Artist"
+                name={name}
+                images={images}
+                renderFooter={<div>{formatNumber(followers.total)} followers</div>}
+            />
+            <ArtistBody name={name} tracks={props.topTracks} />
+        </ArtistProvider>
     );
 };

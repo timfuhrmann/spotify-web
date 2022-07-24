@@ -40,7 +40,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         addSavedTrackToCache,
         removeSavedTrackFromCache,
     } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.PlaylistTrackResponse>({
-        key: "playlist-tracks",
+        key: playlist.id,
         initialTracks: playlist.tracks,
         limit: PLAYLIST_TRACKS_OFFSET,
         queryFn: ({ pageParam = 1 }) => getPlaylistTracks(access_token, playlist.id, pageParam),

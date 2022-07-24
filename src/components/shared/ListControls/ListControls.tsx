@@ -2,7 +2,7 @@ import React from "react";
 import { PlayButton } from "../PlayButton";
 import styled from "styled-components";
 import { FollowHeart } from "@icon/FollowHeart";
-import { hover } from "@css/helper";
+import { hover, square } from "@css/helper";
 import { UnfollowHeart } from "@icon/UnfollowHeart";
 import { useSession } from "@lib/context/session";
 
@@ -32,6 +32,10 @@ const ControlsUnfollow = styled(UnfollowHeart)`
     `};
 `;
 
+const ControlsPlay = styled.div`
+    ${square("5.6rem")};
+`;
+
 interface ListControlsProps {
     owner?: SpotifyApi.UserObjectPublic | null;
     isFollowing?: boolean;
@@ -51,7 +55,9 @@ export const ListControls: React.FC<ListControlsProps> = ({
 
     return (
         <ControlsWrapper>
-            <PlayButton />
+            <ControlsPlay>
+                <PlayButton />
+            </ControlsPlay>
             {(!owner || (session && session.id !== owner.id)) && !hideFollow && (
                 <React.Fragment>
                     {isFollowing ? (

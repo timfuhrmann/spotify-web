@@ -1,13 +1,11 @@
 import React, { useMemo } from "react";
 import Head from "next/head";
 import styled from "styled-components";
-import { fillParent, square } from "@css/helper";
+import { fillParent } from "@css/helper";
 import { useIntersection } from "next/dist/client/use-intersection";
 
 const CoverWrapper = styled.div`
-    position: relative;
-    ${square("100%")};
-    background-color: ${p => p.theme.gray200};
+    ${fillParent};
 `;
 
 const Image = styled.img`

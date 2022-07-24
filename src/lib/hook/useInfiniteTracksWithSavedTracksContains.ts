@@ -40,9 +40,6 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
             );
 
             return res.flatMap(arr => arr || []);
-        },
-        {
-            cacheTime: 0,
         }
     );
 
@@ -67,12 +64,12 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
     const writeToSavedTracksCache = (value: boolean, index: number) => {
         return queryClient.setQueryData<InfiniteData<boolean[] | undefined> | undefined>(
             ["saved-tracks-contains", key, access_token],
-            data => {
-                if (!data) {
-                    return data;
+            cachedData => {
+                if (!cachedData) {
+                    return;
                 }
 
-                const newData = cloneDeep(data);
+                const newData = cloneDeep(cachedData);
                 const pageIndex = Math.floor(index / limit);
                 const page = newData.pages[pageIndex];
 
@@ -81,10 +78,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
                 }
 
                 const trackIndex = index - pageIndex * limit;
-
-                if (page && page[trackIndex] !== undefined) {
-                    page[trackIndex] = value;
-                }
+                page[trackIndex] = value;
 
                 return newData;
             }

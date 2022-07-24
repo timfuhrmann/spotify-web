@@ -18,13 +18,14 @@ const UserButton = styled.button`
     background-color: ${p => p.theme.black};
     padding: 0.4rem 1.2rem 0.4rem 0.4rem;
     border-radius: 2rem;
-    ${text("textSm", "medium")}
+    ${text("textSm", "bold")}
 `;
 
 const UserAvatar = styled.div`
     position: relative;
     ${square("2.8rem")};
     border-radius: 50%;
+    background-color: ${p => p.theme.gray200};
     overflow: hidden;
     transform: translateZ(0);
 `;
@@ -46,7 +47,9 @@ export const HeaderUser: React.FC = () => {
         <UserWrapper>
             <UserButton onClick={() => setOpen(prevState => !prevState)}>
                 <UserAvatar>
-                    {session.images && <SpotifyImage images={session.images} />}
+                    {session.images && (
+                        <SpotifyImage images={session.images} alt="Avatar" sizes="28px" />
+                    )}
                 </UserAvatar>
                 {session.display_name}
                 <UserChevron $active={open} />

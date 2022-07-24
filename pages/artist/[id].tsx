@@ -4,7 +4,7 @@ import { NextPageWithLayout } from "@type/page";
 import { useRouter } from "next/router";
 import { useSession } from "@lib/context/session";
 import { useQuery } from "react-query";
-import { getArtist } from "@lib/api/artist";
+import { getArtist, getArtistTopTracks } from "@lib/api/artist";
 import { Artist as ArtistComponent } from "../../src/components/artist/Artist";
 import { useDominantColor } from "@lib/hook/useDominantColor";
 
@@ -14,19 +14,27 @@ const Artist: NextPageWithLayout = () => {
 
     const { id } = query;
 
+    const enabled = !!access_token && !!id && typeof id === "string";
+
     const { data: artist } = useQuery(
         ["artist", id, access_token],
         () => getArtist(access_token, id && typeof id === "string" ? id : null),
-        { enabled: !!access_token && !!id && typeof id === "string" }
+        { enabled }
+    );
+
+    const { data: artistTopTracks } = useQuery(
+        ["artist-top-tracks", id, access_token],
+        () => getArtistTopTracks(access_token, id && typeof id === "string" ? id : null),
+        { enabled }
     );
 
     useDominantColor(artist ? artist.images : null);
 
-    if (!artist) {
+    if (!artist || !artistTopTracks) {
         return null;
     }
 
-    return <ArtistComponent {...artist} />;
+    return <ArtistComponent artist={artist} topTracks={artistTopTracks} />;
 };
 
 // eslint-disable-next-line react/display-name

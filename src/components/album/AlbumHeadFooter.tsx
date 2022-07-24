@@ -4,13 +4,7 @@ import Link from "next/link";
 import { text } from "@css/helper/typography";
 import { useAlbum } from "./AlbumProvider";
 import { getTotalSongsString } from "@lib/util";
-import { hover, square } from "@css/helper";
-import { SpotifyImage } from "@lib/image";
-
-const HeadAvatar = styled.div`
-    position: relative;
-    ${square("2.4rem")};
-`;
+import { hover } from "@css/helper";
 
 const HeadUser = styled.a`
     ${text("textSm", "bold")};

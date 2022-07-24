@@ -105,13 +105,13 @@ const TrackRemove = styled(UnfollowHeart)`
 interface TrackProps {
     index: number;
     name: string;
-    artists: SpotifyApi.ArtistObjectSimplified[];
     explicit: boolean;
     duration_ms: number;
     isSaved: boolean;
+    artists?: SpotifyApi.ArtistObjectSimplified[];
     album?: SpotifyApi.AlbumObjectSimplified;
+    hideAlbum?: boolean;
     addedAt?: string;
-    hideArtists?: boolean;
     onSaveTrack?: () => void;
     onRemoveTrack?: () => void;
 }
@@ -123,6 +123,7 @@ export const Track: React.FC<TrackProps> = ({
     artists,
     explicit,
     duration_ms,
+    hideAlbum,
     isSaved,
     addedAt,
     onSaveTrack,
@@ -137,7 +138,7 @@ export const Track: React.FC<TrackProps> = ({
                 <TrackPlay />
             </TrackIndex>
             <TrackTitle name={name} album={album} artists={artists} explicit={explicit} />
-            {album && <TrackAlbum {...album} />}
+            {!hideAlbum && album && <TrackAlbum {...album} />}
             {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
             <TrackDuration>
                 {isSaved ? (

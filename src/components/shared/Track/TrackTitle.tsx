@@ -15,7 +15,9 @@ const TitleWrapper = styled.div`
 `;
 
 const TitleCover = styled.div`
+    position: relative;
     ${square("4rem")};
+    background-color: ${p => p.theme.gray200};
 `;
 
 const TitleFrame = styled.div`
@@ -56,10 +58,9 @@ const TitleArtist = styled.a`
 
 interface PlaylistTrackTitleProps {
     name: string;
-    artists: SpotifyApi.ArtistObjectSimplified[];
     explicit: boolean;
+    artists?: SpotifyApi.ArtistObjectSimplified[];
     album?: SpotifyApi.AlbumObjectSimplified;
-    hideArtists?: boolean;
 }
 
 export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
@@ -67,7 +68,6 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
     album,
     artists,
     explicit,
-    hideArtists,
 }) => {
     return (
         <TitleWrapper>
@@ -80,7 +80,7 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
                 <TitleName>{name}</TitleName>
                 <TitleFooter>
                     {explicit && <Explicit />}
-                    {!hideArtists && (
+                    {artists && (
                         <TitleArtists>
                             {artists.map((artist, index) => (
                                 <React.Fragment key={artist.id}>

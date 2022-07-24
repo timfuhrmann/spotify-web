@@ -4,9 +4,7 @@ import {
     QueryFunction,
     useInfiniteQuery,
 } from "react-query";
-import { getSavedTracksContains } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
-import { useEffect, useMemo } from "react";
 import { queryClient } from "@lib/api";
 
 export interface InfiniteTracksOptions<T> {
@@ -30,7 +28,7 @@ export const useInfiniteTracks = <T>({
         hasNextPage,
         isLoading,
         isFetching,
-    } = useInfiniteQuery([key, access_token], queryFn, {
+    } = useInfiniteQuery(["tracks", key, access_token], queryFn, {
         cacheTime: 0,
         getNextPageParam,
         initialData: {
@@ -45,7 +43,7 @@ export const useInfiniteTracks = <T>({
         ) => InfiniteData<T | undefined> | undefined
     ) => {
         return queryClient.setQueryData<InfiniteData<T | undefined> | undefined>(
-            [key, access_token],
+            ["tracks", key, access_token],
             data => updater(data)
         );
     };

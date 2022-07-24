@@ -34,6 +34,7 @@ const AlbumContext = createContext<AlbumContextData>({} as AlbumContextData);
 
 export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, children }) => {
     const { access_token } = useSession();
+
     const { data: savedAlbumsContains } = useQuery(
         ["saved-albums-contains", album.id, access_token],
         () => getSavedAlbumsContains(access_token, [album.id]),
@@ -49,7 +50,7 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         addSavedTrackToCache,
         removeSavedTrackFromCache,
     } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.AlbumTracksResponse>({
-        key: "album-tracks",
+        key: album.id,
         initialTracks: album.tracks,
         limit: ALBUM_TRACKS_OFFSET,
         queryFn: ({ pageParam = 1 }) => getAlbumTracks(access_token, album.id, pageParam),

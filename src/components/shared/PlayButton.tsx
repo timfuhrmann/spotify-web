@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { hover, square } from "@css/helper";
 import { Play } from "@icon/Play";
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    ${square("5.6rem")};
+    ${square("100%")};
     background-color: ${p => p.theme.primary200};
     color: ${p => p.theme.gray50};
     border-radius: 50%;
@@ -25,8 +25,8 @@ const ButtonWrapper = styled.div`
 
 export const PlayButton: React.FC = () => {
     return (
-        <ButtonWrapper>
-            <Play width="28" />
+        <ButtonWrapper type="button">
+            <Play width="50%" />
         </ButtonWrapper>
     );
 };

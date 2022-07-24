@@ -19,12 +19,15 @@ const HeadInner = styled.div`
 `;
 
 const HeadCover = styled.div`
+    position: relative;
     ${square("23.2rem")};
     box-shadow: 0 0.4rem 6rem rgba(0, 0, 0, 0.5);
+    background-color: ${p => p.theme.gray200};
 `;
 
 const HeadGroup = styled.div`
-    flex: 1;
+    flex: 1 1 0;
+    width: 0;
     min-width: 0;
 `;
 
@@ -33,7 +36,7 @@ const HeadOverline = styled.div`
     text-transform: uppercase;
 `;
 
-const HeadName = styled.div`
+const HeadName = styled.h1`
     ${text("display3Xl", "black")};
     margin-bottom: 0.8rem;
     white-space: nowrap;
