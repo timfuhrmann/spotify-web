@@ -1,18 +1,10 @@
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { SavedTracks } from "../../src/components/saved-tracks/SavedTracks";
-import { useSession } from "@lib/context/session";
-import { useQuery } from "react-query";
-import { getSavedTracks } from "@lib/api/track";
+import { useSavedTracksQuery } from "@lib/api/hook/useSavedTracksQuery";
 
 const Tracks: NextPageWithLayout = () => {
-    const { access_token } = useSession();
-
-    const { data: savedTracks } = useQuery(
-        ["saved-tracks", access_token],
-        () => getSavedTracks(access_token),
-        { enabled: !!access_token }
-    );
+    const { data: savedTracks } = useSavedTracksQuery();
 
     if (!savedTracks) {
         return null;

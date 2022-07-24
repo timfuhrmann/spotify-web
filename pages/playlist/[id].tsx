@@ -1,23 +1,14 @@
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { useRouter } from "next/router";
-import { useQuery } from "react-query";
-import { getPlaylist } from "@lib/api/playlist";
-import { useSession } from "@lib/context/session";
 import { Playlist as PlaylistComponent } from "../../src/components/playlist/Playlist";
 import { useDominantColor } from "@lib/hook/useDominantColor";
+import { usePlaylistQuery } from "@lib/api/hook/usePlaylistQuery";
+import { getIdFromQuery } from "@lib/util";
 
 const Playlist: NextPageWithLayout = () => {
     const { query } = useRouter();
-    const { access_token } = useSession();
-
-    const { id } = query;
-
-    const { data: playlist } = useQuery(
-        ["playlist", id, access_token],
-        () => getPlaylist(access_token, id && typeof id === "string" ? id : null),
-        { enabled: !!access_token && !!id && typeof id === "string" }
-    );
+    const { data: playlist } = usePlaylistQuery(getIdFromQuery(query));
 
     useDominantColor(playlist ? playlist.images : null);
 

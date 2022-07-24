@@ -2,7 +2,7 @@ import cloneDeep from "lodash.clonedeep";
 import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import { SavedTracksProps } from "./SavedTracks";
 import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
-import { getSavedTracks, removeTracks, saveTracks } from "@lib/api/track";
+import { getSavedTracks, removeTracks } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
 
 interface SavedTracksContextData {

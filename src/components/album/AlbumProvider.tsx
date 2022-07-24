@@ -1,18 +1,10 @@
 import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import { AlbumProps } from "./Album";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
-import {
-    ALBUM_TRACKS_OFFSET,
-    getAlbumTracks,
-    getSavedAlbumsContains,
-    removeAlbum,
-    saveAlbum,
-} from "@lib/api/album";
+import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
-import { InfiniteData, QueryKey, useQuery } from "react-query";
-import { queryClient } from "@lib/api";
-import cloneDeep from "lodash.clonedeep";
+import { useSavedAlbumsContains } from "@lib/api/hook/useSavedAlbumsContains";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 
@@ -35,11 +27,11 @@ const AlbumContext = createContext<AlbumContextData>({} as AlbumContextData);
 export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, children }) => {
     const { access_token } = useSession();
 
-    const { data: savedAlbumsContains } = useQuery(
-        ["saved-albums-contains", album.id, access_token],
-        () => getSavedAlbumsContains(access_token, [album.id]),
-        { enabled: !!access_token }
-    );
+    const {
+        data: savedAlbumsContains,
+        saveAlbumToCache,
+        removeAlbumFromCache,
+    } = useSavedAlbumsContains([album.id]);
 
     const {
         isLoading,
@@ -94,22 +86,13 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         return removeTracks(access_token, [id]);
     };
 
-    const writeToSavedAlbumsContainsCache = (value: boolean) => {
-        return queryClient.setQueryData<boolean[] | undefined>(
-            ["saved-albums-contains", album.id, access_token],
-            () => {
-                return [value];
-            }
-        );
-    };
-
     const handleSaveAlbum = async (): Promise<void> => {
-        writeToSavedAlbumsContainsCache(true);
+        saveAlbumToCache();
         return saveAlbum(access_token, [album.id]);
     };
 
     const handleRemoveAlbum = async (): Promise<void> => {
-        writeToSavedAlbumsContainsCache(false);
+        removeAlbumFromCache();
         return removeAlbum(access_token, [album.id]);
     };
 

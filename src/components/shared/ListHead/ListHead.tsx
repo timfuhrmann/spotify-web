@@ -8,7 +8,11 @@ import { HeaderSpacer } from "../../layout/HeaderSpacer";
 const HeadWrapper = styled.div`
     padding-bottom: 2.4rem;
     background: var(--dominant-color, ${p => p.theme.gray50});
-    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, var(--dominant-color) 100%);
+    background-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        var(--dominant-color, ${p => p.theme.gray50}) 100%
+    );
 `;
 
 const HeadInner = styled.div`

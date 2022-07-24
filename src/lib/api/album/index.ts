@@ -4,7 +4,7 @@ export const ALBUM_TRACKS_OFFSET = 50;
 
 export const getAlbum = async (
     access_token: string | null,
-    id: string | null
+    id: string | null | undefined
 ): Promise<SpotifyApi.AlbumObjectFull | undefined> => {
     if (!access_token || !id) {
         return;
@@ -15,7 +15,7 @@ export const getAlbum = async (
 
 export const getAlbumTracks = async (
     access_token: string | null,
-    id: string | null,
+    id: string | null | undefined,
     page: number = 0
 ): Promise<SpotifyApi.AlbumTracksResponse | undefined> => {
     if (!access_token || !id) {

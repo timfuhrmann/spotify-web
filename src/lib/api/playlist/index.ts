@@ -18,7 +18,7 @@ export const getRootPlaylists = async (
 
 export const getPlaylist = async (
     access_token: string | null,
-    id: string | null
+    id: string | null | undefined
 ): Promise<SpotifyApi.PlaylistObjectFull | undefined> => {
     if (!access_token || !id) {
         return;
@@ -29,7 +29,7 @@ export const getPlaylist = async (
 
 export const getPlaylistTracks = async (
     access_token: string | null,
-    id: string | null,
+    id: string | null | undefined,
     page: number = 0
 ): Promise<SpotifyApi.PlaylistTrackResponse | undefined> => {
     if (!access_token || !id) {

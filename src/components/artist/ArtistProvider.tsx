@@ -2,9 +2,9 @@ import React, { createContext, PropsWithChildren, useContext, useState } from "r
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
-import { useSavedTracksContains } from "@lib/hook/useSavedTracksContains";
-import { useArtistsAlbums } from "@lib/api/hook/useArtistsAlbums";
-import { useArtistsRelatedArtists } from "@lib/api/hook/useArtistsRelatedArtists";
+import { useSavedTracksContainsQuery } from "@lib/api/hook/useSavedTracksContainsQuery";
+import { useArtistsAlbumsQuery } from "@lib/api/hook/useArtistsAlbumsQuery";
+import { useArtistsRelatedArtistsQuery } from "@lib/api/hook/useArtistsRelatedArtistsQuery";
 
 interface ArtistContextData {
     savedTracks: boolean[];
@@ -34,16 +34,13 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         data: savedTracks = [],
         saveTrackToCache,
         removeTrackFromCache,
-    } = useSavedTracksContains(
-        artist.id,
-        topTracks.map(track => track.id)
-    );
+    } = useSavedTracksContainsQuery(topTracks.map(track => track.id));
 
-    const { data: artistAlbums } = useArtistsAlbums(artist.id);
+    const { data: artistAlbums } = useArtistsAlbumsQuery(artist.id);
 
-    const { data: artistAppearsOn } = useArtistsAlbums(artist.id, ["appears_on"]);
+    const { data: artistAppearsOn } = useArtistsAlbumsQuery(artist.id, ["appears_on"]);
 
-    const { data: artistRelatedArtists } = useArtistsRelatedArtists(artist.id);
+    const { data: artistRelatedArtists } = useArtistsRelatedArtistsQuery(artist.id);
 
     const hasMorePopularTracks = length < topTracks.length;
     const hasLessPopularTracks = length > Math.min(5, topTracks.length);

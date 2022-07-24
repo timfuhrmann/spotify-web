@@ -5,7 +5,7 @@ import { getImageFromImageObject } from "@lib/image";
 export const useDominantColor = (images?: SpotifyApi.ImageObject[] | null) => {
     useEffect(() => {
         if (!images) {
-            document.body.style.removeProperty("--dominant-color");
+            removeDominantColor();
             return;
         }
 
@@ -24,11 +24,12 @@ export const useDominantColor = (images?: SpotifyApi.ImageObject[] | null) => {
         const onLoad = () => {
             const color = fac.getColor(img);
 
-            if (color.hex === "#00000") {
+            if (color.hex === "#000000") {
+                removeDominantColor();
                 return;
             }
 
-            document.body.style.setProperty("--dominant-color", color.hex);
+            setDominantColor(color.hex);
         };
 
         img.addEventListener("load", onLoad);
@@ -38,4 +39,12 @@ export const useDominantColor = (images?: SpotifyApi.ImageObject[] | null) => {
             img.removeEventListener("load", onLoad);
         };
     }, [images]);
+
+    const setDominantColor = (color: string) => {
+        document.body.style.setProperty("--dominant-color", color);
+    };
+
+    const removeDominantColor = () => {
+        document.body.style.removeProperty("--dominant-color");
+    };
 };

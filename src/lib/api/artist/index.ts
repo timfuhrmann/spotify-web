@@ -4,7 +4,7 @@ export type AlbumGroup = "album" | "single" | "compilation" | "appears_on";
 
 export const getArtist = async (
     access_token: string | null,
-    id: string | null
+    id: string | null | undefined
 ): Promise<SpotifyApi.ArtistObjectFull | undefined> => {
     if (!access_token || !id) {
         return;
@@ -13,9 +13,9 @@ export const getArtist = async (
     return request(access_token, { url: "/artists/" + id });
 };
 
-export const getArtistTopTracks = async (
+export const getArtistsTopTracks = async (
     access_token: string | null,
-    id: string | null
+    id: string | null | undefined
 ): Promise<SpotifyApi.TrackObjectFull[] | undefined> => {
     if (!access_token || !id) {
         return;
@@ -29,9 +29,9 @@ export const getArtistTopTracks = async (
     return tracks;
 };
 
-export const getArtistAlbums = async (
+export const getArtistsAlbums = async (
     access_token: string | null,
-    id: string | null,
+    id: string | null | undefined,
     include_groups: AlbumGroup[] = ["album", "single", "compilation"]
 ): Promise<SpotifyApi.ArtistsAlbumsResponse | undefined> => {
     if (!access_token || !id) {
@@ -44,9 +44,9 @@ export const getArtistAlbums = async (
     });
 };
 
-export const getArtistRelatedArtists = async (
+export const getArtistsRelatedArtists = async (
     access_token: string | null,
-    id: string | null
+    id: string | null | undefined
 ): Promise<SpotifyApi.ArtistsRelatedArtistsResponse | undefined> => {
     if (!access_token || !id) {
         return;
