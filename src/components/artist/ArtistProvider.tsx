@@ -1,19 +1,23 @@
-import React, { createContext, PropsWithChildren, useContext, useState } from "react";
+import React, { createContext, PropsWithChildren, useContext, useMemo, useState } from "react";
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
 import { useSavedTracksContainsQuery } from "@lib/api/hook/useSavedTracksContainsQuery";
 import { useArtistsAlbumsQuery } from "@lib/api/hook/useArtistsAlbumsQuery";
 import { useArtistsRelatedArtistsQuery } from "@lib/api/hook/useArtistsRelatedArtistsQuery";
+import { AlbumGroup } from "@lib/api/artist";
 
 interface ArtistContextData {
     savedTracks: boolean[];
+    albumGroup: AlbumGroup | null;
+    albumGroups: AlbumGroup[] | null;
     albums: SpotifyApi.AlbumObjectSimplified[] | null;
     appearsOn: SpotifyApi.AlbumObjectSimplified[] | null;
     relatedArtists: SpotifyApi.ArtistObjectFull[] | null;
     popularTracksLength: number;
     hasMorePopularTracks: boolean;
     hasLessPopularTracks: boolean;
+    setAlbumGroup: (albumGroup: AlbumGroup | null) => void;
     showMorePopularTracks: () => void;
     showLessPopularTracks: () => void;
     handleSaveTrack: (id: string, index: number) => Promise<void>;
@@ -28,6 +32,7 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     children,
 }) => {
     const { access_token } = useSession();
+    const [albumGroup, setAlbumGroup] = useState<AlbumGroup | null>(null);
     const [popularTracksLength, setPopularTracksLength] = useState(Math.min(5, topTracks.length));
 
     const {
@@ -41,6 +46,33 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
 
     const hasMorePopularTracks = popularTracksLength < topTracks.length;
     const hasLessPopularTracks = popularTracksLength > Math.min(5, topTracks.length);
+
+    const albums = useMemo(() => {
+        if (!artistAlbums) {
+            return null;
+        }
+
+        if (!albumGroup) {
+            return artistAlbums.items;
+        }
+
+        return artistAlbums.items.filter(album => album.album_group === albumGroup);
+    }, [artistAlbums, albumGroup]);
+
+    const albumGroups = useMemo<AlbumGroup[] | null>(() => {
+        if (!artistAlbums) {
+            return null;
+        }
+
+        return artistAlbums.items.reduce((acc, album) => {
+            if (!album.album_group || acc.includes(album.album_group)) {
+                return acc;
+            }
+
+            acc.push(album.album_group);
+            return acc;
+        }, [] as AlbumGroup[]);
+    }, [artistAlbums]);
 
     const showMorePopularTracks = () => {
         setPopularTracksLength(topTracks.length);
@@ -64,12 +96,15 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         <ArtistContext.Provider
             value={{
                 savedTracks,
-                albums: artistAlbums ? artistAlbums.items : null,
+                albumGroup,
+                albumGroups,
+                albums,
                 appearsOn: artistAppearsOn ? artistAppearsOn.items : null,
                 relatedArtists: artistRelatedArtists ? artistRelatedArtists.artists : null,
                 popularTracksLength,
                 hasMorePopularTracks,
                 hasLessPopularTracks,
+                setAlbumGroup,
                 showMorePopularTracks,
                 showLessPopularTracks,
                 handleSaveTrack,

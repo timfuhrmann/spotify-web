@@ -6,7 +6,7 @@ import { text } from "@css/helper/typography";
 import { Link } from "@lib/link";
 import { PlayButton } from "../PlayButton";
 import { EntryType } from "./ListEntries";
-import { Index } from "@lib/skeleton";
+import { Skeleton } from "@lib/skeleton";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 
 const AlbumPlay = styled.div`
@@ -44,14 +44,18 @@ const AlbumWrapper = styled.div`
     `};
 `;
 
-const AlbumFrame = styled.div<{ $type: EntryType }>`
+const AlbumImage = styled.div<{ $type: EntryType }>`
     position: relative;
     ${aspectRatio(1)};
-    margin-bottom: 1.2rem;
     border-radius: ${p => (p.$type === "artist" ? "50%" : "0.4rem")};
     background-color: ${p => p.theme.gray100};
     overflow: hidden;
     transform: translateZ(0);
+`;
+
+const AlbumFrame = styled.div`
+    position: relative;
+    margin-bottom: 1.2rem;
 `;
 
 const AlbumName = styled.div`
@@ -85,8 +89,10 @@ export const ListEntriesItem: React.FC<ListEntriesItemProps> & ParentComposition
 }) => {
     return (
         <AlbumWrapper>
-            <AlbumFrame $type={type}>
-                <SpotifyImage images={images} alt={name} />
+            <AlbumFrame>
+                <AlbumImage $type={type}>
+                    <SpotifyImage images={images} alt={name} />
+                </AlbumImage>
                 <AlbumPlay>
                     <PlayButton />
                 </AlbumPlay>
@@ -103,11 +109,11 @@ const ListEntriesItemSkeleton: React.FC<Pick<ListEntriesItemProps, "type">> = ({
     return (
         <SkeletonWrapper>
             <AlbumWrapper>
-                <AlbumFrame $type={type}>
-                    <Index fill />
+                <AlbumFrame>
+                    <AlbumImage $type={type} />
                 </AlbumFrame>
                 <AlbumName>
-                    <Index />
+                    <Skeleton />
                 </AlbumName>
             </AlbumWrapper>
         </SkeletonWrapper>

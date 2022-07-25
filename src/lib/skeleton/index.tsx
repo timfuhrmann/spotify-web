@@ -20,7 +20,7 @@ interface SkeletonProps {
     fill?: boolean;
 }
 
-export const Index: React.FC<SkeletonProps> = ({ fill }) => {
+export const Skeleton: React.FC<SkeletonProps> = ({ fill }) => {
     return (
         <SkeletonWrapper aria-live="polite" aria-busy="true">
             <SkeletonInner $fill={fill}>&zwnj;</SkeletonInner>

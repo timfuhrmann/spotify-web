@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 
 const SkeletonOuter = styled.span`
+    display: inline-flex;
     pointer-events: none;
 `;
 

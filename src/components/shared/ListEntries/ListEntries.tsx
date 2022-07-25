@@ -22,7 +22,7 @@ const AlbumsGrid = styled.div`
 export type EntryType = "album" | "playlist" | "artist";
 
 interface ListEntriesProps {
-    headline: string;
+    headline?: string;
     entries: ListEntriesItemProps[] | null;
     type: EntryType;
 }
@@ -30,12 +30,12 @@ interface ListEntriesProps {
 export const ListEntries: React.FC<ListEntriesProps> = ({ headline, entries, type }) => {
     return (
         <AlbumsWrapper>
-            <AlbumsHeadline>{headline}</AlbumsHeadline>
+            {headline && <AlbumsHeadline>{headline}</AlbumsHeadline>}
             <AlbumsGrid>
                 {entries
                     ? entries
                           .slice(0, 7)
-                          .map(album => <ListEntriesItem key={album.id} {...album} type={type} />)
+                          .map(entry => <ListEntriesItem key={entry.id} {...entry} type={type} />)
                     : Array.from(Array(10).keys()).map(index => (
                           <ListEntriesItem.Skeleton key={index} type={type} />
                       ))}
