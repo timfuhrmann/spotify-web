@@ -7,6 +7,7 @@ import { HeaderSpacer } from "../../layout/HeaderSpacer";
 import { content } from "@css/helper/content";
 
 const HeadWrapper = styled.div`
+    position: relative;
     padding-bottom: 2.4rem;
     background: var(--dominant-color, ${p => p.theme.gray50});
     background-image: linear-gradient(
@@ -27,7 +28,7 @@ const HeadCover = styled.div`
     position: relative;
     ${square("23.2rem")};
     box-shadow: 0 0.4rem 6rem rgba(0, 0, 0, 0.5);
-    background-color: ${p => p.theme.gray200};
+    background-color: ${p => p.theme.gray100};
 `;
 
 const HeadGroup = styled.div`

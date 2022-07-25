@@ -11,10 +11,6 @@ const DiscographyWrapper = styled.div`
 export const ArtistRelated: React.FC = () => {
     const { relatedArtists } = useArtist();
 
-    if (!relatedArtists) {
-        return null;
-    }
-
     return (
         <DiscographyWrapper>
             <ListEntries headline="Fans also like" entries={relatedArtists} type="artist" />

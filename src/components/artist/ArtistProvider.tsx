@@ -35,15 +35,12 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         saveTrackToCache,
         removeTrackFromCache,
     } = useSavedTracksContainsQuery(topTracks.map(track => track.id));
-
     const { data: artistAlbums } = useArtistsAlbumsQuery(artist.id);
-
     const { data: artistAppearsOn } = useArtistsAlbumsQuery(artist.id, ["appears_on"]);
-
     const { data: artistRelatedArtists } = useArtistsRelatedArtistsQuery(artist.id);
 
-    const hasMorePopularTracks = length < topTracks.length;
-    const hasLessPopularTracks = length > Math.min(5, topTracks.length);
+    const hasMorePopularTracks = popularTracksLength < topTracks.length;
+    const hasLessPopularTracks = popularTracksLength > Math.min(5, topTracks.length);
 
     const showMorePopularTracks = () => {
         setPopularTracksLength(topTracks.length);

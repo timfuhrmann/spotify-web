@@ -15,10 +15,6 @@ interface ArtistAppearsProps {
 export const ArtistAppears: React.FC<ArtistAppearsProps> = ({ name }) => {
     const { appearsOn } = useArtist();
 
-    if (!appearsOn) {
-        return null;
-    }
-
     return (
         <AppearsWrapper>
             <ListEntries headline={`Featuring ${name}`} entries={appearsOn} type="album" />

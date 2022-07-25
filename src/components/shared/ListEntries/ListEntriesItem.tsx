@@ -6,6 +6,8 @@ import { text } from "@css/helper/typography";
 import { Link } from "@lib/link";
 import { PlayButton } from "../PlayButton";
 import { EntryType } from "./ListEntries";
+import { Index } from "@lib/skeleton";
+import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 
 const AlbumPlay = styled.div`
     position: absolute;
@@ -19,6 +21,7 @@ const AlbumPlay = styled.div`
 
     @media (hover: none) {
         opacity: 1;
+        transform: none;
     }
 `;
 
@@ -41,18 +44,14 @@ const AlbumWrapper = styled.div`
     `};
 `;
 
-const AlbumFrame = styled.div`
-    position: relative;
-`;
-
-const AlbumImage = styled.div<{ $type: EntryType }>`
+const AlbumFrame = styled.div<{ $type: EntryType }>`
     position: relative;
     ${aspectRatio(1)};
+    margin-bottom: 1.2rem;
     border-radius: ${p => (p.$type === "artist" ? "50%" : "0.4rem")};
-    background-color: ${p => p.theme.gray200};
+    background-color: ${p => p.theme.gray100};
     overflow: hidden;
     transform: translateZ(0);
-    margin-bottom: 1.2rem;
 `;
 
 const AlbumName = styled.div`
@@ -67,6 +66,10 @@ const AlbumAnchor = styled.a`
     ${fillParent};
 `;
 
+interface ParentComposition {
+    Skeleton: typeof ListEntriesItemSkeleton;
+}
+
 export interface ListEntriesItemProps {
     id: string;
     name: string;
@@ -74,13 +77,16 @@ export interface ListEntriesItemProps {
     type: EntryType;
 }
 
-export const ListEntriesItem: React.FC<ListEntriesItemProps> = ({ id, name, images, type }) => {
+export const ListEntriesItem: React.FC<ListEntriesItemProps> & ParentComposition = ({
+    id,
+    name,
+    images,
+    type,
+}) => {
     return (
         <AlbumWrapper>
-            <AlbumFrame>
-                <AlbumImage $type={type}>
-                    <SpotifyImage images={images} alt={name} />
-                </AlbumImage>
+            <AlbumFrame $type={type}>
+                <SpotifyImage images={images} alt={name} />
                 <AlbumPlay>
                     <PlayButton />
                 </AlbumPlay>
@@ -92,3 +98,20 @@ export const ListEntriesItem: React.FC<ListEntriesItemProps> = ({ id, name, imag
         </AlbumWrapper>
     );
 };
+
+const ListEntriesItemSkeleton: React.FC<Pick<ListEntriesItemProps, "type">> = ({ type }) => {
+    return (
+        <SkeletonWrapper>
+            <AlbumWrapper>
+                <AlbumFrame $type={type}>
+                    <Index fill />
+                </AlbumFrame>
+                <AlbumName>
+                    <Index />
+                </AlbumName>
+            </AlbumWrapper>
+        </SkeletonWrapper>
+    );
+};
+
+ListEntriesItem.Skeleton = ListEntriesItemSkeleton;

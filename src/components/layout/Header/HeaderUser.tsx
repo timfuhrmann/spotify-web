@@ -25,7 +25,7 @@ const UserAvatar = styled.div`
     position: relative;
     ${square("2.8rem")};
     border-radius: 50%;
-    background-color: ${p => p.theme.gray200};
+    background-color: ${p => p.theme.gray100};
     overflow: hidden;
     transform: translateZ(0);
 `;

@@ -23,7 +23,7 @@ export type EntryType = "album" | "playlist" | "artist";
 
 interface ListEntriesProps {
     headline: string;
-    entries: ListEntriesItemProps[];
+    entries: ListEntriesItemProps[] | null;
     type: EntryType;
 }
 
@@ -32,9 +32,13 @@ export const ListEntries: React.FC<ListEntriesProps> = ({ headline, entries, typ
         <AlbumsWrapper>
             <AlbumsHeadline>{headline}</AlbumsHeadline>
             <AlbumsGrid>
-                {entries.slice(0, 7).map(album => (
-                    <ListEntriesItem key={album.id} {...album} type={type} />
-                ))}
+                {entries
+                    ? entries
+                          .slice(0, 7)
+                          .map(album => <ListEntriesItem key={album.id} {...album} type={type} />)
+                    : Array.from(Array(10).keys()).map(index => (
+                          <ListEntriesItem.Skeleton key={index} type={type} />
+                      ))}
             </AlbumsGrid>
         </AlbumsWrapper>
     );

@@ -11,10 +11,6 @@ const DiscographyWrapper = styled.div`
 export const ArtistDiscography: React.FC = () => {
     const { albums } = useArtist();
 
-    if (!albums) {
-        return null;
-    }
-
     return (
         <DiscographyWrapper>
             <ListEntries headline="Discography" entries={albums} type="album" />

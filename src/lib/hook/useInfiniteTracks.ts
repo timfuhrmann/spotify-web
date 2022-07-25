@@ -22,6 +22,7 @@ export const useInfiniteTracks = <T>({
 }: InfiniteTracksOptions<T>) => {
     const { access_token } = useSession();
 
+    //@todo improve maintainability
     const {
         data: tracksPages,
         fetchNextPage,

@@ -17,7 +17,7 @@ const TitleWrapper = styled.div`
 const TitleCover = styled.div`
     position: relative;
     ${square("4rem")};
-    background-color: ${p => p.theme.gray200};
+    background-color: ${p => p.theme.gray100};
 `;
 
 const TitleFrame = styled.div`
