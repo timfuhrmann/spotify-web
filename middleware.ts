@@ -5,6 +5,7 @@ import {
     getCookieSetOptions,
 } from "@lib/api/auth/cookie";
 import { getRefreshedSpotifyAccessToken } from "@lib/api/auth/access-token";
+import { isAlbumGroup } from "@lib/api/artist";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -58,6 +59,15 @@ export default async function handler(req: NextRequest) {
         } else if (!shouldHandleAuthProtection(url.pathname) && access_token) {
             url.pathname = "/";
             return NextResponse.rewrite(url);
+        }
+
+        if (url.pathname.includes("/discography/")) {
+            const albumGroup = url.pathname.substring(url.pathname.lastIndexOf("/") + 1);
+
+            if (!isAlbumGroup(albumGroup)) {
+                url.pathname = "/404";
+                return NextResponse.rewrite(url);
+            }
         }
     }
 

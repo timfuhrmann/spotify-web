@@ -29,7 +29,7 @@ export const configSpotify = {
 };
 
 export const SPOTIFY_SCOPES =
-    "streaming user-read-email playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private user-library-modify user-library-read";
+    "streaming user-read-email playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private user-library-modify user-library-read user-follow-modify user-follow-read";
 
 const SPOTIFY_AUTHORIZATION =
     "Basic " + btoa(configSpotify.clientId + ":" + configSpotify.clientSecret);

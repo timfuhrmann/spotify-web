@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 interface LabeledLink extends Omit<LinkProps, "href" | "passHref"> {
     label: string;
-    href: string;
+    href: string | URL;
     title?: string;
     className?: string;
 }

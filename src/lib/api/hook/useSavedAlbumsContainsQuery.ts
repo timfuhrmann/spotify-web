@@ -3,7 +3,7 @@ import { getSavedAlbumsContains } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
 
-export const useSavedAlbumsContains = (ids: string[]) => {
+export const useSavedAlbumsContainsQuery = (ids: string[]) => {
     const { access_token } = useSession();
 
     const queryKey = ["saved-albums-contains", ids.join(","), access_token];

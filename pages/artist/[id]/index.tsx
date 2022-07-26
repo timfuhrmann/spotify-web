@@ -1,8 +1,8 @@
 import React from "react";
-import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
+import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { NextPageWithLayout } from "@type/page";
 import { useRouter } from "next/router";
-import { Artist as ArtistComponent } from "../../src/components/artist/Artist";
+import { Artist as ArtistComponent } from "../../../src/components/artist/Artist";
 import { useDominantColor } from "@lib/hook/useDominantColor";
 import { useArtistQuery } from "@lib/api/hook/useArtistQuery";
 import { getIdFromQuery } from "@lib/util";

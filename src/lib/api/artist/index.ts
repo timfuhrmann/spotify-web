@@ -1,6 +1,14 @@
 import { request } from "@lib/api";
 
-export type AlbumGroup = "album" | "single" | "compilation" | "appears_on";
+export const ALBUM_TRACKS_OFFSET = 50;
+
+export const ALBUM_GROUPS = ["album", "single", "appears_on", "compilation"];
+
+export const isAlbumGroup = (group: string): group is AlbumGroup => {
+    return ALBUM_GROUPS.includes(group);
+};
+
+export type AlbumGroup = "album" | "single" | "appears_on" | "compilation";
 
 export const getArtist = async (
     access_token: string | null,
@@ -40,7 +48,7 @@ export const getArtistsAlbums = async (
 
     return request<SpotifyApi.ArtistsAlbumsResponse>(access_token, {
         url: "/artists/" + id + "/albums",
-        params: { include_groups: include_groups.join(",") },
+        params: { include_groups: include_groups.join(","), limit: ALBUM_TRACKS_OFFSET },
     });
 };
 
@@ -54,5 +62,45 @@ export const getArtistsRelatedArtists = async (
 
     return request<SpotifyApi.ArtistsRelatedArtistsResponse>(access_token, {
         url: "/artists/" + id + "/related-artists",
+    });
+};
+
+export const getFollowedArtistsContains = async (
+    access_token: string | null,
+    ids: string[] | null
+): Promise<SpotifyApi.UserFollowsUsersOrArtistsResponse | undefined> => {
+    if (!access_token || !ids) {
+        return;
+    }
+
+    return request<SpotifyApi.UserFollowsUsersOrArtistsResponse>(access_token, {
+        url: "/me/following/contains",
+        params: { type: "artist", ids: ids.join(",") },
+    });
+};
+
+export const followArtist = async (access_token: string | null, ids: string[]): Promise<void> => {
+    if (!access_token) {
+        return;
+    }
+
+    return request(access_token, {
+        url: "/me/following",
+        params: { type: "artist" },
+        data: { ids },
+        method: "PUT",
+    });
+};
+
+export const unfollowArtist = async (access_token: string | null, ids: string[]): Promise<void> => {
+    if (!access_token) {
+        return;
+    }
+
+    return request(access_token, {
+        url: "/me/following",
+        params: { type: "artist" },
+        data: { ids },
+        method: "DELETE",
     });
 };

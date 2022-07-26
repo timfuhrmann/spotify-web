@@ -4,12 +4,12 @@ import { SpotifyImage } from "@lib/image";
 import { aspectRatio, fillParent, hover, square, transition } from "@css/helper";
 import { text } from "@css/helper/typography";
 import { Link } from "@lib/link";
-import { PlayButton } from "../PlayButton";
+import { PlayButton } from "./PlayButton";
 import { EntryType } from "./ListEntries";
 import { Skeleton } from "@lib/skeleton";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 
-const AlbumPlay = styled.div`
+const EntryPlay = styled.div`
     position: absolute;
     z-index: 3;
     bottom: 0.8rem;
@@ -25,7 +25,7 @@ const AlbumPlay = styled.div`
     }
 `;
 
-const AlbumWrapper = styled.div`
+const EntryWrapper = styled.div`
     position: relative;
     width: 100%;
     padding: 1.2rem;
@@ -37,14 +37,14 @@ const AlbumWrapper = styled.div`
     ${p => hover`
         background-color: ${p.theme.gray100};
       
-        ${AlbumPlay} {
+        ${EntryPlay} {
             transform: translate3d(0, 0, 0);
             opacity: 1;
         }
     `};
 `;
 
-const AlbumImage = styled.div<{ $type: EntryType }>`
+const EntryImage = styled.div<{ $type: EntryType }>`
     position: relative;
     ${aspectRatio(1)};
     border-radius: ${p => (p.$type === "artist" ? "50%" : "0.4rem")};
@@ -53,12 +53,12 @@ const AlbumImage = styled.div<{ $type: EntryType }>`
     transform: translateZ(0);
 `;
 
-const AlbumFrame = styled.div`
+const EntryFrame = styled.div`
     position: relative;
     margin-bottom: 1.2rem;
 `;
 
-const AlbumName = styled.div`
+const EntryName = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -66,7 +66,7 @@ const AlbumName = styled.div`
     line-height: 1.2;
 `;
 
-const AlbumAnchor = styled.a`
+const EntryAnchor = styled.a`
     ${fillParent};
 `;
 
@@ -74,50 +74,45 @@ interface ParentComposition {
     Skeleton: typeof ListEntriesItemSkeleton;
 }
 
-export interface ListEntriesItemProps {
+export interface EntryProps {
     id: string;
     name: string;
     images: SpotifyApi.ImageObject[];
     type: EntryType;
 }
 
-export const ListEntriesItem: React.FC<ListEntriesItemProps> & ParentComposition = ({
-    id,
-    name,
-    images,
-    type,
-}) => {
+export const Entry: React.FC<EntryProps> & ParentComposition = ({ id, name, images, type }) => {
     return (
-        <AlbumWrapper>
-            <AlbumFrame>
-                <AlbumImage $type={type}>
+        <EntryWrapper>
+            <EntryFrame>
+                <EntryImage $type={type}>
                     <SpotifyImage images={images} alt={name} />
-                </AlbumImage>
-                <AlbumPlay>
+                </EntryImage>
+                <EntryPlay>
                     <PlayButton />
-                </AlbumPlay>
-            </AlbumFrame>
-            <AlbumName>{name}</AlbumName>
+                </EntryPlay>
+            </EntryFrame>
+            <EntryName>{name}</EntryName>
             <Link label={name} href={`/${type}/${id}`}>
-                <AlbumAnchor />
+                <EntryAnchor />
             </Link>
-        </AlbumWrapper>
+        </EntryWrapper>
     );
 };
 
-const ListEntriesItemSkeleton: React.FC<Pick<ListEntriesItemProps, "type">> = ({ type }) => {
+const ListEntriesItemSkeleton: React.FC<Pick<EntryProps, "type">> = ({ type }) => {
     return (
         <SkeletonWrapper>
-            <AlbumWrapper>
-                <AlbumFrame>
-                    <AlbumImage $type={type} />
-                </AlbumFrame>
-                <AlbumName>
+            <EntryWrapper>
+                <EntryFrame>
+                    <EntryImage $type={type} />
+                </EntryFrame>
+                <EntryName>
                     <Skeleton />
-                </AlbumName>
-            </AlbumWrapper>
+                </EntryName>
+            </EntryWrapper>
         </SkeletonWrapper>
     );
 };
 
-ListEntriesItem.Skeleton = ListEntriesItemSkeleton;
+Entry.Skeleton = ListEntriesItemSkeleton;

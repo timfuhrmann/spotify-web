@@ -5,9 +5,11 @@ import { removeTracks, saveTracks } from "@lib/api/track";
 import { useSavedTracksContainsQuery } from "@lib/api/hook/useSavedTracksContainsQuery";
 import { useArtistsAlbumsQuery } from "@lib/api/hook/useArtistsAlbumsQuery";
 import { useArtistsRelatedArtistsQuery } from "@lib/api/hook/useArtistsRelatedArtistsQuery";
-import { AlbumGroup } from "@lib/api/artist";
+import { AlbumGroup, followArtist, unfollowArtist } from "@lib/api/artist";
+import { useFollowedArtistsContains } from "@lib/api/hook/useFollowedArtistOrUser";
 
 interface ArtistContextData {
+    isFollowing: boolean;
     savedTracks: boolean[];
     albumGroup: AlbumGroup | null;
     albumGroups: AlbumGroup[] | null;
@@ -22,6 +24,8 @@ interface ArtistContextData {
     showLessPopularTracks: () => void;
     handleSaveTrack: (id: string, index: number) => Promise<void>;
     handleRemoveTrack: (id: string, index: number) => Promise<void>;
+    handleFollowArtist: () => Promise<void>;
+    handleUnfollowArtist: () => Promise<void>;
 }
 
 const ArtistContext = createContext<ArtistContextData>({} as ArtistContextData);
@@ -35,6 +39,11 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     const [albumGroup, setAlbumGroup] = useState<AlbumGroup | null>(null);
     const [popularTracksLength, setPopularTracksLength] = useState(Math.min(5, topTracks.length));
 
+    const {
+        data: followedArtists = [],
+        saveArtistToCache,
+        removeArtistFromCache,
+    } = useFollowedArtistsContains([artist.id]);
     const {
         data: savedTracks = [],
         saveTrackToCache,
@@ -92,9 +101,20 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         return removeTracks(access_token, [id]);
     };
 
+    const handleFollowArtist = () => {
+        saveArtistToCache(0);
+        return followArtist(access_token, [artist.id]);
+    };
+
+    const handleUnfollowArtist = () => {
+        removeArtistFromCache(0);
+        return unfollowArtist(access_token, [artist.id]);
+    };
+
     return (
         <ArtistContext.Provider
             value={{
+                isFollowing: !!followedArtists && followedArtists[0],
                 savedTracks,
                 albumGroup,
                 albumGroups,
@@ -109,6 +129,8 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
                 showLessPopularTracks,
                 handleSaveTrack,
                 handleRemoveTrack,
+                handleFollowArtist,
+                handleUnfollowArtist,
             }}>
             {children}
         </ArtistContext.Provider>

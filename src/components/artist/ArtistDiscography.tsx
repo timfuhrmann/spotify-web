@@ -1,19 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import { ListEntries } from "../shared/ListEntries/ListEntries";
+import { ListEntries } from "../shared/ListEntries";
 import { useArtist } from "./ArtistProvider";
 import { content } from "@css/helper/content";
 import { text } from "@css/helper/typography";
-import { hover, transition } from "@css/helper";
 import { ArtistDiscographyTag } from "./ArtistDiscographyTag";
+import { createArray } from "@lib/util";
+import { SecondaryButton } from "../shared/SecondaryButton";
 
 const DiscographyWrapper = styled.div`
     ${content()};
 `;
 
+const DiscographyHead = styled.div`
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2.4rem;
+    margin-bottom: 2.4rem;
+`;
+
 const DiscographyHeadline = styled.h2`
     ${text("displayXs", "bold")};
-    margin-bottom: 2.4rem;
 `;
 
 const DiscographyTags = styled.div`
@@ -23,12 +31,23 @@ const DiscographyTags = styled.div`
     margin-bottom: 2.4rem;
 `;
 
-export const ArtistDiscography: React.FC = () => {
+interface ArtistDiscographyProps {
+    id: string;
+}
+
+export const ArtistDiscography: React.FC<ArtistDiscographyProps> = ({ id }) => {
     const { albumGroups, albums, albumGroup, setAlbumGroup } = useArtist();
 
     return (
         <DiscographyWrapper>
-            <DiscographyHeadline>Discography</DiscographyHeadline>
+            <DiscographyHead>
+                <DiscographyHeadline>Discography</DiscographyHeadline>
+                <SecondaryButton
+                    as="a"
+                    action={`/artist/${id}/discography${albumGroup ? `/${albumGroup}` : ""}`}
+                    label="See More"
+                />
+            </DiscographyHead>
             <DiscographyTags>
                 <ArtistDiscographyTag
                     label="Popular releases"
@@ -44,9 +63,7 @@ export const ArtistDiscography: React.FC = () => {
                               onClick={() => setAlbumGroup(group)}
                           />
                       ))
-                    : Array.from(Array(3).keys()).map(index => (
-                          <ArtistDiscographyTag.Skeleton key={index} />
-                      ))}
+                    : createArray(3).map(index => <ArtistDiscographyTag.Skeleton key={index} />)}
             </DiscographyTags>
             <ListEntries entries={albums} type="album" />
         </DiscographyWrapper>

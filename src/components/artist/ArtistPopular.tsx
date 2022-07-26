@@ -5,6 +5,7 @@ import { Track } from "../shared/Track/Track";
 import { useArtist } from "./ArtistProvider";
 import { text } from "@css/helper/typography";
 import { content } from "@css/helper/content";
+import { SecondaryButton } from "../shared/SecondaryButton";
 
 const PopularWrapper = styled.div`
     ${content()};
@@ -73,20 +74,10 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
                     ))}
             </PopularList>
             {hasMorePopularTracks && (
-                <PopularButton
-                    type="button"
-                    aria-label="Show more tracks"
-                    onClick={showMorePopularTracks}>
-                    Show More
-                </PopularButton>
+                <SecondaryButton as="button" label="Show more" action={showMorePopularTracks} />
             )}
             {hasLessPopularTracks && (
-                <PopularButton
-                    type="button"
-                    aria-label="Show less tracks"
-                    onClick={showLessPopularTracks}>
-                    Show Less
-                </PopularButton>
+                <SecondaryButton as="button" label="Show less" action={showLessPopularTracks} />
             )}
         </PopularWrapper>
     );

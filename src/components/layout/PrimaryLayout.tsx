@@ -31,17 +31,22 @@ const LayoutHeader = styled.div`
     pointer-events: none;
 `;
 
-const LayoutMain = styled(OverlayScrollbarsComponent)`
+const LayoutMain = styled.div`
     grid-area: main;
     min-height: 0;
+    overflow: hidden;
+`;
+
+const LayoutStage = styled(OverlayScrollbarsComponent)`
+    height: 100%;
 `;
 
 const LayoutPlaying = styled.div`
     grid-area: playing;
-    z-index: 1;
+    z-index: 4;
     background-color: ${p => p.theme.gray50};
     border-top: 0.1rem solid ${p => p.theme.gray200};
-    min-height: 7rem;
+    height: 7rem;
 `;
 
 export const PrimaryLayout: React.FC<PropsWithChildren> = ({ children }) => {
@@ -57,11 +62,14 @@ export const PrimaryLayout: React.FC<PropsWithChildren> = ({ children }) => {
                 <LayoutHeader>
                     <Header />
                 </LayoutHeader>
-                <LayoutMain
-                    key={asPath}
-                    className="custom-scrollbar main-scrollbar"
-                    options={{ callbacks: { onScroll } }}>
-                    {children}
+                <LayoutMain>
+                    <LayoutStage
+                        key={asPath}
+                        className="custom-scrollbar main-scrollbar"
+                        style={{ height: "100%" }}
+                        options={{ callbacks: { onScroll } }}>
+                        {children}
+                    </LayoutStage>
                 </LayoutMain>
                 <LayoutPlaying />
             </LayoutGrid>

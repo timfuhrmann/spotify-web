@@ -6,6 +6,7 @@ import { ListBody } from "../shared/ListBody";
 import { ArtistDiscography } from "./ArtistDiscography";
 import { ArtistAppears } from "./ArtistAppears";
 import { ArtistRelated } from "./ArtistRelated";
+import { useArtist } from "./ArtistProvider";
 
 const BodyControls = styled.div`
     margin-bottom: 1.2rem;
@@ -21,23 +22,30 @@ const BodySection = styled.section`
 
 interface ArtistBodyProps {
     name: string;
+    id: string;
     tracks: SpotifyApi.TrackObjectFull[];
 }
 
-export const ArtistBody: React.FC<ArtistBodyProps> = ({ name, tracks }) => {
+export const ArtistBody: React.FC<ArtistBodyProps> = ({ id, name, tracks }) => {
+    const { isFollowing, handleFollowArtist, handleUnfollowArtist } = useArtist();
+
     return (
         <ListBody>
             <BodyControls>
-                <ListControls />
+                <ListControls
+                    isFollowing={isFollowing}
+                    onFollow={handleFollowArtist}
+                    onUnfollow={handleUnfollowArtist}
+                />
             </BodyControls>
             <BodySection>
                 <ArtistPopular tracks={tracks} />
             </BodySection>
             <BodySection>
-                <ArtistDiscography />
+                <ArtistDiscography id={id} />
             </BodySection>
             <BodySection>
-                <ArtistAppears name={name} />
+                <ArtistAppears id={id} name={name} />
             </BodySection>
             <BodySection>
                 <ArtistRelated />

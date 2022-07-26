@@ -10,7 +10,7 @@ export interface ArtistProps {
 }
 
 export const Artist: React.FC<ArtistProps> = props => {
-    const { name, images, followers } = props.artist;
+    const { id, name, images, followers } = props.artist;
 
     return (
         <ArtistProvider {...props}>
@@ -18,9 +18,11 @@ export const Artist: React.FC<ArtistProps> = props => {
                 overline="Artist"
                 name={name}
                 images={images}
-                renderFooter={<div>{formatNumber(followers.total)} followers</div>}
+                renderFooter={
+                    <React.Fragment>{formatNumber(followers.total)} followers</React.Fragment>
+                }
             />
-            <ArtistBody name={name} tracks={props.topTracks} />
+            <ArtistBody id={id} name={name} tracks={props.topTracks} />
         </ArtistProvider>
     );
 };

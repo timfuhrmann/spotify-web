@@ -4,7 +4,7 @@ import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteT
 import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
-import { useSavedAlbumsContains } from "@lib/api/hook/useSavedAlbumsContains";
+import { useSavedAlbumsContainsQuery } from "@lib/api/hook/useSavedAlbumsContainsQuery";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 
@@ -31,7 +31,7 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         data: savedAlbumsContains,
         saveAlbumToCache,
         removeAlbumFromCache,
-    } = useSavedAlbumsContains([album.id]);
+    } = useSavedAlbumsContainsQuery([album.id]);
 
     const {
         isLoading,

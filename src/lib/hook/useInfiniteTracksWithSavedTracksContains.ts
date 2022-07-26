@@ -5,6 +5,7 @@ import { useSession } from "@lib/context/session";
 import { useEffect, useMemo } from "react";
 import { queryClient } from "@lib/api";
 import { InfiniteTracksOptions, useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
+import { createArray } from "@lib/util";
 
 interface InfiniteTracksWithSavedTracksContainsOptions<T> extends InfiniteTracksOptions<T> {
     idsFn: (data: T) => string[];
@@ -34,7 +35,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
             }
 
             const res = await Promise.all(
-                Array.from(Array(Math.ceil(ids.length / 50))).map((_, i) =>
+                createArray(Math.ceil(ids.length / 50)).map((_, i) =>
                     getSavedTracksContains(access_token, ids.slice(i * 50, (i + 1) * 50))
                 )
             );
