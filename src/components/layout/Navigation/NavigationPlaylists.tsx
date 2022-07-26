@@ -14,17 +14,21 @@ const PlaylistsWrapper = styled.div`
     &::before {
         content: "";
         position: absolute;
+        z-index: 1;
         top: 0;
         left: 0;
         width: 100%;
         height: 2rem;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
     }
 `;
 
-const PlaylistsStage = styled(OverlayScrollbarsComponent)`
-    padding: 1rem 0;
+const PlaylistStage = styled(OverlayScrollbarsComponent)`
     height: 100%;
+`;
+
+const PlaylistFrame = styled.div`
+    padding: 1rem 0;
 `;
 
 const PlaylistsItem = styled.a<{ $active: boolean }>`
@@ -49,15 +53,18 @@ export const NavigationPlaylists: React.FC = () => {
     return (
         <PlaylistsWrapper>
             {playlists && (
-                <PlaylistsStage className="custom-scrollbar">
-                    {playlists.map(playlist => (
-                        <Link key={playlist.id} href={"/playlist/" + playlist.id} passHref>
-                            <PlaylistsItem $active={asPath.includes("/playlist/" + playlist.id)}>
-                                {playlist.name}
-                            </PlaylistsItem>
-                        </Link>
-                    ))}
-                </PlaylistsStage>
+                <PlaylistStage className="custom-scrollbar">
+                    <PlaylistFrame>
+                        {playlists.map(playlist => (
+                            <Link key={playlist.id} href={"/playlist/" + playlist.id} passHref>
+                                <PlaylistsItem
+                                    $active={asPath.includes("/playlist/" + playlist.id)}>
+                                    {playlist.name}
+                                </PlaylistsItem>
+                            </Link>
+                        ))}
+                    </PlaylistFrame>
+                </PlaylistStage>
             )}
         </PlaylistsWrapper>
     );
