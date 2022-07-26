@@ -15,7 +15,7 @@ const DiscographyWrapper = styled.div`
 const Discography: NextPageWithLayout = () => {
     const { query } = useRouter();
 
-    const { data: artistAlbums } = useArtistsAlbumsQuery(getIdFromQuery(query));
+    const { data: artistAlbums } = useArtistsAlbumsQuery(getIdFromQuery(query), undefined);
 
     return (
         <DiscographyWrapper>

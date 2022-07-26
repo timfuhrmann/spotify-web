@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSpotifyAccessToken } from "@lib/api/auth/access-token";
-import { setAuthCookies } from "@lib/api/auth/cookie";
+import { removeAuthCookies, setAuthCookies } from "@lib/api/auth/cookie";
+import { getCurrentUser } from "@lib/api/user";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -13,12 +14,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const auth = await getSpotifyAccessToken(code);
 
         if (auth.access_token) {
-            setAuthCookies(res, auth);
+            const user = await getCurrentUser(auth.access_token);
+            setAuthCookies(res, auth, user);
             return res.redirect("/");
         }
 
         return res.status(500).send("Error trying to authenticate.");
     } catch (e) {
+        removeAuthCookies(res);
         console.error(e);
         return res.status(500).send("Error trying to authenticate.");
     }

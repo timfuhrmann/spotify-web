@@ -1,15 +1,14 @@
 import React from "react";
-import Link from "next/link";
 import styled from "styled-components";
-import { text } from "@css/helper/typography";
-import { hover } from "@css/helper";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useRootPlaylists } from "@lib/context/root-playlists";
-import { useRouter } from "next/router";
+import { createArray } from "@lib/util";
+import { NavigationPlaylistItem } from "./NavigationPlaylistItem";
 
 const PlaylistsWrapper = styled.div`
     position: relative;
     flex: 1;
+    overflow: hidden;
 
     &::before {
         content: "";
@@ -31,40 +30,32 @@ const PlaylistFrame = styled.div`
     padding: 1rem 0;
 `;
 
-const PlaylistsItem = styled.a<{ $active: boolean }>`
-    display: block;
-    padding: 0.6rem 2.4rem;
-    color: ${p => (p.$active ? p.theme.gray900 : p.theme.gray700)};
-    ${text("textSm")};
-
-    ${p => hover`
-        color: ${p.theme.gray900};
-    `};
-
-    &:active {
-        color: ${p => p.theme.gray900};
-    }
-`;
-
 export const NavigationPlaylists: React.FC = () => {
-    const { asPath } = useRouter();
     const { playlists } = useRootPlaylists();
 
     return (
         <PlaylistsWrapper>
-            {playlists && (
+            {playlists ? (
                 <PlaylistStage className="custom-scrollbar">
                     <PlaylistFrame>
-                        {playlists.map(playlist => (
-                            <Link key={playlist.id} href={"/playlist/" + playlist.id} passHref>
-                                <PlaylistsItem
-                                    $active={asPath.includes("/playlist/" + playlist.id)}>
-                                    {playlist.name}
-                                </PlaylistsItem>
-                            </Link>
+                        {playlists.map(({ id, name }) => (
+                            <NavigationPlaylistItem key={id} id={id} name={name} />
                         ))}
                     </PlaylistFrame>
                 </PlaylistStage>
+            ) : (
+                <PlaylistFrame>
+                    <NavigationPlaylistItem.Skeleton width={40} />
+                    <NavigationPlaylistItem.Skeleton width={60} />
+                    <NavigationPlaylistItem.Skeleton width={45} />
+                    <NavigationPlaylistItem.Skeleton width={55} />
+                    <NavigationPlaylistItem.Skeleton width={40} />
+                    <NavigationPlaylistItem.Skeleton width={75} />
+                    <NavigationPlaylistItem.Skeleton width={45} />
+                    <NavigationPlaylistItem.Skeleton width={50} />
+                    <NavigationPlaylistItem.Skeleton width={40} />
+                    <NavigationPlaylistItem.Skeleton width={65} />
+                </PlaylistFrame>
             )}
         </PlaylistsWrapper>
     );

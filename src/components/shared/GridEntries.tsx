@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Entry, EntryProps } from "./Entry";
+import { Entry, EntryProps, EntryType } from "./Entry";
 import { content } from "@css/helper/content";
-import { EntryType } from "./ListEntries";
 import { SkeletonOverlay } from "@lib/skeleton/overlay";
 import { createArray } from "@lib/util";
 

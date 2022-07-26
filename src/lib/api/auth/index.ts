@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export interface SpotifyAuth {
     access_token: string;
     refresh_token: string;
@@ -28,8 +26,19 @@ export const configSpotify = {
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 };
 
-export const SPOTIFY_SCOPES =
-    "streaming user-read-email playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private user-library-modify user-library-read user-follow-modify user-follow-read";
+export const SPOTIFY_SCOPES = [
+    "streaming",
+    "user-read-email",
+    "playlist-read-collaborative",
+    "playlist-modify-public",
+    "playlist-read-private",
+    "playlist-modify-private",
+    "user-library-modify",
+    "user-library-read",
+    "user-follow-modify",
+    "user-follow-read",
+    "user-top-read",
+].join(" ");
 
 const SPOTIFY_AUTHORIZATION =
     "Basic " + btoa(configSpotify.clientId + ":" + configSpotify.clientSecret);

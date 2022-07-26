@@ -57,3 +57,10 @@ export const removeAlbum = async (access_token: string | null, ids: string[]): P
 
     return request(access_token, { url: "/me/albums", data: { ids }, method: "DELETE" });
 };
+
+export const getNewReleases = async (
+    access_token: string,
+    limit: number = 20
+): Promise<SpotifyApi.ListOfNewReleasesResponse> => {
+    return request(access_token, { url: "/browse/new-releases", params: { limit } });
+};

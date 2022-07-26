@@ -20,16 +20,16 @@ const TagWrapper = styled.button<{ $selected?: boolean }>`
 `;
 
 interface ParentComposition {
-    Skeleton: typeof ArtistDiscographyTagSkeleton;
+    Skeleton: typeof ListEntriesTagSkeleton;
 }
 
-interface ArtistDiscographyTagProps {
+interface ListEntriesTagProps {
     label: string;
     selected: boolean;
     onClick: () => void;
 }
 
-export const ArtistDiscographyTag: React.FC<ArtistDiscographyTagProps> & ParentComposition = ({
+export const ListEntriesTag: React.FC<ListEntriesTagProps> & ParentComposition = ({
     label,
     selected,
     onClick,
@@ -41,7 +41,7 @@ export const ArtistDiscographyTag: React.FC<ArtistDiscographyTagProps> & ParentC
     );
 };
 
-const ArtistDiscographyTagSkeleton: React.FC = () => {
+const ListEntriesTagSkeleton: React.FC = () => {
     return (
         <SkeletonWrapper>
             <TagWrapper style={{ width: "70px" }} />
@@ -49,4 +49,4 @@ const ArtistDiscographyTagSkeleton: React.FC = () => {
     );
 };
 
-ArtistDiscographyTag.Skeleton = ArtistDiscographyTagSkeleton;
+ListEntriesTag.Skeleton = ListEntriesTagSkeleton;

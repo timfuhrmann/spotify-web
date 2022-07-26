@@ -12,12 +12,14 @@ const BodyControls = styled.div`
     margin-bottom: 1.2rem;
 `;
 
-const BodySection = styled.section`
-    margin-bottom: 4rem;
+const BodyGrid = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4.2rem;
+`;
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+const BodyPopular = styled.div`
+    padding-bottom: 1.2rem;
 `;
 
 interface ArtistBodyProps {
@@ -38,18 +40,14 @@ export const ArtistBody: React.FC<ArtistBodyProps> = ({ id, name, tracks }) => {
                     onUnfollow={handleUnfollowArtist}
                 />
             </BodyControls>
-            <BodySection>
-                <ArtistPopular tracks={tracks} />
-            </BodySection>
-            <BodySection>
+            <BodyGrid>
+                <BodyPopular>
+                    <ArtistPopular tracks={tracks} />
+                </BodyPopular>
                 <ArtistDiscography id={id} />
-            </BodySection>
-            <BodySection>
                 <ArtistAppears id={id} name={name} />
-            </BodySection>
-            <BodySection>
                 <ArtistRelated />
-            </BodySection>
+            </BodyGrid>
         </ListBody>
     );
 };

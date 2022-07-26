@@ -57,3 +57,13 @@ export const unfollowPlaylist = async (access_token: string | null, id: string):
 
     return request(access_token, { url: "/playlists/" + id + "/followers", method: "DELETE" });
 };
+
+export const getFeaturedPlaylists = async (
+    access_token: string,
+    limit: number = 20
+): Promise<SpotifyApi.ListOfFeaturedPlaylistsResponse | undefined> => {
+    return request(access_token, {
+        url: "/browse/featured-playlists",
+        params: { country: "US", limit },
+    });
+};

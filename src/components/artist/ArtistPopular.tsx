@@ -9,6 +9,7 @@ import { SecondaryButton } from "../shared/SecondaryButton";
 
 const PopularWrapper = styled.div`
     ${content()};
+    width: 100%;
 `;
 
 const PopularHeadline = styled.h2`
@@ -29,11 +30,8 @@ const PopularList = styled.div`
     }
 `;
 
-const PopularButton = styled.button`
+const PopularButton = styled.div`
     padding: 0 1.6rem;
-    ${text("textXs", "bold")};
-    color: ${p => p.theme.gray700};
-    text-transform: uppercase;
 `;
 
 interface ArtistPopularProps {
@@ -74,10 +72,14 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
                     ))}
             </PopularList>
             {hasMorePopularTracks && (
-                <SecondaryButton as="button" label="Show more" action={showMorePopularTracks} />
+                <PopularButton>
+                    <SecondaryButton as="button" label="Show more" action={showMorePopularTracks} />
+                </PopularButton>
             )}
             {hasLessPopularTracks && (
-                <SecondaryButton as="button" label="Show less" action={showLessPopularTracks} />
+                <PopularButton>
+                    <SecondaryButton as="button" label="Show less" action={showLessPopularTracks} />
+                </PopularButton>
             )}
         </PopularWrapper>
     );

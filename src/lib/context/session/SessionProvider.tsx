@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import axios from "axios";
 import { Session, SessionContext } from "@lib/context/session/index";
-import { getCurrentUser } from "@lib/api/auth/user";
+import { getCurrentUser } from "@lib/api/user";
 
 export const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [session, setSession] = useState<Session | null>(null);
@@ -11,10 +11,14 @@ export const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }, []);
 
     const handleUserSession = async () => {
-        //@todo get from cookie
-        const { data } = await axios.get<Session>("/api/auth/session");
+        const { data } = await axios.get("/api/auth/session");
 
         if (!data || !data.access_token) {
+            return;
+        }
+
+        if (data.user) {
+            setSession({ ...data.user, access_token: data.access_token });
             return;
         }
 

@@ -5,7 +5,6 @@ import { aspectRatio, fillParent, hover, square, transition } from "@css/helper"
 import { text } from "@css/helper/typography";
 import { Link } from "@lib/link";
 import { PlayButton } from "./PlayButton";
-import { EntryType } from "./ListEntries";
 import { Skeleton } from "@lib/skeleton";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 
@@ -74,11 +73,13 @@ interface ParentComposition {
     Skeleton: typeof ListEntriesItemSkeleton;
 }
 
+export type EntryType = "album" | "playlist" | "artist";
+
 export interface EntryProps {
+    type: EntryType;
     id: string;
     name: string;
     images: SpotifyApi.ImageObject[];
-    type: EntryType;
 }
 
 export const Entry: React.FC<EntryProps> & ParentComposition = ({ id, name, images, type }) => {
@@ -86,7 +87,7 @@ export const Entry: React.FC<EntryProps> & ParentComposition = ({ id, name, imag
         <EntryWrapper>
             <EntryFrame>
                 <EntryImage $type={type}>
-                    <SpotifyImage images={images} alt={name} />
+                    <SpotifyImage images={images} alt={name} sizes="300px" />
                 </EntryImage>
                 <EntryPlay>
                     <PlayButton />
