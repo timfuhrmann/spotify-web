@@ -38,9 +38,14 @@ export const PlaylistTracks: React.FC = () => {
                             index={index}
                             isSaved={savedTracks[index]}
                             addedAt={added_at}
-                            onSaveTrack={() => handleSaveTrack(track.id, index)}
-                            onRemoveTrack={() => handleRemoveTrack(track.id, index)}
-                            {...track}
+                            id={track.id}
+                            name={track.name}
+                            explicit={track.explicit}
+                            duration_ms={track.duration_ms}
+                            artists={track.artists}
+                            album={track.album}
+                            onSaveTrack={handleSaveTrack}
+                            onRemoveTrack={handleRemoveTrack}
                         />
                     )
             )}

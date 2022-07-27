@@ -1,4 +1,4 @@
-import React from "react";
+import React, { NamedExoticComponent } from "react";
 import styled from "styled-components";
 import { TrackTitle } from "./TrackTitle";
 import { TrackAlbum } from "./TrackAlbum";
@@ -104,6 +104,7 @@ const TrackRemove = styled(UnfollowHeart)`
 
 interface TrackProps {
     index: number;
+    id: string;
     name: string;
     explicit: boolean;
     duration_ms: number;
@@ -112,52 +113,57 @@ interface TrackProps {
     album?: SpotifyApi.AlbumObjectSimplified;
     hideAlbum?: boolean;
     addedAt?: string;
-    onSaveTrack?: () => void;
-    onRemoveTrack?: () => void;
+    onSaveTrack?: (id: string, index: number) => void;
+    onRemoveTrack?: (id: string, index: number) => void;
 }
 
-export const Track: React.FC<TrackProps> = ({
-    index,
-    name,
-    album,
-    artists,
-    explicit,
-    duration_ms,
-    hideAlbum,
-    isSaved,
-    addedAt,
-    onSaveTrack,
-    onRemoveTrack,
-}) => {
-    const buttonSaveLabel = isSaved ? "Remove from library" : "Add to library";
+export const Track: NamedExoticComponent<TrackProps> = React.memo(
+    ({
+        index,
+        id,
+        name,
+        album,
+        artists,
+        explicit,
+        duration_ms,
+        hideAlbum,
+        isSaved,
+        addedAt,
+        onSaveTrack,
+        onRemoveTrack,
+    }) => {
+        const buttonSaveLabel = isSaved ? "Remove from library" : "Add to library";
 
-    return (
-        <TrackWrapper role="row" aria-rowindex={index}>
-            <TrackIndex>
-                <TrackNumber>{index + 1}</TrackNumber>
-                <TrackPlay />
-            </TrackIndex>
-            <TrackTitle name={name} album={album} artists={artists} explicit={explicit} />
-            {!hideAlbum && album && <TrackAlbum {...album} />}
-            {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
-            <TrackDuration>
-                {isSaved ? (
-                    <TrackButton
-                        title={buttonSaveLabel}
-                        aria-label={buttonSaveLabel}
-                        onClick={onRemoveTrack}>
-                        <TrackRemove />
-                    </TrackButton>
-                ) : (
-                    <TrackButton
-                        title={buttonSaveLabel}
-                        aria-label={buttonSaveLabel}
-                        onClick={onSaveTrack}>
-                        <TrackSave />
-                    </TrackButton>
-                )}
-                <TrackDurationText>{msToMinutesAndSeconds(duration_ms)}</TrackDurationText>
-            </TrackDuration>
-        </TrackWrapper>
-    );
-};
+        return (
+            <TrackWrapper role="row" aria-rowindex={index}>
+                <TrackIndex>
+                    <TrackNumber>{index + 1}</TrackNumber>
+                    <TrackPlay />
+                </TrackIndex>
+                <TrackTitle name={name} album={album} artists={artists} explicit={explicit} />
+                {!hideAlbum && album && <TrackAlbum {...album} />}
+                {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
+                <TrackDuration>
+                    {isSaved ? (
+                        <TrackButton
+                            title={buttonSaveLabel}
+                            aria-label={buttonSaveLabel}
+                            onClick={() => onRemoveTrack && onRemoveTrack(id, index)}>
+                            <TrackRemove />
+                        </TrackButton>
+                    ) : (
+                        <TrackButton
+                            title={buttonSaveLabel}
+                            aria-label={buttonSaveLabel}
+                            onClick={() => onSaveTrack && onSaveTrack(id, index)}>
+                            <TrackSave />
+                        </TrackButton>
+                    )}
+                    <TrackDurationText>{msToMinutesAndSeconds(duration_ms)}</TrackDurationText>
+                </TrackDuration>
+            </TrackWrapper>
+        );
+    }
+);
+
+Track.displayName = "Track";

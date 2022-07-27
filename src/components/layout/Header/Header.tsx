@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigation } from "@lib/context/navigation";
 import { ChevronRight } from "@icon/ChevronRight";
-import { fillParent } from "@css/helper";
+import { fillParent, transition } from "@css/helper";
 import { HeaderUser } from "./HeaderUser";
 
 const HeaderWrapper = styled.header`
@@ -15,6 +15,7 @@ const HeaderWrapper = styled.header`
         z-index: -1;
         background-color: var(--dominant-color, ${p => p.theme.gray50});
         opacity: var(--scroll, 0);
+        ${transition("background-color", "0.4s")};
     }
 `;
 

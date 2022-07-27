@@ -64,21 +64,24 @@ export const AlbumTracks: React.FC = () => {
                                 <TracksColumn>Disc {discNumber}</TracksColumn>
                             </TracksHead>
                         )}
-                        {discs[discNumber].map(
-                            ({ id, name, explicit, duration_ms, artists }, index) => (
-                                <Track
-                                    key={index}
-                                    index={index}
-                                    name={name}
-                                    explicit={explicit}
-                                    duration_ms={duration_ms}
-                                    artists={artists}
-                                    isSaved={savedTracks[index]}
-                                    onSaveTrack={() => handleSaveTrack(id, index)}
-                                    onRemoveTrack={() => handleRemoveTrack(id, index)}
-                                />
-                            )
-                        )}
+                        <React.Fragment>
+                            {discs[discNumber].map(
+                                ({ id, name, explicit, duration_ms, artists }, index) => (
+                                    <Track
+                                        key={index}
+                                        index={index}
+                                        id={id}
+                                        name={name}
+                                        explicit={explicit}
+                                        duration_ms={duration_ms}
+                                        artists={artists}
+                                        isSaved={savedTracks[index]}
+                                        onSaveTrack={handleSaveTrack}
+                                        onRemoveTrack={handleRemoveTrack}
+                                    />
+                                )
+                            )}
+                        </React.Fragment>
                     </TracksDisc>
                 ))}
             </ListInfiniteTracks>

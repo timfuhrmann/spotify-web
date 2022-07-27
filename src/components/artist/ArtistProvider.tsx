@@ -1,4 +1,11 @@
-import React, { createContext, PropsWithChildren, useContext, useMemo, useState } from "react";
+import React, {
+    createContext,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from "react";
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
@@ -78,22 +85,28 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         }, {} as Record<string, SpotifyApi.AlbumObjectSimplified[]>);
     }, [artistAlbums, albumGroups]);
 
+    const handleSaveTrack = useCallback(
+        async (id: string, index: number) => {
+            saveTrackToCache(index);
+            return saveTracks(access_token, [id]);
+        },
+        [access_token]
+    );
+
+    const handleRemoveTrack = useCallback(
+        async (id: string, index: number) => {
+            removeTrackFromCache(index);
+            return removeTracks(access_token, [id]);
+        },
+        [access_token]
+    );
+
     const showMorePopularTracks = () => {
         setPopularTracksLength(topTracks.length);
     };
 
     const showLessPopularTracks = () => {
         setPopularTracksLength(Math.min(5, topTracks.length));
-    };
-
-    const handleSaveTrack = async (id: string, index: number): Promise<void> => {
-        saveTrackToCache(index);
-        return saveTracks(access_token, [id]);
-    };
-
-    const handleRemoveTrack = async (id: string, index: number): Promise<void> => {
-        removeTrackFromCache(index);
-        return removeTracks(access_token, [id]);
     };
 
     const handleFollowArtist = () => {

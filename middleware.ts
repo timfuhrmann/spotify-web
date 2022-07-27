@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
     COOKIES_ACCESS_TOKEN,
-    COOKIES_DEL_OPTIONS,
     COOKIES_REFRESH_TOKEN,
-    COOKIES_USER,
     getCookieSetOptions,
 } from "@lib/api/auth/cookie";
 import { getRefreshedSpotifyAccessToken } from "@lib/api/auth/access-token";

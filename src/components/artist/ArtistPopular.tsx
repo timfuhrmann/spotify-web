@@ -60,13 +60,14 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
                         <Track
                             key={index}
                             index={index}
+                            id={id}
                             name={name}
                             album={album}
                             explicit={explicit}
                             duration_ms={duration_ms}
                             isSaved={savedTracks[index]}
-                            onSaveTrack={() => handleSaveTrack(id, index)}
-                            onRemoveTrack={() => handleRemoveTrack(id, index)}
+                            onSaveTrack={handleSaveTrack}
+                            onRemoveTrack={handleRemoveTrack}
                             hideAlbum
                         />
                     ))}

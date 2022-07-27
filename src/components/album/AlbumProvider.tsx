@@ -1,4 +1,4 @@
-import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
 import { AlbumProps } from "./Album";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
@@ -76,15 +76,21 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         return mapTracksByDiscNumber(tracksPages.pages.flatMap(page => (page ? page.items : [])));
     }, [tracksPages, album]);
 
-    const handleSaveTrack = async (id: string, index: number): Promise<void> => {
-        addSavedTrackToCache(index);
-        return saveTracks(access_token, [id]);
-    };
+    const handleSaveTrack = useCallback(
+        async (id: string, index: number): Promise<void> => {
+            addSavedTrackToCache(index);
+            return saveTracks(access_token, [id]);
+        },
+        [access_token]
+    );
 
-    const handleRemoveTrack = async (id: string, index: number): Promise<void> => {
-        removeSavedTrackFromCache(index);
-        return removeTracks(access_token, [id]);
-    };
+    const handleRemoveTrack = useCallback(
+        async (id: string, index: number) => {
+            removeSavedTrackFromCache(index);
+            return removeTracks(access_token, [id]);
+        },
+        [access_token]
+    );
 
     const handleSaveAlbum = async (): Promise<void> => {
         saveAlbumToCache();

@@ -33,8 +33,13 @@ export const SavedTracksList: React.FC = () => {
                                 index={index}
                                 isSaved={true}
                                 addedAt={added_at}
-                                onRemoveTrack={() => handleRemoveTrack(track.id, index)}
-                                {...track}
+                                id={track.id}
+                                name={track.name}
+                                explicit={track.explicit}
+                                duration_ms={track.duration_ms}
+                                artists={track.artists}
+                                album={track.album}
+                                onRemoveTrack={handleRemoveTrack}
                             />
                         )
                 )}

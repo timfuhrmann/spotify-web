@@ -1,4 +1,4 @@
-import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
 import { PlaylistProps } from "./Playlist";
 import { getPlaylistTracks, PLAYLIST_TRACKS_OFFSET } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
@@ -62,15 +62,21 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         return tracksPages.pages.flatMap(page => (page ? page.items : []));
     }, [playlist, tracksPages]);
 
-    const handleSaveTrack = async (id: string, index: number): Promise<void> => {
-        addSavedTrackToCache(index);
-        return saveTracks(access_token, [id]);
-    };
+    const handleSaveTrack = useCallback(
+        async (id: string, index: number) => {
+            addSavedTrackToCache(index);
+            return saveTracks(access_token, [id]);
+        },
+        [access_token]
+    );
 
-    const handleRemoveTrack = async (id: string, index: number): Promise<void> => {
-        removeSavedTrackFromCache(index);
-        return removeTracks(access_token, [id]);
-    };
+    const handleRemoveTrack = useCallback(
+        async (id: string, index: number) => {
+            removeSavedTrackFromCache(index);
+            return removeTracks(access_token, [id]);
+        },
+        [access_token]
+    );
 
     return (
         <PlaylistContext.Provider

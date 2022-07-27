@@ -1,5 +1,5 @@
 import cloneDeep from "lodash.clonedeep";
-import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
 import { SavedTracksProps } from "./SavedTracks";
 import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
 import { getSavedTracks, removeTracks } from "@lib/api/track";
@@ -70,10 +70,13 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
         });
     };
 
-    const handleRemoveTrack = async (id: string, index: number) => {
-        removeTrackFromCache(index);
-        removeTracks(access_token, [id]);
-    };
+    const handleRemoveTrack = useCallback(
+        async (id: string, index: number) => {
+            removeTrackFromCache(index);
+            removeTracks(access_token, [id]);
+        },
+        [access_token]
+    );
 
     return (
         <SavedTracksContext.Provider

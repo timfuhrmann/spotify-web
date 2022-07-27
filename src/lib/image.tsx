@@ -19,12 +19,19 @@ const emptyDataURL =
 
 interface CoverImageProps {
     images: SpotifyApi.ImageObject[];
+    onLoad?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
     alt?: string;
     sizes?: string;
     priority?: boolean;
 }
 
-export const SpotifyImage: React.FC<CoverImageProps> = ({ images, alt, sizes, priority }) => {
+export const SpotifyImage: React.FC<CoverImageProps> = ({
+    images,
+    alt,
+    sizes,
+    priority,
+    onLoad,
+}) => {
     const [setIntersection, isIntersected] = useIntersection<HTMLImageElement>({
         rootMargin: "300px",
     });
@@ -60,7 +67,7 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({ images, alt, sizes, pr
 
     return (
         <CoverWrapper>
-            <Image decoding="async" ref={setIntersection} {...imgAttributes} />
+            <Image decoding="async" ref={setIntersection} {...imgAttributes} onLoad={onLoad} />
             {priority && (
                 <Head>
                     <link
