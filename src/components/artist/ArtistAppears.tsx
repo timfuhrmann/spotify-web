@@ -6,6 +6,7 @@ import { content } from "@css/helper/content";
 
 const AppearsWrapper = styled.div`
     ${content()};
+    width: 100%;
 `;
 
 interface ArtistAppearsProps {

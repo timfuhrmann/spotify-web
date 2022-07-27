@@ -1,4 +1,4 @@
-import React from "react";
+import React, { NamedExoticComponent } from "react";
 import styled from "styled-components";
 import { SpotifyImage } from "@lib/image";
 import { aspectRatio, fillParent, hover, square, transition } from "@css/helper";
@@ -82,24 +82,27 @@ export interface EntryProps {
     images: SpotifyApi.ImageObject[];
 }
 
-export const Entry: React.FC<EntryProps> & ParentComposition = ({ id, name, images, type }) => {
-    return (
-        <EntryWrapper>
-            <EntryFrame>
-                <EntryImage $type={type}>
-                    <SpotifyImage images={images} alt={name} sizes="300px" />
-                </EntryImage>
-                <EntryPlay>
-                    <PlayButton />
-                </EntryPlay>
-            </EntryFrame>
-            <EntryName>{name}</EntryName>
-            <Link label={name} href={`/${type}/${id}`}>
-                <EntryAnchor />
-            </Link>
-        </EntryWrapper>
-    );
-};
+//@ts-ignore
+export const Entry: NamedExoticComponent<EntryProps> & ParentComposition = React.memo(
+    ({ id, name, images, type }) => {
+        return (
+            <EntryWrapper>
+                <EntryFrame>
+                    <EntryImage $type={type}>
+                        <SpotifyImage images={images} alt={name} sizes="300px" />
+                    </EntryImage>
+                    <EntryPlay>
+                        <PlayButton />
+                    </EntryPlay>
+                </EntryFrame>
+                <EntryName>{name}</EntryName>
+                <Link label={name} href={`/${type}/${id}`}>
+                    <EntryAnchor />
+                </Link>
+            </EntryWrapper>
+        );
+    }
+);
 
 const ListEntriesItemSkeleton: React.FC<Pick<EntryProps, "type">> = ({ type }) => {
     return (
@@ -117,3 +120,4 @@ const ListEntriesItemSkeleton: React.FC<Pick<EntryProps, "type">> = ({ type }) =
 };
 
 Entry.Skeleton = ListEntriesItemSkeleton;
+Entry.displayName = "Entry";

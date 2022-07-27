@@ -15,7 +15,7 @@ const HeaderWrapper = styled.header`
         z-index: -1;
         background-color: var(--dominant-color, ${p => p.theme.gray50});
         opacity: var(--scroll, 0);
-        ${transition("background-color", "0.4s")};
+        ${transition("background-color", "1s")};
     }
 `;
 
