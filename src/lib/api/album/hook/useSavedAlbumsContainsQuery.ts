@@ -8,7 +8,7 @@ export const useSavedAlbumsContainsQuery = (ids: string[]) => {
 
     const queryKey = ["saved-albums-contains", ids.join(","), access_token];
 
-    const data = useQuery(queryKey, () => getSavedAlbumsContains(access_token, ids), {
+    const data = useQuery(queryKey, () => getSavedAlbumsContains(access_token!, ids), {
         enabled: !!access_token,
     });
 

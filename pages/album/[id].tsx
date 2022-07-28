@@ -3,7 +3,7 @@ import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { useRouter } from "next/router";
 import { useDominantColor } from "@lib/hook/useDominantColor";
 import { Album } from "../../src/components/album/Album";
-import { useAlbumQuery } from "@lib/api/hook/useAlbumQuery";
+import { useAlbumQuery } from "@lib/api/album/hook/useAlbumQuery";
 import { getIdFromQuery } from "@lib/util";
 
 const Playlist: NextPageWithLayout = () => {

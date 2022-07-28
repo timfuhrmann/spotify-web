@@ -5,7 +5,7 @@ import { useSession } from "@lib/context/session";
 export const useSavedTracksQuery = () => {
     const { access_token } = useSession();
 
-    return useQuery(["saved-tracks", access_token], () => getSavedTracks(access_token), {
+    return useQuery(["saved-tracks", access_token], () => getSavedTracks(access_token!), {
         enabled: !!access_token,
     });
 };

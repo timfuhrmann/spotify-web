@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { useRootPlaylists } from "@lib/context/root-playlists";
-import { createArray } from "@lib/util";
 import { NavigationPlaylistItem } from "./NavigationPlaylistItem";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
 
 const PlaylistsWrapper = styled.div`
     position: relative;
@@ -31,7 +30,7 @@ const PlaylistFrame = styled.div`
 `;
 
 export const NavigationPlaylists: React.FC = () => {
-    const { playlists } = useRootPlaylists();
+    const { data: playlists } = useRootPlaylistsQuery();
 
     return (
         <PlaylistsWrapper>

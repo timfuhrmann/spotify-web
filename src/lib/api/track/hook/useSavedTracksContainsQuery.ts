@@ -9,7 +9,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
 
     const queryKey = ["saved-tracks-contains", ids.join(","), access_token];
 
-    const data = useQuery(queryKey, () => getSavedTracksContains(access_token, ids), {
+    const data = useQuery(queryKey, () => getSavedTracksContains(access_token!, ids), {
         enabled: !!access_token,
     });
 

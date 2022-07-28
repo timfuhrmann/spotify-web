@@ -4,7 +4,6 @@ import { Navigation } from "./Navigation/Navigation";
 import { Header } from "./Header/Header";
 import { useRouter } from "next/router";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { RootPlaylistsProvider } from "@lib/context/root-playlists/RootPlaylistsProvider";
 import { useScrollVariable } from "@lib/hook/useScrollVariable";
 
 const LayoutGrid = styled.div`
@@ -54,25 +53,23 @@ export const PrimaryLayout: React.FC<PropsWithChildren> = ({ children }) => {
     const onScroll = useScrollVariable();
 
     return (
-        <RootPlaylistsProvider>
-            <LayoutGrid>
-                <LayoutNavigation>
-                    <Navigation />
-                </LayoutNavigation>
-                <LayoutHeader>
-                    <Header />
-                </LayoutHeader>
-                <LayoutMain>
-                    <LayoutStage
-                        key={asPath}
-                        className="custom-scrollbar main-scrollbar"
-                        style={{ height: "100%" }}
-                        options={{ callbacks: { onScroll } }}>
-                        {children}
-                    </LayoutStage>
-                </LayoutMain>
-                <LayoutPlaying />
-            </LayoutGrid>
-        </RootPlaylistsProvider>
+        <LayoutGrid>
+            <LayoutNavigation>
+                <Navigation />
+            </LayoutNavigation>
+            <LayoutHeader>
+                <Header />
+            </LayoutHeader>
+            <LayoutMain>
+                <LayoutStage
+                    key={asPath}
+                    className="custom-scrollbar main-scrollbar"
+                    style={{ height: "100%" }}
+                    options={{ callbacks: { onScroll } }}>
+                    {children}
+                </LayoutStage>
+            </LayoutMain>
+            <LayoutPlaying />
+        </LayoutGrid>
     );
 };

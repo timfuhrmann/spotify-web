@@ -7,7 +7,7 @@ export const useArtistsRelatedArtistsQuery = (id: string) => {
 
     return useQuery(
         ["artist-related-artists", id, access_token],
-        () => getArtistsRelatedArtists(access_token, id),
+        () => getArtistsRelatedArtists(access_token!, id),
         { enabled: !!access_token }
     );
 };

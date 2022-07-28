@@ -9,11 +9,11 @@ import React, {
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
-import { useSavedTracksContainsQuery } from "@lib/api/hook/useSavedTracksContainsQuery";
-import { useArtistsAlbumsQuery } from "@lib/api/hook/useArtistsAlbumsQuery";
-import { useArtistsRelatedArtistsQuery } from "@lib/api/hook/useArtistsRelatedArtistsQuery";
+import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
+import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
+import { useArtistsRelatedArtistsQuery } from "@lib/api/artist/hook/useArtistsRelatedArtistsQuery";
 import { AlbumGroup, followArtist, unfollowArtist } from "@lib/api/artist";
-import { useFollowedArtistsContains } from "@lib/api/hook/useFollowedArtistOrUser";
+import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
 
 interface ArtistContextData {
     isFollowing: boolean;
@@ -26,10 +26,10 @@ interface ArtistContextData {
     hasLessPopularTracks: boolean;
     showMorePopularTracks: () => void;
     showLessPopularTracks: () => void;
-    handleSaveTrack: (id: string, index: number) => Promise<void>;
-    handleRemoveTrack: (id: string, index: number) => Promise<void>;
-    handleFollowArtist: () => Promise<void>;
-    handleUnfollowArtist: () => Promise<void>;
+    handleSaveTrack: (id: string, index: number) => void;
+    handleRemoveTrack: (id: string, index: number) => void;
+    handleFollowArtist: () => void;
+    handleUnfollowArtist: () => void;
 }
 
 const ArtistContext = createContext<ArtistContextData>({} as ArtistContextData);
@@ -87,6 +87,10 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
 
     const handleSaveTrack = useCallback(
         async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
             saveTrackToCache(index);
             return saveTracks(access_token, [id]);
         },
@@ -95,6 +99,10 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
 
     const handleRemoveTrack = useCallback(
         async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
             removeTrackFromCache(index);
             return removeTracks(access_token, [id]);
         },
@@ -110,13 +118,21 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     };
 
     const handleFollowArtist = () => {
+        if (!access_token) {
+            return;
+        }
+
         saveArtistToCache(0);
-        return followArtist(access_token, [artist.id]);
+        followArtist(access_token, [artist.id]);
     };
 
     const handleUnfollowArtist = () => {
+        if (!access_token) {
+            return;
+        }
+
         removeArtistFromCache(0);
-        return unfollowArtist(access_token, [artist.id]);
+        unfollowArtist(access_token, [artist.id]);
     };
 
     return (

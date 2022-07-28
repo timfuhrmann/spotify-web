@@ -4,9 +4,9 @@ import { NextPageWithLayout } from "@type/page";
 import { useRouter } from "next/router";
 import { Artist as ArtistComponent } from "../../../src/components/artist/Artist";
 import { useDominantColor } from "@lib/hook/useDominantColor";
-import { useArtistQuery } from "@lib/api/hook/useArtistQuery";
+import { useArtistQuery } from "@lib/api/artist/hook/useArtistQuery";
 import { getIdFromQuery } from "@lib/util";
-import { useArtistsTopTracksQuery } from "@lib/api/hook/useArtistsTopTracksQuery";
+import { useArtistsTopTracksQuery } from "@lib/api/artist/hook/useArtistsTopTracksQuery";
 
 const Artist: NextPageWithLayout = () => {
     const { query } = useRouter();

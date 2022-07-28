@@ -11,7 +11,7 @@ export const useArtistsAlbumsQuery = (id: string | undefined, include_groups?: A
         queryKey.push(include_groups.join(","));
     }
 
-    return useQuery(queryKey, () => getArtistsAlbums(access_token, id, include_groups), {
+    return useQuery(queryKey, () => getArtistsAlbums(access_token!, id!, include_groups), {
         enabled: !!access_token || !!id,
     });
 };

@@ -9,7 +9,7 @@ export const useFollowedArtistsContains = (ids: string[]) => {
 
     const queryKey = ["followed-artists-contains", ids.join(","), access_token];
 
-    const data = useQuery(queryKey, () => getFollowedArtistsContains(access_token, ids), {
+    const data = useQuery(queryKey, () => getFollowedArtistsContains(access_token!, ids), {
         enabled: !!access_token,
     });
 

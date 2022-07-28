@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../../../src/components/layout/PrimaryLayout";
 import { GridEntries } from "../../../../src/components/shared/GridEntries";
-import { useArtistsAlbumsQuery } from "@lib/api/hook/useArtistsAlbumsQuery";
+import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
 import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";

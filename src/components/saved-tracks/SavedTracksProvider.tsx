@@ -11,7 +11,7 @@ interface SavedTracksContextData {
     isLoading: boolean;
     hasNextPage: boolean;
     fetchNextPage: () => void;
-    handleRemoveTrack: (id: string, index: number) => Promise<void>;
+    handleRemoveTrack: (id: string, index: number) => void;
 }
 
 const SavedTracksContext = createContext<SavedTracksContextData>({} as SavedTracksContextData);
@@ -26,7 +26,8 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
         useInfiniteTracks<SpotifyApi.UsersSavedTracksResponse>({
             key: "saved-tracks-list",
             initialTracks,
-            queryFn: ({ pageParam = 1 }) => getSavedTracks(access_token, pageParam),
+            enabled: !!access_token,
+            queryFn: ({ pageParam = 1 }) => getSavedTracks(access_token!, pageParam),
             getNextPageParam: (data, allPages) => {
                 const lastPage = allPages[allPages.length - 1];
 
@@ -72,6 +73,10 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
 
     const handleRemoveTrack = useCallback(
         async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
             removeTrackFromCache(index);
             removeTracks(access_token, [id]);
         },

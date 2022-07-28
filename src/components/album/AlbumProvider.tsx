@@ -4,7 +4,7 @@ import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteT
 import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
-import { useSavedAlbumsContainsQuery } from "@lib/api/hook/useSavedAlbumsContainsQuery";
+import { useSavedAlbumsContainsQuery } from "@lib/api/album/hook/useSavedAlbumsContainsQuery";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 
@@ -16,10 +16,10 @@ interface AlbumContextData {
     isLoading: boolean;
     hasNextPage: boolean;
     fetchNextPage: () => void;
-    handleSaveTrack: (id: string, index: number) => Promise<void>;
-    handleRemoveTrack: (id: string, index: number) => Promise<void>;
-    handleSaveAlbum: () => Promise<void>;
-    handleRemoveAlbum: () => Promise<void>;
+    handleSaveTrack: (id: string, index: number) => void;
+    handleRemoveTrack: (id: string, index: number) => void;
+    handleSaveAlbum: () => void;
+    handleRemoveAlbum: () => void;
 }
 
 const AlbumContext = createContext<AlbumContextData>({} as AlbumContextData);
@@ -45,7 +45,8 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         key: album.id,
         initialTracks: album.tracks,
         limit: ALBUM_TRACKS_OFFSET,
-        queryFn: ({ pageParam = 1 }) => getAlbumTracks(access_token, album.id, pageParam),
+        enabled: !!access_token,
+        queryFn: ({ pageParam = 1 }) => getAlbumTracks(access_token!, album.id, pageParam),
         idsFn: page => page.items.flatMap(item => item.id),
         getNextPageParam: (data, allPages) => {
             const lastPage = allPages[allPages.length - 1];
@@ -77,7 +78,11 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
     }, [tracksPages, album]);
 
     const handleSaveTrack = useCallback(
-        async (id: string, index: number): Promise<void> => {
+        async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
             addSavedTrackToCache(index);
             return saveTracks(access_token, [id]);
         },
@@ -86,20 +91,32 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
 
     const handleRemoveTrack = useCallback(
         async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
             removeSavedTrackFromCache(index);
             return removeTracks(access_token, [id]);
         },
         [access_token]
     );
 
-    const handleSaveAlbum = async (): Promise<void> => {
+    const handleSaveAlbum = () => {
+        if (!access_token) {
+            return;
+        }
+
         saveAlbumToCache();
-        return saveAlbum(access_token, [album.id]);
+        saveAlbum(access_token, [album.id]);
     };
 
-    const handleRemoveAlbum = async (): Promise<void> => {
+    const handleRemoveAlbum = () => {
+        if (!access_token) {
+            return;
+        }
+
         removeAlbumFromCache();
-        return removeAlbum(access_token, [album.id]);
+        removeAlbum(access_token, [album.id]);
     };
 
     return (

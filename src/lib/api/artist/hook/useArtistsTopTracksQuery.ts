@@ -7,7 +7,7 @@ export const useArtistsTopTracksQuery = (id: string | undefined) => {
 
     return useQuery(
         ["artist-top-tracks", id, access_token],
-        () => getArtistsTopTracks(access_token, id),
+        () => getArtistsTopTracks(access_token!, id!),
         { enabled: !!access_token && !!id }
     );
 };

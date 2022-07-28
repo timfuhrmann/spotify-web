@@ -36,12 +36,13 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
 
             const res = await Promise.all(
                 createArray(Math.ceil(ids.length / 50)).map((_, i) =>
-                    getSavedTracksContains(access_token, ids.slice(i * 50, (i + 1) * 50))
+                    getSavedTracksContains(access_token!, ids.slice(i * 50, (i + 1) * 50))
                 )
             );
 
             return res.flatMap(arr => arr || []);
-        }
+        },
+        { enabled: !!access_token }
     );
 
     useEffect(() => {

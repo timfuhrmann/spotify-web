@@ -9,6 +9,7 @@ import { queryClient } from "@lib/api";
 
 export interface InfiniteTracksOptions<T> {
     key: string;
+    enabled: boolean;
     queryFn: QueryFunction<T | undefined>;
     getNextPageParam: GetNextPageParamFunction<T | undefined>;
     initialTracks: T;
@@ -17,6 +18,7 @@ export interface InfiniteTracksOptions<T> {
 export const useInfiniteTracks = <T>({
     key,
     queryFn,
+    enabled,
     getNextPageParam,
     initialTracks,
 }: InfiniteTracksOptions<T>) => {
@@ -30,6 +32,7 @@ export const useInfiniteTracks = <T>({
         isLoading,
         isFetching,
     } = useInfiniteQuery(["tracks", key, access_token], queryFn, {
+        enabled,
         cacheTime: 0,
         getNextPageParam,
         initialData: {

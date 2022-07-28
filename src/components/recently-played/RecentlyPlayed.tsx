@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { RecentlyPlayedProvider } from "./RecentlyPlayedProvider";
-import { useRootPlaylists } from "@lib/context/root-playlists";
 import { RecentlyPlayedPlaylist } from "./RecentlyPlayedPlaylist";
 import { createArray } from "@lib/util";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
 
 const PlayedWrapper = styled.div``;
 
@@ -14,7 +14,7 @@ const PlayedGrid = styled.div`
 `;
 
 export const RecentlyPlayed: React.FC = () => {
-    const { playlists } = useRootPlaylists();
+    const { data: playlists } = useRootPlaylistsQuery();
 
     return (
         <RecentlyPlayedProvider>

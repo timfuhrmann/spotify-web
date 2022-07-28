@@ -1,24 +1,30 @@
-import React, { PropsWithChildren } from "react";
 import cloneDeep from "lodash.clonedeep";
-import { RootPlaylistsContext } from "@lib/context/root-playlists/index";
-import { useSession } from "@lib/context/session";
 import { useQuery } from "react-query";
 import { followPlaylist, getRootPlaylists, unfollowPlaylist } from "@lib/api/playlist";
+import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
 
-export const RootPlaylistsProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const useRootPlaylistsQuery = () => {
     const { access_token } = useSession();
 
-    const { data: playlists } = useQuery(["root-playlists", access_token], () =>
-        getRootPlaylists(access_token)
-    );
+    const data = useQuery(["root-playlists", access_token], () => getRootPlaylists(access_token!), {
+        enabled: !!access_token,
+    });
 
-    const handleFollowPlaylist = (playlist: SpotifyApi.PlaylistObjectSimplified): Promise<void> => {
+    const handleFollowPlaylist = (playlist: SpotifyApi.PlaylistObjectSimplified) => {
+        if (!access_token) {
+            return;
+        }
+
         addPlaylistToCache(playlist);
         return followPlaylist(access_token, playlist.id);
     };
 
-    const handleUnfollowPlaylist = (id: string): Promise<void> => {
+    const handleUnfollowPlaylist = (id: string) => {
+        if (!access_token) {
+            return;
+        }
+
         removePlaylistFromCache(id);
         return unfollowPlaylist(access_token, id);
     };
@@ -63,10 +69,5 @@ export const RootPlaylistsProvider: React.FC<PropsWithChildren> = ({ children })
         );
     };
 
-    return (
-        <RootPlaylistsContext.Provider
-            value={{ playlists, handleFollowPlaylist, handleUnfollowPlaylist }}>
-            {children}
-        </RootPlaylistsContext.Provider>
-    );
+    return { ...data, handleFollowPlaylist, handleUnfollowPlaylist };
 };

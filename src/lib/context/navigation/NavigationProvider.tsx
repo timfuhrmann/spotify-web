@@ -1,11 +1,4 @@
-import React, {
-    createContext,
-    PropsWithChildren,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { NavigationContext } from "@lib/context/navigation/index";
 

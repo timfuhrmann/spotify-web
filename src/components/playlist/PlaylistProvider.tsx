@@ -2,9 +2,9 @@ import React, { createContext, PropsWithChildren, useCallback, useContext, useMe
 import { PlaylistProps } from "./Playlist";
 import { getPlaylistTracks, PLAYLIST_TRACKS_OFFSET } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
-import { useRootPlaylists } from "@lib/context/root-playlists";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { removeTracks, saveTracks } from "@lib/api/track";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
 
 interface PlaylistContextData {
     isFollowing: boolean;
@@ -14,10 +14,10 @@ interface PlaylistContextData {
     isLoading: boolean;
     hasNextPage: boolean;
     fetchNextPage: () => void;
-    handleSaveTrack: (id: string, index: number) => Promise<void>;
-    handleRemoveTrack: (id: string, index: number) => Promise<void>;
-    handleFollowPlaylist: () => Promise<void>;
-    handleUnfollowPlaylist: () => Promise<void>;
+    handleSaveTrack: (id: string, index: number) => void;
+    handleRemoveTrack: (id: string, index: number) => void;
+    handleFollowPlaylist: () => void;
+    handleUnfollowPlaylist: () => void;
 }
 
 const PlaylistContext = createContext<PlaylistContextData>({} as PlaylistContextData);
@@ -27,7 +27,12 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     children,
 }) => {
     const { access_token } = useSession();
-    const { playlists, handleFollowPlaylist, handleUnfollowPlaylist } = useRootPlaylists();
+
+    const {
+        data: playlists,
+        handleFollowPlaylist,
+        handleUnfollowPlaylist,
+    } = useRootPlaylistsQuery();
 
     const isFollowing = playlists ? !!playlists.find(({ id }) => id === playlist.id) : false;
 
@@ -43,7 +48,8 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         key: playlist.id,
         initialTracks: playlist.tracks,
         limit: PLAYLIST_TRACKS_OFFSET,
-        queryFn: ({ pageParam = 1 }) => getPlaylistTracks(access_token, playlist.id, pageParam),
+        enabled: !!access_token,
+        queryFn: ({ pageParam = 1 }) => getPlaylistTracks(access_token!, playlist.id, pageParam),
         idsFn: page => page.items.flatMap(item => (item.track ? item.track.id : [])),
         getNextPageParam: (data, allPages) => {
             const lastPage = allPages[allPages.length - 1];
@@ -64,6 +70,10 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
 
     const handleSaveTrack = useCallback(
         async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
             addSavedTrackToCache(index);
             return saveTracks(access_token, [id]);
         },
@@ -72,6 +82,10 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
 
     const handleRemoveTrack = useCallback(
         async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
             removeSavedTrackFromCache(index);
             return removeTracks(access_token, [id]);
         },
