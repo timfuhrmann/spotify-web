@@ -1,10 +1,11 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useRef } from "react";
 import styled from "styled-components";
 import { Navigation } from "./Navigation/Navigation";
 import { Header } from "./Header/Header";
 import { useRouter } from "next/router";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { useScrollVariable } from "@lib/hook/useScrollVariable";
+import { withOverlayScroll } from "@lib/context/overlay-scroll/OverlayScrollProvider";
+import { useOverlayScroll } from "@lib/context/overlay-scroll";
 
 const LayoutGrid = styled.div`
     display: grid;
@@ -52,31 +53,30 @@ interface PrimaryLayoutProps {
     hasLibraryNavigation?: boolean;
 }
 
-export const PrimaryLayout: React.FC<PropsWithChildren<PrimaryLayoutProps>> = ({
-    hasLibraryNavigation,
-    children,
-}) => {
-    const { asPath } = useRouter();
-    const onScroll = useScrollVariable();
+export const PrimaryLayout = withOverlayScroll<PropsWithChildren<PrimaryLayoutProps>>(
+    ({ hasLibraryNavigation, children }) => {
+        const { asPath } = useRouter();
+        const { initOverlayScrollbars, onScroll } = useOverlayScroll();
 
-    return (
-        <LayoutGrid>
-            <LayoutNavigation>
-                <Navigation />
-            </LayoutNavigation>
-            <LayoutHeader>
-                <Header hasLibraryNavigation={hasLibraryNavigation} />
-            </LayoutHeader>
-            <LayoutMain>
-                <LayoutStage
-                    key={asPath}
-                    className="custom-scrollbar main-scrollbar"
-                    style={{ height: "100%" }}
-                    options={{ callbacks: { onScroll } }}>
-                    {children}
-                </LayoutStage>
-            </LayoutMain>
-            <LayoutPlaying />
-        </LayoutGrid>
-    );
-};
+        return (
+            <LayoutGrid>
+                <LayoutNavigation>
+                    <Navigation />
+                </LayoutNavigation>
+                <LayoutHeader>
+                    <Header hasLibraryNavigation={hasLibraryNavigation} />
+                </LayoutHeader>
+                <LayoutMain>
+                    <LayoutStage
+                        ref={initOverlayScrollbars}
+                        key={asPath}
+                        className="custom-scrollbar main-scrollbar"
+                        options={{ callbacks: { onScroll } }}>
+                        {children}
+                    </LayoutStage>
+                </LayoutMain>
+                <LayoutPlaying />
+            </LayoutGrid>
+        );
+    }
+);

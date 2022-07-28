@@ -11,9 +11,13 @@ const UserAnchor = styled.a`
     gap: 1.2rem;
 `;
 
-export const HeaderUserPopover: React.FC = () => {
+interface HeaderUserPopoverProps {
+    onClose: () => void;
+}
+
+export const HeaderUserPopover: React.FC<HeaderUserPopoverProps> = ({ onClose }) => {
     return (
-        <Popover placement="bottom-end">
+        <Popover placement="bottom-end" onClose={onClose}>
             <PopoverItem>
                 <Link label="Download" href="https://www.spotify.com/de/download">
                     <UserAnchor target="_blank" rel="noreferrer noopener">

@@ -6,6 +6,7 @@ import { useSession } from "@lib/context/session";
 import { SpotifyImage } from "@lib/image";
 import { ChevronBottom } from "@icon/ChevronBottom";
 import { text } from "@css/helper/typography";
+import { useClickOutside } from "@lib/hook/useClickOutside";
 
 const UserWrapper = styled.div`
     pointer-events: auto;
@@ -38,13 +39,14 @@ const UserChevron = styled(ChevronBottom)<{ $active: boolean }>`
 export const HeaderUser: React.FC = () => {
     const { session } = useSession();
     const [open, setOpen] = useState<boolean>(false);
+    const ref = useClickOutside<HTMLDivElement>({ callback: () => setOpen(false) });
 
     if (!session) {
         return null;
     }
 
     return (
-        <UserWrapper>
+        <UserWrapper ref={ref}>
             <UserButton onClick={() => setOpen(prevState => !prevState)}>
                 <UserAvatar>
                     {session.images && (
@@ -54,7 +56,7 @@ export const HeaderUser: React.FC = () => {
                 {session.display_name}
                 <UserChevron $active={open} />
             </UserButton>
-            {open && <HeaderUserPopover />}
+            {open && <HeaderUserPopover onClose={() => setOpen(false)} />}
         </UserWrapper>
     );
 };
