@@ -73,16 +73,16 @@ export const NavigationList: React.FC = () => {
                 </ListItem>
                 <ListItem>
                     <Link href="/search" label="Search">
-                        <ListAnchor $active={asPath === "/search"}>
-                            <Search width="24" active={asPath === "/search"} />
+                        <ListAnchor $active={asPath.startsWith("/search")}>
+                            <Search width="24" active={asPath.startsWith("/search")} />
                             Search
                         </ListAnchor>
                     </Link>
                 </ListItem>
                 <ListItem>
                     <Link href="/library" label="Your Library">
-                        <ListAnchor $active={asPath === "/library"}>
-                            <Library width="24" active={asPath === "/library"} />
+                        <ListAnchor $active={asPath.startsWith("/library")}>
+                            <Library width="24" active={asPath.startsWith("/library")} />
                             Your Library
                         </ListAnchor>
                     </Link>
@@ -99,7 +99,7 @@ export const NavigationList: React.FC = () => {
                 </ListItem>
                 <ListItem>
                     <Link href="/library/tracks" label="Liked Songs">
-                        <ListAnchor $active={asPath === "/library/tracks"}>
+                        <ListAnchor $active={asPath.includes("/library/tracks")}>
                             <ListHeart>
                                 <Heart width="12" />
                             </ListHeart>

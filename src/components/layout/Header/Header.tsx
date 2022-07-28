@@ -4,6 +4,7 @@ import { useNavigation } from "@lib/context/navigation";
 import { ChevronRight } from "@icon/ChevronRight";
 import { fillParent, transition } from "@css/helper";
 import { HeaderUser } from "./HeaderUser";
+import { HeaderLibraryNavigation } from "./HeaderLibraryNavigation";
 
 const HeaderWrapper = styled.header`
     position: relative;
@@ -27,6 +28,12 @@ const HeaderInner = styled.div`
     height: 100%;
     max-width: ${p => p.theme.contentWidth.intrinsic};
     margin: 0 auto;
+`;
+
+const HeaderGroup = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 4.8rem;
 `;
 
 const HeaderControls = styled.div`
@@ -56,20 +63,27 @@ const HeaderBack = styled(HeaderForth)`
     transform: scale(-1);
 `;
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+    hasLibraryNavigation?: boolean;
+}
+
+export const Header: React.FC<HeaderProps> = ({ hasLibraryNavigation }) => {
     const { hasBack, hasForth, navigateBack, navigateForth } = useNavigation();
 
     return (
         <HeaderWrapper>
             <HeaderInner>
-                <HeaderControls>
-                    <HeaderButton type="button" onClick={navigateBack} disabled={!hasBack}>
-                        <HeaderBack />
-                    </HeaderButton>
-                    <HeaderButton type="button" onClick={navigateForth} disabled={!hasForth}>
-                        <HeaderForth />
-                    </HeaderButton>
-                </HeaderControls>
+                <HeaderGroup>
+                    <HeaderControls>
+                        <HeaderButton type="button" onClick={navigateBack} disabled={!hasBack}>
+                            <HeaderBack />
+                        </HeaderButton>
+                        <HeaderButton type="button" onClick={navigateForth} disabled={!hasForth}>
+                            <HeaderForth />
+                        </HeaderButton>
+                    </HeaderControls>
+                    {hasLibraryNavigation && <HeaderLibraryNavigation />}
+                </HeaderGroup>
                 <HeaderUser />
             </HeaderInner>
         </HeaderWrapper>

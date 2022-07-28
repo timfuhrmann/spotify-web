@@ -20,7 +20,7 @@ export const getArtist = async (
 export const getArtistsTopTracks = async (
     access_token: string,
     id: string
-): Promise<SpotifyApi.TrackObjectFull[] | undefined> => {
+): Promise<SpotifyApi.TrackObjectFull[]> => {
     const { tracks } = await request<SpotifyApi.ArtistsTopTracksResponse>(access_token, {
         url: "/artists/" + id + "/top-tracks",
         params: { market: "US" },
@@ -33,8 +33,8 @@ export const getArtistsAlbums = async (
     access_token: string,
     id: string,
     include_groups: AlbumGroup[] = ["album", "single", "compilation"]
-): Promise<SpotifyApi.ArtistsAlbumsResponse | undefined> => {
-    return request<SpotifyApi.ArtistsAlbumsResponse>(access_token, {
+): Promise<SpotifyApi.ArtistsAlbumsResponse> => {
+    return request(access_token, {
         url: "/artists/" + id + "/albums",
         params: { include_groups: include_groups.join(","), limit: ALBUM_TRACKS_OFFSET },
     });
@@ -43,9 +43,18 @@ export const getArtistsAlbums = async (
 export const getArtistsRelatedArtists = async (
     access_token: string,
     id: string
-): Promise<SpotifyApi.ArtistsRelatedArtistsResponse | undefined> => {
-    return request<SpotifyApi.ArtistsRelatedArtistsResponse>(access_token, {
+): Promise<SpotifyApi.ArtistsRelatedArtistsResponse> => {
+    return request(access_token, {
         url: "/artists/" + id + "/related-artists",
+    });
+};
+
+export const getFollowedArtists = async (
+    access_token: string
+): Promise<SpotifyApi.UsersFollowedArtistsResponse> => {
+    return request(access_token, {
+        url: "/me/following",
+        params: { type: "artist" },
     });
 };
 

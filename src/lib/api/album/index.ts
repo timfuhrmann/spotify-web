@@ -20,6 +20,12 @@ export const getAlbumTracks = async (
     });
 };
 
+export const getSavedAlbums = async (
+    access_token: string
+): Promise<SpotifyApi.UsersSavedAlbumsResponse | undefined> => {
+    return request(access_token, { url: "/me/albums/" });
+};
+
 export const getSavedAlbumsContains = async (
     access_token: string,
     ids: string[]

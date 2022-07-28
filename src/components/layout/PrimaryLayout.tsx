@@ -48,7 +48,14 @@ const LayoutPlaying = styled.div`
     height: 7rem;
 `;
 
-export const PrimaryLayout: React.FC<PropsWithChildren> = ({ children }) => {
+interface PrimaryLayoutProps {
+    hasLibraryNavigation?: boolean;
+}
+
+export const PrimaryLayout: React.FC<PropsWithChildren<PrimaryLayoutProps>> = ({
+    hasLibraryNavigation,
+    children,
+}) => {
     const { asPath } = useRouter();
     const onScroll = useScrollVariable();
 
@@ -58,7 +65,7 @@ export const PrimaryLayout: React.FC<PropsWithChildren> = ({ children }) => {
                 <Navigation />
             </LayoutNavigation>
             <LayoutHeader>
-                <Header />
+                <Header hasLibraryNavigation={hasLibraryNavigation} />
             </LayoutHeader>
             <LayoutMain>
                 <LayoutStage

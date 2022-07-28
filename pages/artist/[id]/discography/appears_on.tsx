@@ -7,33 +7,27 @@ import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuer
 import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
-import { ALBUM_GROUPS, AlbumGroup, isAlbumGroup } from "@lib/api/artist";
 
-const DiscographyWrapper = styled.div`
+const AppearsOnWrapper = styled.div`
     padding-bottom: 2.4rem;
 `;
 
-const Discography: NextPageWithLayout = () => {
+const AppearsOn: NextPageWithLayout = () => {
     const { query } = useRouter();
-    const { group } = query;
 
-    const { data: artistAlbums } = useArtistsAlbumsQuery(
-        getIdFromQuery(query),
-        group && typeof group === "string" && isAlbumGroup(group) ? [group] : undefined
-    );
+    const { data: artistAppearsOn } = useArtistsAlbumsQuery(getIdFromQuery(query), ["appears_on"]);
 
     return (
-        <DiscographyWrapper>
+        <AppearsOnWrapper>
             <HeaderSpacer />
-            <GridEntries entries={artistAlbums ? artistAlbums.items : null} type="album" />
-        </DiscographyWrapper>
+            <GridEntries entries={artistAppearsOn ? artistAppearsOn.items : null} type="album" />
+        </AppearsOnWrapper>
     );
 };
 
 // eslint-disable-next-line react/display-name
-Discography.getLayout = page => {
+AppearsOn.getLayout = page => {
     return <PrimaryLayout>{page}</PrimaryLayout>;
 };
 
-export default Discography;
+export default AppearsOn;
