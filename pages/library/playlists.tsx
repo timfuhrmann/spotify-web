@@ -15,7 +15,11 @@ const Playlists: NextPageWithLayout = () => {
     return (
         <PlaylistsWrapper>
             <HeaderSpacer />
-            <GridEntries headline="Playlists" entries={rootPlaylists || null} type="playlist" />
+            <GridEntries
+                headline="Playlists"
+                entries={rootPlaylists ? rootPlaylists : null}
+                type="playlist"
+            />
         </PlaylistsWrapper>
     );
 };

@@ -4,7 +4,7 @@ import { fillParent } from "@css/helper";
 
 const SkeletonWrapper = styled.span``;
 
-const SkeletonInner = styled.span<{ $fill?: boolean }>`
+const SkeletonInner = styled.span<{ $fill?: boolean; $invisible?: boolean }>`
     position: relative;
     z-index: 1;
     display: inline-flex;
@@ -14,18 +14,20 @@ const SkeletonInner = styled.span<{ $fill?: boolean }>`
     line-height: 1;
     border-radius: 0.4rem;
     overflow: hidden;
+    visibility: ${p => p.$invisible && "hidden"};
     ${p => p.$fill && fillParent};
 `;
 
 interface SkeletonProps {
+    invisible?: boolean;
     style?: CSSProperties;
     fill?: boolean;
 }
 
-export const Skeleton: React.FC<SkeletonProps> = ({ style, fill }) => {
+export const Skeleton: React.FC<SkeletonProps> = ({ style, fill, invisible }) => {
     return (
         <SkeletonWrapper aria-live="polite" aria-busy="true">
-            <SkeletonInner style={style} $fill={fill}>
+            <SkeletonInner style={style} $fill={fill} $invisible={invisible}>
                 &zwnj;
             </SkeletonInner>
         </SkeletonWrapper>

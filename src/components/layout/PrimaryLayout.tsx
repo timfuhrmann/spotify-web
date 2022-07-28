@@ -37,10 +37,6 @@ const LayoutMain = styled.div`
     overflow: hidden;
 `;
 
-const LayoutStage = styled(OverlayScrollbarsComponent)`
-    height: 100%;
-`;
-
 const LayoutPlaying = styled.div`
     grid-area: playing;
     z-index: 4;
@@ -67,13 +63,14 @@ export const PrimaryLayout = withOverlayScroll<PropsWithChildren<PrimaryLayoutPr
                     <Header hasLibraryNavigation={hasLibraryNavigation} />
                 </LayoutHeader>
                 <LayoutMain>
-                    <LayoutStage
+                    <OverlayScrollbarsComponent
                         ref={initOverlayScrollbars}
                         key={asPath}
+                        style={{ height: "100%" }}
                         className="custom-scrollbar main-scrollbar"
                         options={{ callbacks: { onScroll } }}>
                         {children}
-                    </LayoutStage>
+                    </OverlayScrollbarsComponent>
                 </LayoutMain>
                 <LayoutPlaying />
             </LayoutGrid>

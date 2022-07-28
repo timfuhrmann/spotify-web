@@ -73,7 +73,7 @@ interface ParentComposition {
     Skeleton: typeof ListEntriesItemSkeleton;
 }
 
-export type EntryType = "album" | "playlist" | "artist";
+export type EntryType = "album" | "playlist" | "artist" | "category";
 
 export interface EntryProps {
     type: EntryType;
@@ -91,9 +91,11 @@ export const Entry: NamedExoticComponent<EntryProps> & ParentComposition = React
                     <EntryImage $type={type}>
                         <SpotifyImage images={images} alt={name} sizes="300px" />
                     </EntryImage>
-                    <EntryPlay>
-                        <PlayButton />
-                    </EntryPlay>
+                    {type !== "category" && (
+                        <EntryPlay>
+                            <PlayButton />
+                        </EntryPlay>
+                    )}
                 </EntryFrame>
                 <EntryName>{name}</EntryName>
                 <Link label={name} href={`/${type}/${id}`}>

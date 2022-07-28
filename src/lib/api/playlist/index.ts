@@ -44,6 +44,6 @@ export const getFeaturedPlaylists = async (
 ): Promise<SpotifyApi.ListOfFeaturedPlaylistsResponse | undefined> => {
     return request(access_token, {
         url: "/browse/featured-playlists",
-        params: { country: "US", limit },
+        params: { country: "US", locale: "en-US", limit },
     });
 };

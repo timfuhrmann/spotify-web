@@ -2,12 +2,6 @@ import { request } from "@lib/api";
 
 export const ALBUM_TRACKS_OFFSET = 50;
 
-export const ALBUM_GROUPS = ["album", "single", "appears_on", "compilation"];
-
-export const isAlbumGroup = (group: string): group is AlbumGroup => {
-    return ALBUM_GROUPS.includes(group);
-};
-
 export type AlbumGroup = "album" | "single" | "appears_on" | "compilation";
 
 export const getArtist = async (

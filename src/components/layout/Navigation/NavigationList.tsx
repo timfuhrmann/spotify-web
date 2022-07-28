@@ -72,9 +72,9 @@ export const NavigationList: React.FC = () => {
                     </Link>
                 </ListItem>
                 <ListItem>
-                    <Link href="/search" label="Search">
-                        <ListAnchor $active={asPath.startsWith("/search")}>
-                            <Search width="24" active={asPath.startsWith("/search")} />
+                    <Link href="/browse" label="Search">
+                        <ListAnchor $active={asPath.startsWith("/browse")}>
+                            <Search width="24" active={asPath.startsWith("/browse")} />
                             Search
                         </ListAnchor>
                     </Link>

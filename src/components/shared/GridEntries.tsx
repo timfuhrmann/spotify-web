@@ -5,6 +5,7 @@ import { content } from "@css/helper/content";
 import { SkeletonOverlay } from "@lib/skeleton/overlay";
 import { createArray } from "@lib/util";
 import { text } from "@css/helper/typography";
+import { Skeleton } from "@lib/skeleton";
 
 const EntriesWrapper = styled.div`
     ${content()};
@@ -31,7 +32,9 @@ interface GridEntriesProps {
 export const GridEntries: React.FC<GridEntriesProps> = ({ headline, entries, type }) => {
     return (
         <EntriesWrapper>
-            {headline && <EntriesHeadline>{headline}</EntriesHeadline>}
+            {headline !== undefined && (
+                <EntriesHeadline>{headline ? headline : <Skeleton invisible />}</EntriesHeadline>
+            )}
             <EntriesGrid>
                 {entries ? (
                     entries.map(entry => <Entry key={entry.id} {...entry} />)
