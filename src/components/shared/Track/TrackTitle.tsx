@@ -5,6 +5,7 @@ import { SpotifyImage } from "@lib/image";
 import { hover, square } from "@css/helper";
 import { text } from "@css/helper/typography";
 import { Explicit } from "../Explicit";
+import { useOverlayScroll } from "@lib/context/overlay-scroll";
 
 const TitleWrapper = styled.div`
     display: flex;
@@ -69,11 +70,19 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
     artists,
     explicit,
 }) => {
+    const { targetRef } = useOverlayScroll();
+
     return (
         <TitleWrapper>
             {album && (
                 <TitleCover>
-                    <SpotifyImage alt={name} images={album.images} sizes="40px" />
+                    <SpotifyImage
+                        alt={name}
+                        images={album.images}
+                        sizes="40px"
+                        rootMargin="1000px"
+                        rootRef={targetRef}
+                    />
                 </TitleCover>
             )}
             <TitleFrame>

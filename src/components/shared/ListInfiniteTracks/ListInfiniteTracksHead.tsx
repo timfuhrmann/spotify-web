@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { text } from "@css/helper/typography";
-import { getMainScrollStage } from "@lib/util";
 import { Clock } from "@icon/Clock";
 import { TrackGrid } from "@css/helper/track";
+import { useOverlayScroll } from "@lib/context/overlay-scroll";
 
 const HeadWrapper = styled.div<{ $stuck: boolean }>`
     position: sticky;
@@ -50,10 +50,11 @@ interface TracksHeadProps {
 export const ListInfiniteTracksHead: React.FC<TracksHeadProps> = ({ columns }) => {
     const theme = useTheme();
     const headRef = useRef<HTMLDivElement | null>(null);
+    const { targetRef } = useOverlayScroll();
     const [stuck, setStuck] = useState<boolean>(false);
 
     useEffect(() => {
-        const scrollStage = getMainScrollStage();
+        const scrollStage = targetRef.current;
 
         if (!scrollStage || !headRef.current) {
             return;

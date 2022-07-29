@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { MutableRefObject, useMemo } from "react";
 import Head from "next/head";
 import styled from "styled-components";
 import { fillParent } from "@css/helper";
@@ -20,6 +20,8 @@ const emptyDataURL =
 interface CoverImageProps {
     images: SpotifyApi.ImageObject[];
     onLoad?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
+    rootMargin?: string;
+    rootRef?: MutableRefObject<HTMLDivElement | null>;
     alt?: string;
     sizes?: string;
     priority?: boolean;
@@ -30,10 +32,13 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({
     alt,
     sizes,
     priority,
+    rootRef,
+    rootMargin = "300px",
     onLoad,
 }) => {
     const [setIntersection, isIntersected] = useIntersection<HTMLImageElement>({
-        rootMargin: "300px",
+        rootMargin,
+        rootRef,
     });
 
     const isVisible = priority || isIntersected;

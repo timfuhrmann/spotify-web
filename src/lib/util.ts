@@ -10,14 +10,6 @@ export const getAppUrl = () => {
     return variable;
 };
 
-export const getMainScrollStage = (): HTMLElement | null => {
-    if (typeof window === "undefined") {
-        return null;
-    }
-
-    return document.querySelector(".main-scrollbar .os-viewport");
-};
-
 export const getTotalSongsString = (totalSongs: number): string => {
     if (totalSongs === 1) {
         return "1 song";

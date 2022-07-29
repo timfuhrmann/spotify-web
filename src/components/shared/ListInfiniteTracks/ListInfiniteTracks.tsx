@@ -1,10 +1,10 @@
 import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
-import { getMainScrollStage } from "@lib/util";
 import { ListInfiniteTracksHead } from "./ListInfiniteTracksHead";
 import { TrackGrid } from "@css/helper/track";
 import { content } from "@css/helper/content";
+import { useOverlayScroll } from "@lib/context/overlay-scroll";
 
 const getGridTemplateColumns = (columns: 3 | 5) => {
     switch (columns) {
@@ -41,6 +41,8 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
     loadMore,
     children,
 }) => {
+    const { targetRef } = useOverlayScroll();
+
     return (
         <ListWrapper>
             <ListGrid
@@ -55,7 +57,7 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
                     loadMore={loadMore}
                     threshold={1500}
                     useWindow={false}
-                    getScrollParent={getMainScrollStage}>
+                    getScrollParent={() => targetRef.current}>
                     {children}
                 </InfiniteScroll>
             </ListGrid>

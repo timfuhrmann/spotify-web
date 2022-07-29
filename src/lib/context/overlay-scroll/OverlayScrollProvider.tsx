@@ -6,6 +6,7 @@ import { OverlayScrollContext } from "@lib/context/overlay-scroll/index";
 
 export const OverlayScrollProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const { events } = useRouter();
+    const targetRef = useRef<HTMLDivElement | null>(null);
     const instanceRef = useRef<OverlayScrollbars | null>(null);
 
     const initOverlayScrollbars = useCallback((ref: OverlayScrollbarsComponent | null) => {
@@ -14,6 +15,11 @@ export const OverlayScrollProvider: React.FC<PropsWithChildren> = ({ children })
         }
 
         instanceRef.current = ref.osInstance();
+        const target = ref.osTarget();
+
+        if (target) {
+            targetRef.current = target ? target.querySelector(".os-viewport") : null;
+        }
     }, []);
 
     useEffect(() => {
@@ -55,7 +61,7 @@ export const OverlayScrollProvider: React.FC<PropsWithChildren> = ({ children })
 
     return (
         <OverlayScrollContext.Provider
-            value={{ initOverlayScrollbars, stopScroll, resumeScroll, onScroll }}>
+            value={{ targetRef, initOverlayScrollbars, stopScroll, resumeScroll, onScroll }}>
             {children}
         </OverlayScrollContext.Provider>
     );
