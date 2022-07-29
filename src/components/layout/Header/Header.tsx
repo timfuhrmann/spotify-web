@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigation } from "@lib/context/navigation";
 import { ChevronRight } from "@icon/ChevronRight";
 import { fillParent, transition } from "@css/helper";
 import { HeaderUser } from "./HeaderUser";
 import { HeaderLibraryNavigation } from "./HeaderLibraryNavigation";
+import { useNavigation } from "@lib/hook/useNavigation";
 
 const HeaderWrapper = styled.header`
     position: relative;

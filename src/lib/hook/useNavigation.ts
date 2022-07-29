@@ -1,8 +1,7 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { NavigationContext } from "@lib/context/navigation/index";
+import { useEffect, useState } from "react";
 
-export const NavigationProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const useNavigation = () => {
     const { events, push, isReady, asPath } = useRouter();
     const [forthCounter, setForthCounter] = useState<number>(0);
     const [backCounter, setBackCounter] = useState<number>(0);
@@ -75,15 +74,10 @@ export const NavigationProvider: React.FC<PropsWithChildren> = ({ children }) =>
         return push(nextPath);
     };
 
-    return (
-        <NavigationContext.Provider
-            value={{
-                hasBack,
-                hasForth,
-                navigateBack,
-                navigateForth,
-            }}>
-            {children}
-        </NavigationContext.Provider>
-    );
+    return {
+        hasBack,
+        hasForth,
+        navigateBack,
+        navigateForth,
+    };
 };
