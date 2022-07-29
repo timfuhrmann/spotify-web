@@ -33,7 +33,7 @@ const TitleName = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     color: ${p => p.theme.gray900};
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.4rem;
 `;
 
 const TitleFooter = styled.div`
