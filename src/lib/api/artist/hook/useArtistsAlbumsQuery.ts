@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
-import { AlbumGroup, getArtistsAlbums } from "@lib/api/artist";
+import { getArtistsAlbums } from "@lib/api/artist";
 import { useSession } from "@lib/context/session";
+import { AlbumGroup } from "@lib/api/album";
 
 export const useArtistsAlbumsQuery = (id: string | undefined, include_groups?: AlbumGroup[]) => {
     const { access_token } = useSession();

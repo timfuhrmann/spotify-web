@@ -1,8 +1,7 @@
 import { request } from "@lib/api";
+import { AlbumGroup } from "@lib/api/album";
 
 export const ALBUM_TRACKS_OFFSET = 50;
-
-export type AlbumGroup = "album" | "single" | "appears_on" | "compilation";
 
 export const getArtist = async (
     access_token: string,
@@ -17,7 +16,7 @@ export const getArtistsTopTracks = async (
 ): Promise<SpotifyApi.TrackObjectFull[]> => {
     const { tracks } = await request<SpotifyApi.ArtistsTopTracksResponse>(access_token, {
         url: "/artists/" + id + "/top-tracks",
-        params: { market: "US" },
+        params: { market: "US", locale: "en-US" },
     });
 
     return tracks;
@@ -26,7 +25,7 @@ export const getArtistsTopTracks = async (
 export const getArtistsAlbums = async (
     access_token: string,
     id: string,
-    include_groups: AlbumGroup[] = ["album", "single", "compilation"]
+    include_groups: AlbumGroup[] = [AlbumGroup.Album, AlbumGroup.Single, AlbumGroup.Compilation]
 ): Promise<SpotifyApi.ArtistsAlbumsResponse> => {
     return request(access_token, {
         url: "/artists/" + id + "/albums",

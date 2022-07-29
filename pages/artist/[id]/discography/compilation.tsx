@@ -7,6 +7,7 @@ import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuer
 import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
+import { AlbumGroup } from "@lib/api/album";
 
 const CompilationWrapper = styled.div`
     padding-bottom: 2.4rem;
@@ -16,7 +17,7 @@ const Compilation: NextPageWithLayout = () => {
     const { query } = useRouter();
 
     const { data: artistCompilations } = useArtistsAlbumsQuery(getIdFromQuery(query), [
-        "compilation",
+        AlbumGroup.Compilation,
     ]);
 
     return (

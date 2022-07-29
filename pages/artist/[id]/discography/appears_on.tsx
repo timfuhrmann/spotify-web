@@ -7,6 +7,7 @@ import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuer
 import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
+import { AlbumGroup } from "@lib/api/album";
 
 const AppearsOnWrapper = styled.div`
     padding-bottom: 2.4rem;
@@ -15,7 +16,9 @@ const AppearsOnWrapper = styled.div`
 const AppearsOn: NextPageWithLayout = () => {
     const { query } = useRouter();
 
-    const { data: artistAppearsOn } = useArtistsAlbumsQuery(getIdFromQuery(query), ["appears_on"]);
+    const { data: artistAppearsOn } = useArtistsAlbumsQuery(getIdFromQuery(query), [
+        AlbumGroup.AppearsOn,
+    ]);
 
     return (
         <AppearsOnWrapper>

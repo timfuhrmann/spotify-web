@@ -1,5 +1,12 @@
 import { request } from "@lib/api";
 
+export enum AlbumGroup {
+    Album = "album",
+    Single = "single",
+    AppearsOn = "appears_on",
+    Compilation = "compilation",
+}
+
 export const ALBUM_TRACKS_OFFSET = 50;
 
 export const getAlbum = async (
