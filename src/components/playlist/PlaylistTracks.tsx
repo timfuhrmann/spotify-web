@@ -36,7 +36,7 @@ export const PlaylistTracks: React.FC = () => {
                         <Track
                             key={index}
                             index={index}
-                            isSaved={savedTracks[index]}
+                            isSaved={savedTracks[index] || false}
                             addedAt={added_at}
                             id={track.id}
                             name={track.name}
