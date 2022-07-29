@@ -60,7 +60,6 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({
         ? {
               src: images[0].url,
               srcSet,
-              alt,
               sizes,
           }
         : {
