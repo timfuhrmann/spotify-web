@@ -7,6 +7,7 @@ import { PlayButton } from "../shared/PlayButton";
 import { Link } from "@lib/link";
 import { Skeleton } from "@lib/skeleton";
 import { FastAverageColor } from "fast-average-color";
+import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 
 const PlaylistPlay = styled.div`
     position: relative;
@@ -130,14 +131,16 @@ const RecentlyPlayedPlaylistSkeleton: React.FC = () => {
     const theme = useTheme();
 
     return (
-        <PlaylistWrapper>
-            <PlaylistCover />
-            <PlaylistBody>
-                <PlaylistName>
-                    <Skeleton style={{ backgroundColor: theme.gray300, maxWidth: "50%" }} />
-                </PlaylistName>
-            </PlaylistBody>
-        </PlaylistWrapper>
+        <SkeletonWrapper>
+            <PlaylistWrapper>
+                <PlaylistCover />
+                <PlaylistBody>
+                    <PlaylistName>
+                        <Skeleton style={{ backgroundColor: theme.gray300, maxWidth: "50%" }} />
+                    </PlaylistName>
+                </PlaylistBody>
+            </PlaylistWrapper>
+        </SkeletonWrapper>
     );
 };
 
