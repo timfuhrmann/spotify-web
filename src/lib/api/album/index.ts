@@ -7,6 +7,8 @@ export enum AlbumGroup {
     Compilation = "compilation",
 }
 
+export type AlbumGroupType = `${AlbumGroup}`;
+
 export const ALBUM_TRACKS_OFFSET = 50;
 
 export const getAlbum = async (

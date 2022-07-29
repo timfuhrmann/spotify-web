@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { ListEntries } from "../shared/ListEntries/ListEntries";
-import { useArtist } from "./ArtistProvider";
 import { content } from "@css/helper/content";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
+import { AlbumGroup } from "@lib/api/album";
 
 const AppearsWrapper = styled.div`
     ${content()};
@@ -16,7 +16,7 @@ interface ArtistAppearsProps {
 }
 
 export const ArtistAppears: React.FC<ArtistAppearsProps> = ({ id, name }) => {
-    const { data: artistAppearsOn } = useArtistsAlbumsQuery(id, ["appears_on"]);
+    const { data: artistAppearsOn } = useArtistsAlbumsQuery(id, [AlbumGroup.AppearsOn]);
 
     return (
         <AppearsWrapper>

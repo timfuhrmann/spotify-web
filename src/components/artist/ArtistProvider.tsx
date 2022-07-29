@@ -11,8 +11,9 @@ import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
 import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
-import { AlbumGroup, followArtist, unfollowArtist } from "@lib/api/artist";
+import { followArtist, unfollowArtist } from "@lib/api/artist";
 import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
+import { AlbumGroup, AlbumGroupType } from "@lib/api/album";
 
 interface ArtistContextData {
     isFollowing: boolean;
@@ -54,7 +55,7 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     const hasMorePopularTracks = popularTracksLength < topTracks.length;
     const hasLessPopularTracks = popularTracksLength > Math.min(5, topTracks.length);
 
-    const albumGroups = useMemo<AlbumGroup[] | null>(() => {
+    const albumGroups = useMemo<AlbumGroupType[] | null>(() => {
         if (!artistAlbums) {
             return null;
         }
@@ -66,7 +67,7 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
 
             acc.push(album.album_group);
             return acc;
-        }, [] as AlbumGroup[]);
+        }, [] as AlbumGroupType[]);
     }, [artistAlbums]);
 
     const albums = useMemo<Record<string, SpotifyApi.AlbumObjectSimplified[]> | null>(() => {
