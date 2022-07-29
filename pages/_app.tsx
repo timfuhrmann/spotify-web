@@ -9,7 +9,6 @@ import { NextPageWithLayout } from "@type/page";
 import { SessionProvider } from "@lib/context/session/SessionProvider";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "@lib/api";
-import { NavigationProvider } from "@lib/context/navigation/NavigationProvider";
 
 interface AppPropsWithLayout extends AppProps {
     Component: NextPageWithLayout;
@@ -22,10 +21,8 @@ const App: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
         <ThemeProvider theme={theme}>
             <QueryClientProvider client={queryClient}>
                 <SessionProvider>
-                    <NavigationProvider>
-                        <GlobalStyle />
-                        {getLayout(<Component {...pageProps} />)}
-                    </NavigationProvider>
+                    <GlobalStyle />
+                    {getLayout(<Component {...pageProps} />)}
                 </SessionProvider>
             </QueryClientProvider>
         </ThemeProvider>
