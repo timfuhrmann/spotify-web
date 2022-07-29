@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ListEntries } from "../shared/ListEntries/ListEntries";
 import { useArtist } from "./ArtistProvider";
 import { content } from "@css/helper/content";
+import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
 
 const AppearsWrapper = styled.div`
     ${content()};
@@ -15,13 +16,13 @@ interface ArtistAppearsProps {
 }
 
 export const ArtistAppears: React.FC<ArtistAppearsProps> = ({ id, name }) => {
-    const { appearsOn } = useArtist();
+    const { data: artistAppearsOn } = useArtistsAlbumsQuery(id, ["appears_on"]);
 
     return (
         <AppearsWrapper>
             <ListEntries
                 headline={`Featuring ${name}`}
-                entries={appearsOn}
+                entries={artistAppearsOn ? artistAppearsOn.items : null}
                 type="album"
                 link={`/artist/${id}/discography/appears_on`}
             />

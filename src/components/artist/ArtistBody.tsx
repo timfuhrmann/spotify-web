@@ -46,7 +46,7 @@ export const ArtistBody: React.FC<ArtistBodyProps> = ({ id, name, tracks }) => {
                 </BodyPopular>
                 <ArtistDiscography id={id} />
                 <ArtistAppears id={id} name={name} />
-                <ArtistRelated />
+                <ArtistRelated id={id} />
             </BodyGrid>
         </ListBody>
     );

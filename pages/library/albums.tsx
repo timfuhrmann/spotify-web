@@ -20,7 +20,7 @@ const Albums: NextPageWithLayout = () => {
         }
 
         return savedAlbums.items.map(item => item.album);
-    }, []);
+    }, [savedAlbums]);
 
     return (
         <AlbumsWrapper>

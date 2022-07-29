@@ -11,7 +11,6 @@ import { useSession } from "@lib/context/session";
 import { removeTracks, saveTracks } from "@lib/api/track";
 import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
-import { useArtistsRelatedArtistsQuery } from "@lib/api/artist/hook/useArtistsRelatedArtistsQuery";
 import { AlbumGroup, followArtist, unfollowArtist } from "@lib/api/artist";
 import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
 
@@ -19,8 +18,6 @@ interface ArtistContextData {
     isFollowing: boolean;
     savedTracks: boolean[];
     albums: Record<string, SpotifyApi.AlbumObjectSimplified[]> | null;
-    appearsOn: SpotifyApi.AlbumObjectSimplified[] | null;
-    relatedArtists: SpotifyApi.ArtistObjectFull[] | null;
     popularTracksLength: number;
     hasMorePopularTracks: boolean;
     hasLessPopularTracks: boolean;
@@ -53,8 +50,6 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         removeTrackFromCache,
     } = useSavedTracksContainsQuery(topTracks.map(track => track.id));
     const { data: artistAlbums } = useArtistsAlbumsQuery(artist.id);
-    const { data: artistAppearsOn } = useArtistsAlbumsQuery(artist.id, ["appears_on"]);
-    const { data: artistRelatedArtists } = useArtistsRelatedArtistsQuery(artist.id);
 
     const hasMorePopularTracks = popularTracksLength < topTracks.length;
     const hasLessPopularTracks = popularTracksLength > Math.min(5, topTracks.length);
@@ -141,8 +136,6 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
                 isFollowing: !!followedArtists && followedArtists[0],
                 savedTracks,
                 albums,
-                appearsOn: artistAppearsOn ? artistAppearsOn.items : null,
-                relatedArtists: artistRelatedArtists ? artistRelatedArtists.artists : null,
                 popularTracksLength,
                 hasMorePopularTracks,
                 hasLessPopularTracks,
