@@ -59,11 +59,6 @@ export default async function handler(req: NextRequest) {
             url.pathname = "/";
             return NextResponse.rewrite(url);
         }
-
-        if (url.pathname === "/library") {
-            url.pathname = "/library/playlists";
-            return NextResponse.redirect(url);
-        }
     }
 
     return res;

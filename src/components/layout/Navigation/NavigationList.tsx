@@ -80,7 +80,7 @@ export const NavigationList: React.FC = () => {
                     </Link>
                 </ListItem>
                 <ListItem>
-                    <Link href="/library" label="Your Library">
+                    <Link href="/library/playlists" label="Your Library">
                         <ListAnchor $active={asPath.startsWith("/library")}>
                             <Library width="24" active={asPath.startsWith("/library")} />
                             Your Library
