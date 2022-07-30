@@ -5,12 +5,15 @@ import { hover, transition } from "@css/helper";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 
 const TagWrapper = styled.button<{ $selected?: boolean }>`
+    display: inline-flex;
+    align-items: center;
     height: 3.2rem;
     padding: 0 1.2rem;
     border-radius: 3rem;
     color: ${p => (p.$selected ? p.theme.gray50 : p.theme.gray900)};
     background-color: ${p => (p.$selected ? p.theme.gray900 : p.theme.gray75)};
     ${text("textSm")};
+    line-height: 1;
     text-transform: capitalize;
     ${transition("background-color", "0.1s")};
 

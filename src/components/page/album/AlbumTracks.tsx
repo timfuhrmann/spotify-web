@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Track } from "../shared/Track/Track";
+import { Track } from "../../shared/Track/Track";
 import { useAlbum } from "./AlbumProvider";
 import { text } from "@css/helper/typography";
 import { TrackGrid } from "@css/helper/track";
-import { ListInfiniteTracks } from "../shared/ListInfiniteTracks/ListInfiniteTracks";
+import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
 import { Disc } from "@icon/Disc";
 
 const TracksWrapper = styled.div``;
@@ -75,7 +75,7 @@ export const AlbumTracks: React.FC = () => {
                                         explicit={explicit}
                                         duration_ms={duration_ms}
                                         artists={artists}
-                                        isSaved={savedTracks[index]}
+                                        isSaved={savedTracks[index] || false}
                                         onSaveTrack={handleSaveTrack}
                                         onRemoveTrack={handleRemoveTrack}
                                     />

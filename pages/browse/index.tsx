@@ -1,9 +1,9 @@
+import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { useMultipleCategoriesQuery } from "@lib/api/browse/hook/useMultipleCategoriesQuery";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
-import styled from "styled-components";
 import { useMemo } from "react";
 import { EntryProps } from "../../src/components/shared/Entry";
 
@@ -36,7 +36,7 @@ const Browse: NextPageWithLayout = () => {
 
 // eslint-disable-next-line react/display-name
 Browse.getLayout = page => {
-    return <PrimaryLayout>{page}</PrimaryLayout>;
+    return <PrimaryLayout hasSearch>{page}</PrimaryLayout>;
 };
 
 export default Browse;

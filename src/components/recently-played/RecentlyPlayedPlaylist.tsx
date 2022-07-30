@@ -8,6 +8,7 @@ import { Link } from "@lib/link";
 import { Skeleton } from "@lib/skeleton";
 import { FastAverageColor } from "fast-average-color";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
+import { useDominantColor } from "@lib/hook/useDominantColor";
 
 const PlaylistPlay = styled.div`
     position: relative;
@@ -86,33 +87,20 @@ export const RecentlyPlayedPlaylist: React.FC<RecentlyPlayedPlaylistProps> & Par
     name,
     images,
 }) => {
-    const dominantColorRef = useRef<string | null>(null);
-
-    const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-        if (!e.target) {
-            return;
-        }
-
-        const img = e.target as HTMLImageElement;
-        img.setAttribute("crossorigin", "");
-
-        const fac = new FastAverageColor();
-        const color = fac.getColor(img);
-        dominantColorRef.current = color.hex;
-    };
+    const { handleImageLoad, setDominantColor, removeDominantColor } = useDominantColor(true);
 
     const handleMouseEnter = () => {
-        document.body.style.setProperty("--dominant-color", dominantColorRef.current);
+        setDominantColor();
     };
 
     const handleMouseLeave = () => {
-        document.body.style.removeProperty("--dominant-color");
+        removeDominantColor();
     };
 
     return (
         <PlaylistWrapper onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <PlaylistCover>
-                <SpotifyImage images={images} onLoad={handleLoad} />
+                <SpotifyImage images={images} onLoad={handleImageLoad} />
             </PlaylistCover>
             <PlaylistBody>
                 <PlaylistName>{name}</PlaylistName>

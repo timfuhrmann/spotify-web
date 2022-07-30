@@ -1,8 +1,9 @@
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "react-query";
-import { getSavedTracksContains } from "@lib/api/track";
+import { getSavedTracksContains, removeTracks, saveTracks } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
+import { useCallback } from "react";
 
 export const useSavedTracksContainsQuery = (ids: string[]) => {
     const { access_token } = useSession();
@@ -10,7 +11,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
     const queryKey = ["saved-tracks-contains", ids.join(","), access_token];
 
     const data = useQuery(queryKey, () => getSavedTracksContains(access_token!, ids), {
-        enabled: !!access_token,
+        enabled: !!access_token && !!ids.length,
     });
 
     const writeToCache = (index: number, value: boolean) => {
@@ -34,5 +35,29 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
         return writeToCache(index, false);
     };
 
-    return { ...data, saveTrackToCache, removeTrackFromCache };
+    const handleSaveTrack = useCallback(
+        (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            saveTrackToCache(index);
+            saveTracks(access_token, [id]);
+        },
+        [access_token, ids]
+    );
+
+    const handleRemoveTrack = useCallback(
+        (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            removeTrackFromCache(index);
+            removeTracks(access_token, [id]);
+        },
+        [access_token, ids]
+    );
+
+    return { ...data, saveTrackToCache, removeTrackFromCache, handleSaveTrack, handleRemoveTrack };
 };

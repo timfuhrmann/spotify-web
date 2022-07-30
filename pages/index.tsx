@@ -25,7 +25,7 @@ const HomeBackground = styled.div`
     height: 35rem;
     background-color: var(--dominant-color, ${p => p.theme.gray600});
     background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0%, ${p => p.theme.gray50} 100%);
-    ${transition("background-color", "1s")};
+    ${transition("background-color", "0.5s")};
 `;
 
 const HomeHeadline = styled.h1`

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ListEntries } from "../shared/ListEntries/ListEntries";
+import { ListEntries } from "../../shared/ListEntries/ListEntries";
 import { content } from "@css/helper/content";
 import { useArtistsRelatedArtistsQuery } from "@lib/api/artist/hook/useArtistsRelatedArtistsQuery";
 

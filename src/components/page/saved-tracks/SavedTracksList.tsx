@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Track } from "../shared/Track/Track";
+import { Track } from "../../shared/Track/Track";
 import { useSavedTracks } from "./SavedTracksProvider";
-import { ListInfiniteTracks } from "../shared/ListInfiniteTracks/ListInfiniteTracks";
+import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
 
 const TracksWrapper = styled.div``;
 

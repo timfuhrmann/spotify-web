@@ -29,6 +29,10 @@ export const getIdFromQuery = ({ id }: ParsedUrlQuery): string | undefined => {
     return id;
 };
 
+export const objectKeys = <Obj>(obj: Obj): (keyof Obj)[] => {
+    return Object.keys(obj) as (keyof Obj)[];
+};
+
 export const createArray = (length: number) => {
     const arr = [];
 
@@ -37,4 +41,8 @@ export const createArray = (length: number) => {
     }
 
     return arr;
+};
+
+export const pathnameFromAsPath = (asPath: string) => {
+    return asPath.split(/[?#]/)[0] || asPath;
 };

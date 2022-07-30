@@ -5,6 +5,8 @@ import { text } from "@css/helper/typography";
 import { SpotifyImage } from "@lib/image";
 import { HeaderSpacer } from "../../layout/HeaderSpacer";
 import { content } from "@css/helper/content";
+import { FastAverageColor } from "fast-average-color";
+import { useDominantColor } from "@lib/hook/useDominantColor";
 
 const HeadWrapper = styled.div`
     position: relative;
@@ -83,12 +85,20 @@ export const ListHead: React.FC<PlaylistHeadProps> = ({
     description,
     renderFooter,
 }) => {
+    const { handleImageLoad } = useDominantColor();
+
     return (
         <HeadWrapper>
             <HeaderSpacer />
             <HeadInner>
                 <HeadCover>
-                    <SpotifyImage images={images} alt={name} sizes="300px" priority />
+                    <SpotifyImage
+                        images={images}
+                        alt={name}
+                        sizes="300px"
+                        onLoad={handleImageLoad}
+                        priority
+                    />
                 </HeadCover>
                 <HeadGroup>
                     <HeadOverline>{overline}</HeadOverline>

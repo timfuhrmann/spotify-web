@@ -1,6 +1,6 @@
 import React from "react";
 import { PlaylistProvider } from "./PlaylistProvider";
-import { ListHead } from "../shared/ListHead/ListHead";
+import { ListHead } from "../../shared/ListHead/ListHead";
 import { PlaylistBody } from "./PlaylistBody";
 import { PlaylistHeadFooter } from "./PlaylistHeadFooter";
 

@@ -20,6 +20,7 @@ const UserButton = styled.button`
     padding: 0.4rem 1.2rem 0.4rem 0.4rem;
     border-radius: 2rem;
     ${text("textSm", "bold")}
+    line-height: 1;
 `;
 
 const UserAvatar = styled.div`

@@ -22,15 +22,19 @@ const ListGroup = styled.ul`
 
 const ListItem = styled.li``;
 
-const ListAnchor = styled.a<{ $active: boolean }>`
+const ListAnchor = styled.a`
     display: flex;
     align-items: center;
     gap: 1.6rem;
     padding: 0.8rem 2.4rem;
     ${text("textSm", "bold")};
     line-height: 1;
-    color: ${p => (p.$active ? p.theme.gray900 : p.theme.gray700)};
+    color: ${p => p.theme.gray700};
     ${transition("color", "0.1s")};
+
+    &[aria-current="page"] {
+        color: ${p => p.theme.gray900};
+    }
 
     ${p => hover`
         color: ${p.theme.gray900};
@@ -65,7 +69,7 @@ export const NavigationList: React.FC = () => {
             <ListGroup>
                 <ListItem>
                     <Link href="/" label="Home">
-                        <ListAnchor $active={asPath === "/"}>
+                        <ListAnchor aria-current={asPath === "/" && "page"}>
                             <Home width="24" active={asPath === "/"} />
                             Home
                         </ListAnchor>
@@ -73,7 +77,7 @@ export const NavigationList: React.FC = () => {
                 </ListItem>
                 <ListItem>
                     <Link href="/browse" label="Search">
-                        <ListAnchor $active={asPath.startsWith("/browse")}>
+                        <ListAnchor aria-current={asPath.startsWith("/browse") && "page"}>
                             <Search width="24" active={asPath.startsWith("/browse")} />
                             Search
                         </ListAnchor>
@@ -81,7 +85,7 @@ export const NavigationList: React.FC = () => {
                 </ListItem>
                 <ListItem>
                     <Link href="/library/playlists" label="Your Library">
-                        <ListAnchor $active={asPath.startsWith("/library")}>
+                        <ListAnchor aria-current={asPath.startsWith("/library") && "page"}>
                             <Library width="24" active={asPath.startsWith("/library")} />
                             Your Library
                         </ListAnchor>
@@ -90,7 +94,7 @@ export const NavigationList: React.FC = () => {
             </ListGroup>
             <ListGroup>
                 <ListItem>
-                    <ListAnchor as="div" $active={asPath === "/gdfd"}>
+                    <ListAnchor as="div" aria-current={asPath === "/gdfd" && "page"}>
                         <ListPlus>
                             <Plus width="12" />
                         </ListPlus>
@@ -99,7 +103,7 @@ export const NavigationList: React.FC = () => {
                 </ListItem>
                 <ListItem>
                     <Link href="/library/tracks" label="Liked Songs">
-                        <ListAnchor $active={asPath.includes("/library/tracks")}>
+                        <ListAnchor aria-current={asPath.includes("/library/tracks") && "page"}>
                             <ListHeart>
                                 <Heart width="12" />
                             </ListHeart>

@@ -1,6 +1,6 @@
 import React from "react";
-import { ListBody } from "../shared/ListBody";
-import { ListControls } from "../shared/ListControls/ListControls";
+import { ListBody } from "../../shared/ListBody";
+import { ListControls } from "../../shared/ListControls/ListControls";
 import { AlbumTracks } from "./AlbumTracks";
 import { useAlbum } from "./AlbumProvider";
 

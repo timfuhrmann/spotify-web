@@ -1,10 +1,12 @@
 import React, { PropsWithChildren } from "react";
 import { default as NextLink, LinkProps } from "next/link";
 import { useRouter } from "next/router";
+import { UrlObject } from "url";
+import { pathnameFromAsPath } from "@lib/util";
 
 interface LabeledLink extends Omit<LinkProps, "href" | "passHref"> {
     label: string;
-    href: string | URL;
+    href: string | UrlObject | undefined;
     title?: string;
     className?: string;
 }
@@ -17,8 +19,6 @@ export const Link: React.FC<PropsWithChildren<LabeledLink>> = ({
     className,
     ...linkProps
 }) => {
-    const { asPath } = useRouter();
-
     if ((!children || !React.isValidElement(children)) && !label) {
         return null;
     }
@@ -28,7 +28,6 @@ export const Link: React.FC<PropsWithChildren<LabeledLink>> = ({
     }
 
     const anchorProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
-        "aria-current": asPath === href ? "page" : undefined,
         "aria-label": label,
         title,
         className,

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { usePlaylist } from "./PlaylistProvider";
-import { Track } from "../shared/Track/Track";
-import { ListInfiniteTracks } from "../shared/ListInfiniteTracks/ListInfiniteTracks";
+import { Track } from "../../shared/Track/Track";
+import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
 
 export const PlaylistTracks: React.FC = () => {
     const {

@@ -2,8 +2,7 @@ import React from "react";
 import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { NextPageWithLayout } from "@type/page";
 import { useRouter } from "next/router";
-import { Artist as ArtistComponent } from "../../../src/components/artist/Artist";
-import { useDominantColor } from "@lib/hook/useDominantColor";
+import { Artist as ArtistComponent } from "../../../src/components/page/artist/Artist";
 import { useArtistQuery } from "@lib/api/artist/hook/useArtistQuery";
 import { getIdFromQuery } from "@lib/util";
 import { useArtistsTopTracksQuery } from "@lib/api/artist/hook/useArtistsTopTracksQuery";
@@ -15,8 +14,6 @@ const Artist: NextPageWithLayout = () => {
 
     const { data: artist } = useArtistQuery(id);
     const { data: artistTopTracks } = useArtistsTopTracksQuery(id);
-
-    useDominantColor(artist ? artist.images : null);
 
     if (!artist || !artistTopTracks) {
         return null;

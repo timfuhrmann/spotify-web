@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { TrackGrid } from "@css/helper/track";
-import { Track } from "../shared/Track/Track";
+import { Track } from "../../shared/Track/Track";
 import { useArtist } from "./ArtistProvider";
 import { text } from "@css/helper/typography";
 import { content } from "@css/helper/content";
-import { SecondaryButton } from "../shared/SecondaryButton";
+import { SecondaryButton } from "../../shared/SecondaryButton";
 
 const PopularWrapper = styled.div`
     ${content()};
@@ -65,7 +65,7 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
                             album={album}
                             explicit={explicit}
                             duration_ms={duration_ms}
-                            isSaved={savedTracks[index]}
+                            isSaved={savedTracks[index] || false}
                             onSaveTrack={handleSaveTrack}
                             onRemoveTrack={handleRemoveTrack}
                             hideAlbum

@@ -37,7 +37,9 @@ export const GridEntries: React.FC<GridEntriesProps> = ({ headline, entries, typ
             )}
             <EntriesGrid>
                 {entries ? (
-                    entries.map(entry => <Entry key={entry.id} {...entry} />)
+                    entries.map(({ id, type, name, images }) => (
+                        <Entry key={id} id={id} type={type} name={name} images={images} />
+                    ))
                 ) : (
                     <React.Fragment>
                         <SkeletonOverlay />

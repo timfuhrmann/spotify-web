@@ -1,12 +1,10 @@
 import React from "react";
 import { SavedTracksProvider } from "./SavedTracksProvider";
-import { ListHead } from "../shared/ListHead/ListHead";
+import { ListHead } from "../../shared/ListHead/ListHead";
 import { SavedTracksHeadFooter } from "./SavedTracksHeadFooter";
-import { useDominantColor } from "@lib/hook/useDominantColor";
-import { ListBody } from "../shared/ListBody";
-import { ListControls } from "../shared/ListControls/ListControls";
+import { ListBody } from "../../shared/ListBody";
+import { ListControls } from "../../shared/ListControls/ListControls";
 import { SavedTracksList } from "./SavedTracksList";
-import styled from "styled-components";
 
 const images = [
     {
@@ -31,8 +29,6 @@ export interface SavedTracksProps {
 }
 
 export const SavedTracks: React.FC<SavedTracksProps> = props => {
-    useDominantColor(images);
-
     return (
         <SavedTracksProvider {...props}>
             <ListHead

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { withOverlayScroll } from "@lib/context/overlay-scroll/OverlayScrollProvider";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
+import { pathnameFromAsPath } from "@lib/util";
 
 const LayoutGrid = styled.div`
     display: grid;
@@ -46,13 +47,16 @@ const LayoutPlaying = styled.div`
 `;
 
 interface PrimaryLayoutProps {
+    hasSearch?: boolean;
     hasLibraryNavigation?: boolean;
 }
 
 export const PrimaryLayout = withOverlayScroll<PropsWithChildren<PrimaryLayoutProps>>(
-    ({ hasLibraryNavigation, children }) => {
+    ({ hasLibraryNavigation, hasSearch, children }) => {
         const { asPath } = useRouter();
         const { initOverlayScrollbars, onScroll } = useOverlayScroll();
+
+        const pathname = pathnameFromAsPath(asPath);
 
         return (
             <LayoutGrid>
@@ -60,12 +64,12 @@ export const PrimaryLayout = withOverlayScroll<PropsWithChildren<PrimaryLayoutPr
                     <Navigation />
                 </LayoutNavigation>
                 <LayoutHeader>
-                    <Header hasLibraryNavigation={hasLibraryNavigation} />
+                    <Header hasSearch={hasSearch} hasLibraryNavigation={hasLibraryNavigation} />
                 </LayoutHeader>
                 <LayoutMain>
                     <OverlayScrollbarsComponent
+                        key={pathname}
                         ref={initOverlayScrollbars}
-                        key={asPath}
                         style={{ height: "100%" }}
                         className="custom-scrollbar main-scrollbar"
                         options={{ callbacks: { onScroll } }}>

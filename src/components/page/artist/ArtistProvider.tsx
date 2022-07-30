@@ -1,19 +1,11 @@
-import React, {
-    createContext,
-    PropsWithChildren,
-    useCallback,
-    useContext,
-    useMemo,
-    useState,
-} from "react";
+import React, { createContext, PropsWithChildren, useContext, useMemo, useState } from "react";
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
-import { removeTracks, saveTracks } from "@lib/api/track";
 import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
 import { followArtist, unfollowArtist } from "@lib/api/artist";
 import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
-import { AlbumGroup, AlbumGroupType } from "@lib/api/album";
+import { AlbumGroupType } from "@lib/api/album";
 
 interface ArtistContextData {
     isFollowing: boolean;
@@ -47,8 +39,8 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     } = useFollowedArtistsContains([artist.id]);
     const {
         data: savedTracks = [],
-        saveTrackToCache,
-        removeTrackFromCache,
+        handleSaveTrack,
+        handleRemoveTrack,
     } = useSavedTracksContainsQuery(topTracks.map(track => track.id));
     const { data: artistAlbums } = useArtistsAlbumsQuery(artist.id);
 
@@ -80,30 +72,6 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
             return acc;
         }, {} as Record<string, SpotifyApi.AlbumObjectSimplified[]>);
     }, [artistAlbums, albumGroups]);
-
-    const handleSaveTrack = useCallback(
-        async (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            saveTrackToCache(index);
-            return saveTracks(access_token, [id]);
-        },
-        [access_token]
-    );
-
-    const handleRemoveTrack = useCallback(
-        async (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            removeTrackFromCache(index);
-            return removeTracks(access_token, [id]);
-        },
-        [access_token]
-    );
 
     const showMorePopularTracks = () => {
         setPopularTracksLength(topTracks.length);

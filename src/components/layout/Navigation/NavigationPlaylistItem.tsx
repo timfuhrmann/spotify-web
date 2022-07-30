@@ -1,16 +1,20 @@
-import React, { useMemo } from "react";
+import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import { text } from "@css/helper/typography";
 import { hover } from "@css/helper";
 import { Skeleton } from "@lib/skeleton";
 
-const ItemWrapper = styled.a<{ $active?: boolean }>`
+const ItemWrapper = styled.a`
     display: block;
     padding: 0.6rem 2.4rem;
-    color: ${p => (p.$active ? p.theme.gray900 : p.theme.gray700)};
+    color: ${p => p.theme.gray700};
     ${text("textSm")};
+
+    &[aria-current="page"] {
+        color: ${p => p.theme.gray900};
+    }
 
     ${p => hover`
         color: ${p.theme.gray900};
@@ -38,7 +42,9 @@ export const NavigationPlaylistItem: React.FC<NavigationPlaylistItemProps> & Par
 
     return (
         <Link href={"/playlist/" + id} passHref>
-            <ItemWrapper $active={asPath.includes("/playlist/" + id)}>{name}</ItemWrapper>
+            <ItemWrapper aria-current={asPath.includes("/playlist/" + id) && "page"}>
+                {name}
+            </ItemWrapper>
         </Link>
     );
 };

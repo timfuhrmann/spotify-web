@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
-import { SavedTracks } from "../../src/components/saved-tracks/SavedTracks";
+import { SavedTracks } from "../../src/components/page/saved-tracks/SavedTracks";
 import { useSavedTracksQuery } from "@lib/api/track/hook/useSavedTracksQuery";
 
 const Tracks: NextPageWithLayout = () => {

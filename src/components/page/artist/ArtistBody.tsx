@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { ListControls } from "../shared/ListControls/ListControls";
+import { ListControls } from "../../shared/ListControls/ListControls";
 import { ArtistPopular } from "./ArtistPopular";
-import { ListBody } from "../shared/ListBody";
+import { ListBody } from "../../shared/ListBody";
 import { ArtistDiscography } from "./ArtistDiscography";
 import { ArtistAppears } from "./ArtistAppears";
 import { ArtistRelated } from "./ArtistRelated";

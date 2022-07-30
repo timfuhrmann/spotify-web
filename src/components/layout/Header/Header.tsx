@@ -5,6 +5,7 @@ import { fillParent, transition } from "@css/helper";
 import { HeaderUser } from "./HeaderUser";
 import { HeaderLibraryNavigation } from "./HeaderLibraryNavigation";
 import { useNavigation } from "@lib/hook/useNavigation";
+import { HeaderSearch } from "./HeaderSearch";
 
 const HeaderWrapper = styled.header`
     position: relative;
@@ -16,14 +17,13 @@ const HeaderWrapper = styled.header`
         z-index: -1;
         background-color: var(--dominant-color, ${p => p.theme.gray50});
         opacity: var(--scroll, 0);
-        ${transition("background-color", "1s")};
+        ${transition("background-color", "0.5s")};
     }
 `;
 
 const HeaderInner = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 2.4rem;
     height: 100%;
     max-width: ${p => p.theme.contentWidth.intrinsic};
@@ -34,6 +34,7 @@ const HeaderGroup = styled.div`
     display: flex;
     align-items: center;
     gap: 4.8rem;
+    flex: 1 1 0;
 `;
 
 const HeaderControls = styled.div`
@@ -64,10 +65,11 @@ const HeaderBack = styled(HeaderForth)`
 `;
 
 interface HeaderProps {
+    hasSearch?: boolean;
     hasLibraryNavigation?: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ hasLibraryNavigation }) => {
+export const Header: React.FC<HeaderProps> = ({ hasSearch, hasLibraryNavigation }) => {
     const { hasBack, hasForth, navigateBack, navigateForth } = useNavigation();
 
     return (
@@ -82,6 +84,7 @@ export const Header: React.FC<HeaderProps> = ({ hasLibraryNavigation }) => {
                             <HeaderForth />
                         </HeaderButton>
                     </HeaderControls>
+                    {hasSearch && <HeaderSearch />}
                     {hasLibraryNavigation && <HeaderLibraryNavigation />}
                 </HeaderGroup>
                 <HeaderUser />

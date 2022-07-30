@@ -1,50 +1,48 @@
-import { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FastAverageColor } from "fast-average-color";
-import { getImageFromImageObject } from "@lib/image";
 
-export const useDominantColor = (images?: SpotifyApi.ImageObject[] | null) => {
+export const useDominantColor = (preventAuto?: boolean) => {
+    const dominantColorRef = useRef<string | null>(null);
+
     useEffect(() => {
-        if (!images) {
-            removeDominantColor();
+        return () => removeDominantColor();
+    }, []);
+
+    const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+        if (!e.target) {
             return;
         }
 
-        const img = new Image();
-        const src = getImageFromImageObject(images, images.length - 1);
-
-        if (!src) {
-            return;
-        }
-
-        img.src = src;
+        const img = e.target as HTMLImageElement;
         img.setAttribute("crossorigin", "");
 
         const fac = new FastAverageColor();
+        const color = fac.getColor(img);
 
-        const onLoad = () => {
-            const color = fac.getColor(img);
+        if (color.hex === "#000000") {
+            return;
+        }
 
-            if (color.hex === "#000000") {
-                removeDominantColor();
-                return;
-            }
+        dominantColorRef.current = color.hex;
 
-            setDominantColor(color.hex);
-        };
+        if (!preventAuto) {
+            setDominantColor();
+        }
 
-        img.addEventListener("load", onLoad);
+        fac.destroy();
+    };
 
-        return () => {
-            fac.destroy();
-            img.removeEventListener("load", onLoad);
-        };
-    }, [images]);
-
-    const setDominantColor = (color: string) => {
-        document.body.style.setProperty("--dominant-color", color);
+    const setDominantColor = () => {
+        document.body.style.setProperty("--dominant-color", dominantColorRef.current);
     };
 
     const removeDominantColor = () => {
         document.body.style.removeProperty("--dominant-color");
+    };
+
+    return {
+        handleImageLoad,
+        setDominantColor,
+        removeDominantColor,
     };
 };
