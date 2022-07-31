@@ -1,48 +1,68 @@
+import debounce from "lodash.debounce";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { pathnameFromAsPath } from "@lib/util";
+import { searchByTypeThunk } from "@lib/redux/reducer/search";
+import { useSession } from "@lib/context/session";
+import { useAppDispatch } from "@lib/redux";
 
 export const useSearchInput = () => {
-    const { query: routerQuery, asPath, replace, prefetch, isReady } = useRouter();
-    const [value, setValue] = useState<string>("");
+    const dispatch = useAppDispatch();
+    const { access_token } = useSession();
+    const { query: routerQuery, asPath, replace, isReady } = useRouter();
+    const [, startTransition] = useTransition();
+    const [value, setValue] = useState("");
 
     const { query } = routerQuery;
     const pathname = pathnameFromAsPath(asPath);
 
     useEffect(() => {
-        if (!isReady || !query || typeof query !== "string" || value) {
+        if (!access_token || !query || typeof query !== "string") {
             return;
         }
 
-        setValue(query);
-    }, [query, isReady]);
+        debouncedQuery(access_token, query);
+    }, [access_token, query]);
 
-    useEffect(() => {
+    const debouncedQuery = useCallback(
+        debounce((access_token: string, query: string) => {
+            // @ts-ignore
+            dispatch(searchByTypeThunk({ access_token, query }));
+        }, 75),
+        []
+    );
+
+    const handleInput = (input: string) => {
+        setValue(input);
+        startTransition(() => handleQuery(input));
+    };
+
+    const handleQuery = (input: string) => {
         if (!isReady) {
             return;
         }
 
-        if (!value && pathname !== "/browse") {
+        if (!input && pathname !== "/browse") {
             replace("/browse");
             return;
-        } else if (!value) {
+        } else if (!input) {
             return;
         }
 
         replace(
             {
                 pathname: pathname.includes("/search/") ? pathname : "/browse/search",
-                query: { query: value },
+                query: { query: input },
             },
             undefined,
             {
                 shallow: pathname.includes("/search/"),
             }
         );
-    }, [value, isReady]);
+    };
 
     return {
         value,
-        setValue,
+        handleInput,
     };
 };

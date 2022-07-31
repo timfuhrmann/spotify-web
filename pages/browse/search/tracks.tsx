@@ -2,17 +2,16 @@ import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { HeaderSpacer } from "../../../src/components/layout/HeaderSpacer";
-import { SearchProvider } from "@lib/context/search/SearchProvider";
-import { useSearch } from "@lib/context/search";
-import { GridEntries } from "../../../src/components/shared/GridEntries";
 import { SearchNavigation } from "../../../src/components/search/search-navigation/SearchNavigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@lib/redux";
 
 const TracksWrapper = styled.div`
     padding: 2.4rem 0;
 `;
 
 const Tracks: NextPageWithLayout = () => {
-    const { tracks } = useSearch();
+    const tracks = useSelector((state: RootState) => state.search.tracks);
 
     return <TracksWrapper></TracksWrapper>;
 };
@@ -21,11 +20,9 @@ const Tracks: NextPageWithLayout = () => {
 Tracks.getLayout = page => {
     return (
         <PrimaryLayout hasSearch>
-            <SearchProvider>
-                <HeaderSpacer />
-                <SearchNavigation />
-                {page}
-            </SearchProvider>
+            <HeaderSpacer />
+            <SearchNavigation />
+            {page}
         </PrimaryLayout>
     );
 };

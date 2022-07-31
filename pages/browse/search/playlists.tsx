@@ -4,15 +4,15 @@ import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { HeaderSpacer } from "../../../src/components/layout/HeaderSpacer";
 import { GridEntries } from "../../../src/components/shared/GridEntries";
 import { SearchNavigation } from "../../../src/components/search/search-navigation/SearchNavigation";
-import { useSearch } from "@lib/context/search";
-import { SearchProvider } from "@lib/context/search/SearchProvider";
+import { useSelector } from "react-redux";
+import { RootState } from "@lib/redux";
 
 const PlaylistsWrapper = styled.div`
     padding: 2.4rem 0;
 `;
 
 const Playlists: NextPageWithLayout = () => {
-    const { playlists } = useSearch();
+    const playlists = useSelector((state: RootState) => state.search.playlists);
 
     return (
         <PlaylistsWrapper>
@@ -29,11 +29,9 @@ const Playlists: NextPageWithLayout = () => {
 Playlists.getLayout = page => {
     return (
         <PrimaryLayout hasSearch>
-            <SearchProvider>
-                <HeaderSpacer />
-                <SearchNavigation />
-                {page}
-            </SearchProvider>
+            <HeaderSpacer />
+            <SearchNavigation />
+            {page}
         </PrimaryLayout>
     );
 };

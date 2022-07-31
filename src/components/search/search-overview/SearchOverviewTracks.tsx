@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Track } from "../../shared/Track/Track";
-import { useSearch } from "@lib/context/search";
 import { TrackGrid } from "@css/helper/track";
 import { useSearchOverview } from "./SearchOverviewProvider";
+import { useSelector } from "react-redux";
+import { RootState } from "@lib/redux";
 
 const TracksList = styled.div`
     ${TrackGrid} {
@@ -12,7 +13,7 @@ const TracksList = styled.div`
 `;
 
 export const SearchOverviewTracks: React.FC = () => {
-    const { tracks } = useSearch();
+    const tracks = useSelector((state: RootState) => state.search.tracks);
     const { savedTracks, handleSaveTrack, handleRemoveTrack } = useSearchOverview();
 
     if (!tracks) {

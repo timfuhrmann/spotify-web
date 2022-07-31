@@ -49,7 +49,7 @@ const SearchInput = styled.input`
 
 export const HeaderSearch: React.FC = () => {
     const { prefetch } = useRouter();
-    const { value, setValue } = useSearchInput();
+    const { value, handleInput } = useSearchInput();
 
     return (
         <SearchWrapper>
@@ -57,15 +57,19 @@ export const HeaderSearch: React.FC = () => {
                 <SearchIcon aria-hidden />
                 <SearchInput
                     type="text"
+                    name="search"
                     value={value}
                     autoCorrect="off"
                     autoCapitalize="off"
                     spellCheck="false"
                     placeholder="Artists, Songs or Albums"
-                    onInput={e => setValue((e.target as HTMLInputElement).value)}
+                    onInput={e => handleInput((e.target as HTMLInputElement).value)}
                     onFocus={() => prefetch("/browse/search")}
                 />
-                <SearchReset type="button" aria-label="Reset search" onClick={() => setValue("")}>
+                <SearchReset
+                    type="button"
+                    aria-label="Reset search"
+                    onClick={() => handleInput("")}>
                     <X width="24" />
                 </SearchReset>
             </SearchFrame>

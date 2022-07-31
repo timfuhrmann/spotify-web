@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { HeaderSpacer } from "../../../src/components/layout/HeaderSpacer";
-import { SearchProvider } from "@lib/context/search/SearchProvider";
 import { SearchNavigation } from "../../../src/components/search/search-navigation/SearchNavigation";
 import { SearchOverview } from "../../../src/components/search/search-overview/SearchOverview";
 
@@ -22,11 +21,9 @@ const Search: NextPageWithLayout = () => {
 Search.getLayout = page => {
     return (
         <PrimaryLayout hasSearch>
-            <SearchProvider>
-                <HeaderSpacer />
-                <SearchNavigation />
-                {page}
-            </SearchProvider>
+            <HeaderSpacer />
+            <SearchNavigation />
+            {page}
         </PrimaryLayout>
     );
 };

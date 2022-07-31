@@ -12,7 +12,12 @@ export type BrowseTypeType = `${BrowseType}`;
 export const searchByType = async (
     access_token: string,
     query: string,
-    type: BrowseTypeType[],
+    type: BrowseTypeType[] = [
+        BrowseType.Track,
+        BrowseType.Album,
+        BrowseType.Playlist,
+        BrowseType.Artist,
+    ],
     limit: number = 49
 ): Promise<SpotifyApi.SearchResponse> => {
     return request(access_token, {

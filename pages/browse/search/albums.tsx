@@ -2,17 +2,17 @@ import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { HeaderSpacer } from "../../../src/components/layout/HeaderSpacer";
-import { useSearch } from "@lib/context/search";
 import { GridEntries } from "../../../src/components/shared/GridEntries";
 import { SearchNavigation } from "../../../src/components/search/search-navigation/SearchNavigation";
-import { SearchProvider } from "@lib/context/search/SearchProvider";
+import { useSelector } from "react-redux";
+import { RootState } from "@lib/redux";
 
 const AlbumsWrapper = styled.div`
     padding: 2.4rem 0;
 `;
 
 const Albums: NextPageWithLayout = () => {
-    const { albums } = useSearch();
+    const albums = useSelector((state: RootState) => state.search.albums);
 
     return (
         <AlbumsWrapper>
@@ -25,11 +25,9 @@ const Albums: NextPageWithLayout = () => {
 Albums.getLayout = page => {
     return (
         <PrimaryLayout hasSearch>
-            <SearchProvider>
-                <HeaderSpacer />
-                <SearchNavigation />
-                {page}
-            </SearchProvider>
+            <HeaderSpacer />
+            <SearchNavigation />
+            {page}
         </PrimaryLayout>
     );
 };

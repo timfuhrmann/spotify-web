@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { SearchOverviewProvider, useSearchOverview } from "./SearchOverviewProvider";
+import { SearchOverviewProvider } from "./SearchOverviewProvider";
 import { SearchOverviewTopResult } from "./SearchOverviewTopResult";
 import { content } from "@css/helper/content";
 import { SearchOverviewTracks } from "./SearchOverviewTracks";
-import { useSearch } from "@lib/context/search";
 import { ListEntries } from "../../shared/ListEntries/ListEntries";
 import { text } from "@css/helper/typography";
+import { useSelector } from "react-redux";
+import { RootState } from "@lib/redux";
 
 const OverviewWrapper = styled.div`
     display: flex;
@@ -35,14 +36,16 @@ const OverviewHeadline = styled.div`
 `;
 
 export const SearchOverview: React.FC = () => {
-    const { isLoading, topArtist, playlists, artists, albums, tracks } = useSearch();
+    const { topArtist, loading, tracks, artists, albums, playlists } = useSelector(
+        (state: RootState) => state.search
+    );
 
     return (
         <SearchOverviewProvider>
             <OverviewWrapper>
-                {(isLoading || topArtist || tracks) && (
+                {(loading || topArtist || tracks) && (
                     <OverviewHead>
-                        {(isLoading || topArtist) && (
+                        {(loading || topArtist) && (
                             <OverviewTopResult>
                                 <OverviewHeadline>Top result</OverviewHeadline>
                                 {topArtist ? (
@@ -56,7 +59,7 @@ export const SearchOverview: React.FC = () => {
                                 )}
                             </OverviewTopResult>
                         )}
-                        {(isLoading || tracks) && (
+                        {(loading || tracks) && (
                             <OverviewTracks>
                                 <OverviewHeadline>Songs</OverviewHeadline>
                                 <SearchOverviewTracks />
@@ -64,21 +67,21 @@ export const SearchOverview: React.FC = () => {
                         )}
                     </OverviewHead>
                 )}
-                {(isLoading || playlists) && (
+                {(loading || playlists) && (
                     <ListEntries
                         type="playlist"
                         headline="Playlists"
                         entries={playlists ? playlists.items : null}
                     />
                 )}
-                {(isLoading || artists) && (
+                {(loading || artists) && (
                     <ListEntries
                         type="artist"
                         headline="Artists"
                         entries={artists ? artists.items : null}
                     />
                 )}
-                {(isLoading || albums) && (
+                {(loading || albums) && (
                     <ListEntries
                         type="album"
                         headline="Albums"

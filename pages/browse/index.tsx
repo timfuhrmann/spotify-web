@@ -4,15 +4,22 @@ import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { useMultipleCategoriesQuery } from "@lib/api/browse/hook/useMultipleCategoriesQuery";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { EntryProps } from "../../src/components/shared/Entry";
+import { useAppDispatch } from "@lib/redux";
+import { resetSearch } from "@lib/redux/reducer/search";
 
 const BrowseWrapper = styled.div`
     padding-bottom: 2.4rem;
 `;
 
 const Browse: NextPageWithLayout = () => {
+    const dispatch = useAppDispatch();
     const { data } = useMultipleCategoriesQuery();
+
+    useEffect(() => {
+        dispatch(resetSearch());
+    }, []);
 
     const entries = useMemo<EntryProps[] | null>(() => {
         if (!data) {

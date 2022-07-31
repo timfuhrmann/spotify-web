@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { content } from "@css/helper/content";
 import { fillParent, transition } from "@css/helper";
 import { SearchNavigationItem } from "./SearchNavigationItem";
-import { useSearch } from "@lib/context/search";
+import { useSelector } from "react-redux";
+import { RootState } from "@lib/redux";
 
 //@todo organize z-indexes
 const NavigationWrapper = styled.nav`
@@ -29,13 +30,13 @@ const NavigationFrame = styled.div`
 `;
 
 export const SearchNavigation: React.FC = () => {
-    const { typesFound } = useSearch();
+    const types = useSelector((state: RootState) => state.search.types);
 
     return (
         <NavigationWrapper>
             <NavigationFrame>
                 <SearchNavigationItem label="All" />
-                {typesFound.map(type => (
+                {types.map(type => (
                     <SearchNavigationItem key={type} label={type} type={type} />
                 ))}
             </NavigationFrame>

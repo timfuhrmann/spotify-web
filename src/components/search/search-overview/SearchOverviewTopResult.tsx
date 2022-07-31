@@ -76,7 +76,7 @@ interface ParentComposition {
     Skeleton: typeof SearchOverviewTopResultSkeleton;
 }
 
-interface SearchOverviewTopResultProps {
+export interface SearchOverviewTopResultProps {
     id: string;
     name: string;
     images: SpotifyApi.ImageObject[];

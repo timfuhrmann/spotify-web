@@ -1,6 +1,7 @@
 import React, { createContext, PropsWithChildren, useContext } from "react";
-import { useSearch } from "@lib/context/search";
 import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
+import { useSelector } from "react-redux";
+import { RootState } from "@lib/redux";
 
 interface SearchOverviewContextData {
     savedTracks: boolean[];
@@ -13,7 +14,7 @@ const SearchOverviewContext = createContext<SearchOverviewContextData>(
 );
 
 export const SearchOverviewProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const { artists, playlists, tracks } = useSearch();
+    const tracks = useSelector((state: RootState) => state.search.tracks);
 
     const {
         data: savedTracks = [],
