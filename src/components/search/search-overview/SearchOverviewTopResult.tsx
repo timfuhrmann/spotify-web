@@ -94,7 +94,7 @@ export const SearchOverviewTopResult: React.FC<SearchOverviewTopResultProps> &
             <ResultPlay>
                 <PlayButton />
             </ResultPlay>
-            <Link label={name} href={"/artists/" + id}>
+            <Link label={name} href={"/artist/" + id}>
                 <ResultAnchor />
             </Link>
         </ResultFrame>

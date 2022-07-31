@@ -43,7 +43,7 @@ export const SearchNavigationItem: React.FC<SearchNavigationItemProps> = ({ labe
     const pathname = pathnameFromAsPath(asPath);
 
     return (
-        <Link label={label} href={isReady ? { pathname: href, query } : undefined}>
+        <Link label={label} href={isReady ? { pathname: href, query } : undefined} prefetch={false}>
             <ItemLink aria-current={pathname === href && "page"}>{label}</ItemLink>
         </Link>
     );
