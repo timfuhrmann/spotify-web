@@ -21,7 +21,7 @@ export const ListEntriesGrid: React.FC<ListEntriesGridProps> = ({ type }) => {
     const { entries } = useListEntries();
 
     return (
-        <GridWrapper>
+        <GridWrapper aria-busy={!entries}>
             {entries
                 ? entries.slice(0, 7).map(entry => <Entry key={entry.id} {...entry} type={type} />)
                 : createArray(7).map(index => <Entry.Skeleton key={index} type={type} />)}

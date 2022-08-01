@@ -5,6 +5,8 @@ import { ListInfiniteTracksHead } from "./ListInfiniteTracksHead";
 import { TrackGrid } from "@css/helper/track";
 import { content } from "@css/helper/content";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
+import { createArray } from "@lib/util";
+import { Track } from "../Track/Track";
 
 const getGridTemplateColumns = (columns: 3 | 5) => {
     switch (columns) {
@@ -19,7 +21,14 @@ const ListWrapper = styled.div`
     ${content()}
 `;
 
+const ListSkeleton = styled.div`
+    position: absolute;
+    left: 0;
+    width: 100%;
+`;
+
 const ListGrid = styled.div<{ $columns: 3 | 5; $rows: number }>`
+    position: relative;
     min-height: ${p => `calc(${p.$rows} * ${p.theme.sizes.playlistTrackHeight / 10}rem)`};
 
     ${TrackGrid} {
@@ -30,12 +39,14 @@ const ListGrid = styled.div<{ $columns: 3 | 5; $rows: number }>`
 interface ListTracksProps {
     columns: 3 | 5;
     rows: number;
+    totalRows: number;
     hasMore: boolean;
     loadMore: (page: number) => void;
 }
 
 export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = ({
     rows,
+    totalRows,
     columns,
     hasMore,
     loadMore,
@@ -47,9 +58,9 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
         <ListWrapper>
             <ListGrid
                 role="grid"
-                aria-rowcount={rows}
+                aria-rowcount={totalRows}
                 aria-colcount={columns}
-                $rows={rows}
+                $rows={totalRows}
                 $columns={columns}>
                 <ListInfiniteTracksHead columns={columns} />
                 <InfiniteScroll
@@ -60,6 +71,16 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
                     getScrollParent={() => targetRef.current}>
                     {children}
                 </InfiniteScroll>
+                <ListSkeleton aria-hidden>
+                    {createArray(totalRows - rows - 1).map(index => (
+                        <Track.Skeleton
+                            key={index}
+                            hideAlbum={columns === 3}
+                            hideAlbumCover={columns === 3}
+                            hideAddedAt={columns === 3}
+                        />
+                    ))}
+                </ListSkeleton>
             </ListGrid>
         </ListWrapper>
     );

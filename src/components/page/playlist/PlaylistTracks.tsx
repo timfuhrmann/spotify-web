@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { usePlaylist } from "./PlaylistProvider";
 import { Track } from "../../shared/Track/Track";
 import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
@@ -27,7 +26,8 @@ export const PlaylistTracks: React.FC = () => {
     return (
         <ListInfiniteTracks
             columns={5}
-            rows={total}
+            rows={tracks.length}
+            totalRows={total}
             loadMore={handleLoadMore}
             hasMore={hasNextPage}>
             {tracks.map(
@@ -43,6 +43,7 @@ export const PlaylistTracks: React.FC = () => {
                             explicit={track.explicit}
                             duration_ms={track.duration_ms}
                             artists={track.artists}
+                            images={track.album.images}
                             album={track.album}
                             onSaveTrack={handleSaveTrack}
                             onRemoveTrack={handleRemoveTrack}

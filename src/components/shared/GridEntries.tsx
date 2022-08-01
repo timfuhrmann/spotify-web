@@ -35,7 +35,7 @@ export const GridEntries: React.FC<GridEntriesProps> = ({ headline, entries, typ
             {headline !== undefined && (
                 <EntriesHeadline>{headline ? headline : <Skeleton invisible />}</EntriesHeadline>
             )}
-            <EntriesGrid>
+            <EntriesGrid aria-busy={!entries}>
                 {entries ? (
                     entries.map(({ id, type, name, images }) => (
                         <Entry key={id} id={id} type={type} name={name} images={images} />

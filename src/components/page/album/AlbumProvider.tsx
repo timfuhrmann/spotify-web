@@ -11,6 +11,7 @@ type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 interface AlbumContextData {
     isFollowing: boolean;
     total: number;
+    tracksLoaded: number;
     discs: AlbumDiscs;
     savedTracks: boolean[];
     isLoading: boolean;
@@ -56,6 +57,20 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
                 : null;
         },
     });
+
+    const tracksLoaded = useMemo<number>(() => {
+        if (!tracksPages) {
+            return 0;
+        }
+
+        const page = tracksPages.pages[tracksPages.pages.length - 1];
+
+        if (!page) {
+            return 0;
+        }
+
+        return page.offset + page.items.length;
+    }, [tracksPages]);
 
     const mapTracksByDiscNumber = (tracks: SpotifyApi.TrackObjectSimplified[]): AlbumDiscs => {
         return tracks.reduce((acc, track) => {
@@ -124,6 +139,7 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
             value={{
                 isFollowing: !!savedAlbumsContains && savedAlbumsContains[0],
                 total: album.total_tracks,
+                tracksLoaded,
                 discs,
                 savedTracks,
                 isLoading,

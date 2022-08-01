@@ -6,5 +6,5 @@ const SkeletonOuter = styled.span`
 `;
 
 export const SkeletonWrapper: React.FC<PropsWithChildren> = ({ children }) => {
-    return <SkeletonOuter>{children}</SkeletonOuter>;
+    return <SkeletonOuter aria-hidden>{children}</SkeletonOuter>;
 };

@@ -85,7 +85,12 @@ export const NavigationList: React.FC = () => {
                 </ListItem>
                 <ListItem>
                     <Link href="/library/playlists" label="Your Library">
-                        <ListAnchor aria-current={asPath.startsWith("/library") && "page"}>
+                        <ListAnchor
+                            aria-current={
+                                asPath.startsWith("/library") &&
+                                !asPath.includes("/library/tracks") &&
+                                "page"
+                            }>
                             <Library width="24" active={asPath.startsWith("/library")} />
                             Your Library
                         </ListAnchor>

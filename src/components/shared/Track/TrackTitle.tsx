@@ -6,6 +6,7 @@ import { hover, square } from "@css/helper";
 import { text } from "@css/helper/typography";
 import { Explicit } from "../Explicit";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
+import { Skeleton } from "@lib/skeleton";
 
 const TitleWrapper = styled.div`
     display: flex;
@@ -34,6 +35,10 @@ const TitleName = styled.div`
     text-overflow: ellipsis;
     color: ${p => p.theme.gray900};
     margin-bottom: 0.4rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 `;
 
 const TitleFooter = styled.div`
@@ -57,16 +62,20 @@ const TitleArtist = styled.a`
     `};
 `;
 
+interface ParentComposition {
+    Skeleton: typeof TrackTitleSkeleton;
+}
+
 interface PlaylistTrackTitleProps {
     name: string;
     explicit: boolean;
     artists?: SpotifyApi.ArtistObjectSimplified[];
-    album?: SpotifyApi.AlbumObjectSimplified;
+    images?: SpotifyApi.ImageObject[];
 }
 
-export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
+export const TrackTitle: React.FC<PlaylistTrackTitleProps> & ParentComposition = ({
     name,
-    album,
+    images,
     artists,
     explicit,
 }) => {
@@ -74,11 +83,11 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
 
     return (
         <TitleWrapper>
-            {album && (
+            {images && (
                 <TitleCover>
                     <SpotifyImage
                         alt={name}
-                        images={album.images}
+                        images={images}
                         sizes="40px"
                         rootMargin="1000px"
                         rootRef={targetRef}
@@ -87,22 +96,48 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> = ({
             )}
             <TitleFrame>
                 <TitleName>{name}</TitleName>
+                {(explicit || artists) && (
+                    <TitleFooter>
+                        {explicit && <Explicit />}
+                        {artists && (
+                            <TitleArtists>
+                                {artists.map((artist, index) => (
+                                    <React.Fragment key={artist.id}>
+                                        <Link href={"/artist/" + artist.id} passHref>
+                                            <TitleArtist>{artist.name}</TitleArtist>
+                                        </Link>
+                                        {index < artists.length - 1 && ", "}
+                                    </React.Fragment>
+                                ))}
+                            </TitleArtists>
+                        )}
+                    </TitleFooter>
+                )}
+            </TitleFrame>
+        </TitleWrapper>
+    );
+};
+
+interface TrackTitleSkeletonProps {
+    hideAlbumCover?: boolean;
+}
+
+const TrackTitleSkeleton: React.FC<TrackTitleSkeletonProps> = ({ hideAlbumCover }) => {
+    return (
+        <TitleWrapper>
+            {!hideAlbumCover && <TitleCover />}
+            <TitleFrame>
+                <TitleName>
+                    <Skeleton style={{ maxWidth: "50rem" }} />
+                </TitleName>
                 <TitleFooter>
-                    {explicit && <Explicit />}
-                    {artists && (
-                        <TitleArtists>
-                            {artists.map((artist, index) => (
-                                <React.Fragment key={artist.id}>
-                                    <Link href={"/artist/" + artist.id} passHref>
-                                        <TitleArtist>{artist.name}</TitleArtist>
-                                    </Link>
-                                    {index < artists.length - 1 && ", "}
-                                </React.Fragment>
-                            ))}
-                        </TitleArtists>
-                    )}
+                    <TitleArtists style={{ flex: "1 1 0" }}>
+                        <Skeleton style={{ maxWidth: "50rem" }} />
+                    </TitleArtists>
                 </TitleFooter>
             </TitleFrame>
         </TitleWrapper>
     );
 };
+
+TrackTitle.Skeleton = TrackTitleSkeleton;
