@@ -12,7 +12,7 @@ export interface InfiniteTracksOptions<T> {
     enabled: boolean;
     queryFn: QueryFunction<T | undefined>;
     getNextPageParam: GetNextPageParamFunction<T | undefined>;
-    initialTracks: T;
+    initialTracks: T | null;
 }
 
 export const useInfiniteTracks = <T>({
@@ -24,7 +24,6 @@ export const useInfiniteTracks = <T>({
 }: InfiniteTracksOptions<T>) => {
     const { access_token } = useSession();
 
-    //@todo improve maintainability
     const {
         data: tracksPages,
         fetchNextPage,
@@ -35,10 +34,12 @@ export const useInfiniteTracks = <T>({
         enabled,
         cacheTime: 0,
         getNextPageParam,
-        initialData: {
-            pages: [initialTracks],
-            pageParams: [0],
-        },
+        initialData: initialTracks
+            ? {
+                  pages: [initialTracks],
+                  pageParams: [0],
+              }
+            : undefined,
     });
 
     const writeToTracksCache = (

@@ -9,6 +9,8 @@ import { hover } from "@css/helper";
 import { FollowHeart } from "@icon/FollowHeart";
 import { UnfollowHeart } from "@icon/UnfollowHeart";
 import { TrackGrid } from "@css/helper/track";
+import { SkeletonWrapper } from "@lib/skeleton/wrapper";
+import { Skeleton } from "@lib/skeleton";
 
 const TrackPlay = styled(Play)`
     display: none;
@@ -102,6 +104,10 @@ const TrackRemove = styled(UnfollowHeart)`
     `};
 `;
 
+interface ParentComposition {
+    Skeleton: typeof TrackSkeleton;
+}
+
 interface TrackProps {
     index: number;
     id: string;
@@ -109,24 +115,25 @@ interface TrackProps {
     explicit: boolean;
     duration_ms: number;
     isSaved: boolean;
+    images?: SpotifyApi.ImageObject[];
     artists?: SpotifyApi.ArtistObjectSimplified[];
     album?: SpotifyApi.AlbumObjectSimplified;
-    hideAlbum?: boolean;
     addedAt?: string;
     onSaveTrack?: (id: string, index: number) => void;
     onRemoveTrack?: (id: string, index: number) => void;
 }
 
-export const Track: NamedExoticComponent<TrackProps> = React.memo(
+//@ts-ignore
+export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React.memo(
     ({
         index,
         id,
         name,
+        images,
         album,
         artists,
         explicit,
         duration_ms,
-        hideAlbum,
         isSaved,
         addedAt,
         onSaveTrack,
@@ -135,13 +142,13 @@ export const Track: NamedExoticComponent<TrackProps> = React.memo(
         const buttonSaveLabel = isSaved ? "Remove from library" : "Add to library";
 
         return (
-            <TrackWrapper role="row" aria-rowindex={index}>
+            <TrackWrapper role="row" aria-rowindex={index} tabIndex={1}>
                 <TrackIndex>
                     <TrackNumber>{index + 1}</TrackNumber>
                     <TrackPlay />
                 </TrackIndex>
-                <TrackTitle name={name} album={album} artists={artists} explicit={explicit} />
-                {!hideAlbum && album && <TrackAlbum {...album} />}
+                <TrackTitle name={name} images={images} artists={artists} explicit={explicit} />
+                {album && <TrackAlbum {...album} />}
                 {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
                 <TrackDuration>
                     {isSaved ? (
@@ -166,4 +173,45 @@ export const Track: NamedExoticComponent<TrackProps> = React.memo(
     }
 );
 
+interface TrackSkeletonProps {
+    hideAlbum?: boolean;
+    hideAlbumCover?: boolean;
+    hideAddedAt?: boolean;
+}
+
+const TrackSkeleton: React.FC<TrackSkeletonProps> = ({
+    hideAlbum,
+    hideAddedAt,
+    hideAlbumCover,
+}) => {
+    return (
+        <SkeletonWrapper>
+            <TrackWrapper>
+                <TrackIndex>
+                    <div style={{ flex: "1 1 0" }}>
+                        <Skeleton />
+                    </div>
+                </TrackIndex>
+                <TrackTitle.Skeleton hideAlbumCover={hideAlbumCover} />
+                {!hideAlbum && <TrackAlbum.Skeleton />}
+                {!hideAddedAt && (
+                    <TrackTime>
+                        <div style={{ flex: "1 1 0" }}>
+                            <Skeleton />
+                        </div>
+                    </TrackTime>
+                )}
+                <TrackDuration>
+                    <TrackDurationText>
+                        <div style={{ flex: "1 1 0" }}>
+                            <Skeleton />
+                        </div>
+                    </TrackDurationText>
+                </TrackDuration>
+            </TrackWrapper>
+        </SkeletonWrapper>
+    );
+};
+
+Track.Skeleton = TrackSkeleton;
 Track.displayName = "Track";

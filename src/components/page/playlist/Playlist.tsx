@@ -8,11 +8,9 @@ export interface PlaylistProps {
     playlist: SpotifyApi.PlaylistObjectFull;
 }
 
-export const Playlist: React.FC<PlaylistProps> = props => {
-    const { playlist } = props;
-
+export const Playlist: React.FC<PlaylistProps> = ({ playlist }) => {
     return (
-        <PlaylistProvider {...props}>
+        <PlaylistProvider playlist={playlist}>
             <ListHead
                 overline="Playlist"
                 name={playlist.name}

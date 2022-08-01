@@ -14,7 +14,10 @@ const ControlsWrapper = styled.div`
     padding-bottom: 2.4rem;
 `;
 
-const ControlsButton = styled.button``;
+const ControlsButton = styled.button`
+    display: inline-flex;
+    align-items: center;
+`;
 
 const ControlsFollow = styled(FollowHeart)`
     width: 3.2rem;

@@ -4,7 +4,11 @@ import { PlaylistTracks } from "./PlaylistTracks";
 import { usePlaylist } from "./PlaylistProvider";
 import { ListBody } from "../../shared/ListBody";
 
-export const PlaylistBody: React.FC<Pick<SpotifyApi.PlaylistObjectFull, "owner">> = ({ owner }) => {
+interface PlaylistBodyProps {
+    owner: SpotifyApi.UserObjectPublic;
+}
+
+export const PlaylistBody: React.FC<PlaylistBodyProps> = ({ owner }) => {
     const { isFollowing, handleFollowPlaylist, handleUnfollowPlaylist } = usePlaylist();
 
     return (

@@ -25,11 +25,15 @@ export const OverlayScrollProvider: React.FC<PropsWithChildren> = ({ children })
     useEffect(() => {
         const onRouteChange = () => {
             document.body.style.setProperty("--scroll", "0");
+
+            if (instanceRef.current) {
+                instanceRef.current.scroll(0);
+            }
         };
 
         events.on("routeChangeComplete", onRouteChange);
         return () => events.off("routeChangeComplete", onRouteChange);
-    }, []);
+    }, [events]);
 
     const stopScroll = () => {
         if (!instanceRef.current) {

@@ -1,10 +1,9 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
-import { PlaylistProps } from "./Playlist";
+import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
 import { getPlaylistTracks, PLAYLIST_TRACKS_OFFSET } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
-import { removeTracks, saveTracks } from "@lib/api/track";
 import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
+import { PlaylistProps } from "./Playlist";
 
 interface PlaylistContextData {
     isFollowing: boolean;
@@ -29,12 +28,10 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     const { access_token } = useSession();
 
     const {
-        data: playlists,
-        handleFollowPlaylist,
-        handleUnfollowPlaylist,
+        isFollowing,
+        handleFollowPlaylist: handleFollowPlaylistQuery,
+        handleUnfollowPlaylist: handleUnfollowPlaylistQuery,
     } = useRootPlaylistsQuery();
-
-    const isFollowing = playlists ? !!playlists.find(({ id }) => id === playlist.id) : false;
 
     const {
         isLoading,
@@ -42,8 +39,8 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         savedTracks,
         hasNextPage,
         fetchNextPage,
-        addSavedTrackToCache,
-        removeSavedTrackFromCache,
+        handleSaveTrack,
+        handleRemoveTrack,
     } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.PlaylistTrackResponse>({
         key: playlist.id,
         initialTracks: playlist.tracks,
@@ -54,7 +51,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         getNextPageParam: (data, allPages) => {
             const lastPage = allPages[allPages.length - 1];
 
-            return lastPage && playlist.tracks.total > lastPage.offset + lastPage.limit
+            return lastPage && lastPage.total > lastPage.offset + lastPage.limit
                 ? allPages.length
                 : null;
         },
@@ -62,40 +59,16 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
 
     const tracks = useMemo<SpotifyApi.PlaylistTrackObject[]>(() => {
         if (!tracksPages) {
-            return playlist.tracks.items;
+            return playlist ? playlist.tracks.items : [];
         }
 
         return tracksPages.pages.flatMap(page => (page ? page.items : []));
     }, [playlist, tracksPages]);
 
-    const handleSaveTrack = useCallback(
-        async (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            addSavedTrackToCache(index);
-            return saveTracks(access_token, [id]);
-        },
-        [access_token]
-    );
-
-    const handleRemoveTrack = useCallback(
-        async (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            removeSavedTrackFromCache(index);
-            return removeTracks(access_token, [id]);
-        },
-        [access_token]
-    );
-
     return (
         <PlaylistContext.Provider
             value={{
-                isFollowing,
+                isFollowing: isFollowing(playlist.id),
                 total: playlist.tracks.total,
                 tracks,
                 savedTracks,
@@ -104,8 +77,8 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
                 isLoading,
                 hasNextPage,
                 fetchNextPage,
-                handleFollowPlaylist: () => handleFollowPlaylist(playlist),
-                handleUnfollowPlaylist: () => handleUnfollowPlaylist(playlist.id),
+                handleFollowPlaylist: () => handleFollowPlaylistQuery(playlist),
+                handleUnfollowPlaylist: () => handleUnfollowPlaylistQuery(playlist.id),
             }}>
             {children}
         </PlaylistContext.Provider>

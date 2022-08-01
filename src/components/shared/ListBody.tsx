@@ -15,7 +15,7 @@ const BodyWrapper = styled.div`
         left: 0;
         width: 100%;
         height: 25rem;
-        background-color: var(--dominant-color, ${p => p.theme.gray50});
+        background-color: var(--dominant-color, ${p => p.theme.gray100});
         background-image: linear-gradient(rgba(0, 0, 0, 0.7) 0%, ${p => p.theme.gray50} 100%);
     }
 `;

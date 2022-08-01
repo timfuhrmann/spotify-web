@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useRef } from "react";
+import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import { Navigation } from "./Navigation/Navigation";
 import { Header } from "./Header/Header";
@@ -53,10 +53,7 @@ interface PrimaryLayoutProps {
 
 export const PrimaryLayout = withOverlayScroll<PropsWithChildren<PrimaryLayoutProps>>(
     ({ hasLibraryNavigation, hasSearch, children }) => {
-        const { asPath } = useRouter();
         const { initOverlayScrollbars, onScroll } = useOverlayScroll();
-
-        const pathname = pathnameFromAsPath(asPath);
 
         return (
             <LayoutGrid>
@@ -68,11 +65,10 @@ export const PrimaryLayout = withOverlayScroll<PropsWithChildren<PrimaryLayoutPr
                 </LayoutHeader>
                 <LayoutMain>
                     <OverlayScrollbarsComponent
-                        key={pathname}
                         ref={initOverlayScrollbars}
                         style={{ height: "100%" }}
                         className="custom-scrollbar main-scrollbar"
-                        options={{ callbacks: { onScroll } }}>
+                        options={{ callbacks: { onScroll }, updateOnLoad: null }}>
                         {children}
                     </OverlayScrollbarsComponent>
                 </LayoutMain>

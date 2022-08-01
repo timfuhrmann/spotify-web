@@ -74,8 +74,6 @@ export const ListInfiniteTracksHead: React.FC<TracksHeadProps> = ({ columns }) =
             }
         };
 
-        onScroll();
-
         scrollStage.addEventListener("scroll", onScroll, { passive: true });
         return () => scrollStage.removeEventListener("scroll", onScroll);
     }, [stuck]);

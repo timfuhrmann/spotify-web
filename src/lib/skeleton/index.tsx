@@ -5,8 +5,6 @@ import { fillParent } from "@css/helper";
 const SkeletonWrapper = styled.span``;
 
 const SkeletonInner = styled.span<{ $fill?: boolean; $invisible?: boolean }>`
-    position: relative;
-    z-index: 1;
     display: inline-flex;
     width: 100%;
     max-width: 100%;

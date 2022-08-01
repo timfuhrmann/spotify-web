@@ -24,6 +24,7 @@ interface CoverImageProps {
     rootRef?: MutableRefObject<HTMLDivElement | null>;
     alt?: string;
     sizes?: string;
+    eager?: boolean;
     priority?: boolean;
 }
 
@@ -31,6 +32,7 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({
     images,
     alt,
     sizes,
+    eager,
     priority,
     rootRef,
     rootMargin = "300px",
@@ -41,7 +43,7 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({
         rootRef,
     });
 
-    const isVisible = priority || isIntersected;
+    const isVisible = eager || priority || isIntersected;
 
     const srcSet = useMemo<string | undefined>(() => {
         return (

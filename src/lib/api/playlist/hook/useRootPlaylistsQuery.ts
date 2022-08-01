@@ -3,13 +3,29 @@ import { useQuery } from "react-query";
 import { followPlaylist, getRootPlaylists, unfollowPlaylist } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
+import { useCallback, useMemo } from "react";
 
 export const useRootPlaylistsQuery = () => {
     const { access_token } = useSession();
 
-    const data = useQuery(["root-playlists", access_token], () => getRootPlaylists(access_token!), {
-        enabled: !!access_token,
-    });
+    const queryData = useQuery(
+        ["root-playlists", access_token],
+        () => getRootPlaylists(access_token!),
+        {
+            enabled: !!access_token,
+        }
+    );
+
+    const isFollowing = useCallback(
+        (id: string) => {
+            if (!queryData.data) {
+                return false;
+            }
+
+            return !!queryData.data.find(playlist => playlist.id === id);
+        },
+        [queryData.data]
+    );
 
     const handleFollowPlaylist = (playlist: SpotifyApi.PlaylistObjectSimplified) => {
         if (!access_token) {
@@ -69,5 +85,5 @@ export const useRootPlaylistsQuery = () => {
         );
     };
 
-    return { ...data, handleFollowPlaylist, handleUnfollowPlaylist };
+    return { ...queryData, isFollowing, handleFollowPlaylist, handleUnfollowPlaylist };
 };

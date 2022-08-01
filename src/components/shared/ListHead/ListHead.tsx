@@ -5,17 +5,16 @@ import { text } from "@css/helper/typography";
 import { SpotifyImage } from "@lib/image";
 import { HeaderSpacer } from "../../layout/HeaderSpacer";
 import { content } from "@css/helper/content";
-import { FastAverageColor } from "fast-average-color";
 import { useDominantColor } from "@lib/hook/useDominantColor";
 
 const HeadWrapper = styled.div`
     position: relative;
     padding-bottom: 2.4rem;
-    background: var(--dominant-color, ${p => p.theme.gray50});
+    background: var(--dominant-color, ${p => p.theme.gray100});
     background-image: linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.6) 0%,
-        var(--dominant-color, ${p => p.theme.gray50}) 100%
+        var(--dominant-color, ${p => p.theme.gray100}) 100%
     );
 `;
 
@@ -97,7 +96,7 @@ export const ListHead: React.FC<PlaylistHeadProps> = ({
                         alt={name}
                         sizes="300px"
                         onLoad={handleImageLoad}
-                        priority
+                        eager
                     />
                 </HeadCover>
                 <HeadGroup>
