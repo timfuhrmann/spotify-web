@@ -6,7 +6,7 @@ import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
 import { useFollowedArtistsQuery } from "@lib/api/artist/hook/useFollowedArtistsQuery";
 
 const ArtistsWrapper = styled.div`
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
 `;
 
 const Artists: NextPageWithLayout = () => {

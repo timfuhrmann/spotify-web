@@ -10,7 +10,7 @@ import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
 import { AlbumGroup } from "@lib/api/album";
 
 const AppearsOnWrapper = styled.div`
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
 `;
 
 const AppearsOn: NextPageWithLayout = () => {

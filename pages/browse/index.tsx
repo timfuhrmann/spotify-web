@@ -10,7 +10,7 @@ import { useAppDispatch } from "@lib/redux";
 import { resetSearch } from "@lib/redux/reducer/search";
 
 const BrowseWrapper = styled.div`
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
 `;
 
 const Browse: NextPageWithLayout = () => {

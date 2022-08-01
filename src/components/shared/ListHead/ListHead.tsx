@@ -9,7 +9,7 @@ import { useDominantColor } from "@lib/hook/useDominantColor";
 
 const HeadWrapper = styled.div`
     position: relative;
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
     background: var(--dominant-color, ${p => p.theme.gray100});
     background-image: linear-gradient(
         0deg,

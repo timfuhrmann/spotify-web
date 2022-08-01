@@ -6,7 +6,7 @@ import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
 
 const PlaylistsWrapper = styled.div`
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
 `;
 
 const Playlists: NextPageWithLayout = () => {

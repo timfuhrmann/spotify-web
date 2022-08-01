@@ -13,7 +13,7 @@ import { transition } from "@css/helper";
 
 const HomeWrapper = styled.div`
     ${content()};
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
 `;
 
 const HomeBackground = styled.div`

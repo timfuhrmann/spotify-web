@@ -9,7 +9,7 @@ import { getIdFromQuery } from "@lib/util";
 import { useCategoryQuery } from "@lib/api/browse/hook/useCategoryQuery";
 
 const CategoryWrapper = styled.div`
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
 `;
 
 const Category: NextPageWithLayout = () => {

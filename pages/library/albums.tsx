@@ -8,7 +8,7 @@ import { useMemo } from "react";
 import { EntryProps } from "../../src/components/shared/Entry";
 
 const AlbumsWrapper = styled.div`
-    padding-bottom: 2.4rem;
+    padding: 2.4rem 0;
 `;
 
 const Albums: NextPageWithLayout = () => {
