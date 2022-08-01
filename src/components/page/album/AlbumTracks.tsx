@@ -28,7 +28,6 @@ const TracksIndex = styled(TracksColumn)`
 export const AlbumTracks: React.FC = () => {
     const {
         total,
-        tracksLoaded,
         discs,
         savedTracks,
         isLoading,
@@ -53,8 +52,7 @@ export const AlbumTracks: React.FC = () => {
             <ListInfiniteTracks
                 loadMore={handleLoadMore}
                 hasMore={hasNextPage}
-                rows={hasDisc ? tracksLoaded + Object.keys(discs).length : tracksLoaded}
-                totalRows={hasDisc ? total + Object.keys(discs).length : total}
+                rows={hasDisc ? total + Object.keys(discs).length : total}
                 columns={3}>
                 {Object.keys(discs).map(discNumber => (
                     <TracksDisc key={discNumber} role="rowgroup" aria-label={`Disc ${discNumber}`}>

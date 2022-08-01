@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Track } from "../../shared/Track/Track";
 import { useSavedTracks } from "./SavedTracksProvider";
 import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
-import album from "../../../../pages/artist/[id]/discography/album";
 
 const TracksWrapper = styled.div``;
 
@@ -23,8 +22,7 @@ export const SavedTracksList: React.FC = () => {
         <TracksWrapper>
             <ListInfiniteTracks
                 columns={5}
-                rows={tracks.length}
-                totalRows={total}
+                rows={total}
                 loadMore={handleLoadMore}
                 hasMore={hasNextPage}>
                 {tracks.map(

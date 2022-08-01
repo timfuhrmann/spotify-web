@@ -3,7 +3,6 @@ import { AlbumProps } from "./Album";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
-import { removeTracks, saveTracks } from "@lib/api/track";
 import { useSavedAlbumsContainsQuery } from "@lib/api/album/hook/useSavedAlbumsContainsQuery";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
@@ -11,7 +10,6 @@ type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 interface AlbumContextData {
     isFollowing: boolean;
     total: number;
-    tracksLoaded: number;
     discs: AlbumDiscs;
     savedTracks: boolean[];
     isLoading: boolean;
@@ -58,20 +56,6 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         },
     });
 
-    const tracksLoaded = useMemo<number>(() => {
-        if (!tracksPages) {
-            return 0;
-        }
-
-        const page = tracksPages.pages[tracksPages.pages.length - 1];
-
-        if (!page) {
-            return 0;
-        }
-
-        return page.offset + page.items.length;
-    }, [tracksPages]);
-
     const mapTracksByDiscNumber = (tracks: SpotifyApi.TrackObjectSimplified[]): AlbumDiscs => {
         return tracks.reduce((acc, track) => {
             if (!acc[track.disc_number]) {
@@ -97,7 +81,6 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
             value={{
                 isFollowing: !!savedAlbumsContains && savedAlbumsContains[0],
                 total: album.total_tracks,
-                tracksLoaded,
                 discs,
                 savedTracks,
                 isLoading,

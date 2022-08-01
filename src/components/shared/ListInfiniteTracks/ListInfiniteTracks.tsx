@@ -5,9 +5,9 @@ import { ListInfiniteTracksHead } from "./ListInfiniteTracksHead";
 import { TrackGrid } from "@css/helper/track";
 import { content } from "@css/helper/content";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
-import { createArray, pathnameFromAsPath } from "@lib/util";
-import { Track } from "../Track/Track";
+import { pathnameFromAsPath } from "@lib/util";
 import { useRouter } from "next/router";
+import { ListInfiniteTracksLoader } from "./ListInfiniteTracksLoader";
 
 const getGridTemplateColumns = (columns: 3 | 5) => {
     switch (columns) {
@@ -22,15 +22,8 @@ const ListWrapper = styled.div`
     ${content()}
 `;
 
-const ListSkeleton = styled.div`
-    position: absolute;
-    left: 0;
-    width: 100%;
-`;
-
-const ListGrid = styled.div<{ $columns: 3 | 5; $totalRows: number }>`
+const ListGrid = styled.div<{ $columns: 3 | 5 }>`
     position: relative;
-    min-height: ${p => `calc(${p.$totalRows} * ${p.theme.sizes.playlistTrackHeight / 10}rem)`};
 
     ${TrackGrid} {
         grid-template-columns: ${p => getGridTemplateColumns(p.$columns)};
@@ -40,14 +33,12 @@ const ListGrid = styled.div<{ $columns: 3 | 5; $totalRows: number }>`
 interface ListTracksProps {
     columns: 3 | 5;
     rows: number;
-    totalRows: number;
     hasMore: boolean;
     loadMore: (page: number) => void;
 }
 
 export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = ({
     rows,
-    totalRows,
     columns,
     hasMore,
     loadMore,
@@ -58,34 +49,19 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
 
     const pathname = pathnameFromAsPath(asPath);
 
-    //@todo fix performance issue
     return (
         <ListWrapper>
-            <ListGrid
-                role="grid"
-                aria-colcount={columns}
-                aria-rowcount={totalRows}
-                $totalRows={totalRows}
-                $columns={columns}>
+            <ListGrid role="grid" aria-colcount={columns} aria-rowcount={rows} $columns={columns}>
                 <ListInfiniteTracksHead key={pathname} columns={columns} />
                 <InfiniteScroll
                     hasMore={hasMore}
                     loadMore={loadMore}
                     threshold={1500}
                     useWindow={false}
+                    loader={<ListInfiniteTracksLoader columns={columns} />}
                     getScrollParent={() => targetRef.current}>
                     {children}
                 </InfiniteScroll>
-                <ListSkeleton aria-hidden>
-                    {createArray(totalRows - rows - 1).map(index => (
-                        <Track.Skeleton
-                            key={index}
-                            hideAlbum={columns === 3}
-                            hideAlbumCover={columns === 3}
-                            hideAddedAt={columns === 3}
-                        />
-                    ))}
-                </ListSkeleton>
             </ListGrid>
         </ListWrapper>
     );
