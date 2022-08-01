@@ -14,6 +14,30 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
         enabled: !!access_token && !!ids.length,
     });
 
+    const handleSaveTrack = useCallback(
+        (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            writeToCache(index, true);
+            saveTracks(access_token, [id]);
+        },
+        [access_token, ids]
+    );
+
+    const handleRemoveTrack = useCallback(
+        (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            writeToCache(index, false);
+            removeTracks(access_token, [id]);
+        },
+        [access_token, ids]
+    );
+
     const writeToCache = (index: number, value: boolean) => {
         return queryClient.setQueryData<boolean[] | undefined>(queryKey, cachedData => {
             if (!cachedData) {
@@ -27,37 +51,5 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
         });
     };
 
-    const saveTrackToCache = (index: number) => {
-        return writeToCache(index, true);
-    };
-
-    const removeTrackFromCache = (index: number) => {
-        return writeToCache(index, false);
-    };
-
-    const handleSaveTrack = useCallback(
-        (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            saveTrackToCache(index);
-            saveTracks(access_token, [id]);
-        },
-        [access_token, ids]
-    );
-
-    const handleRemoveTrack = useCallback(
-        (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            removeTrackFromCache(index);
-            removeTracks(access_token, [id]);
-        },
-        [access_token, ids]
-    );
-
-    return { ...data, saveTrackToCache, removeTrackFromCache, handleSaveTrack, handleRemoveTrack };
+    return { ...data, handleSaveTrack, handleRemoveTrack };
 };

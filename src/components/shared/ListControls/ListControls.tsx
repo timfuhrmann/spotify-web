@@ -6,6 +6,7 @@ import { hover, square } from "@css/helper";
 import { UnfollowHeart } from "@icon/UnfollowHeart";
 import { useSession } from "@lib/context/session";
 import { content } from "@css/helper/content";
+import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 
 const ControlsWrapper = styled.div`
     display: flex;
@@ -14,7 +15,15 @@ const ControlsWrapper = styled.div`
     padding-bottom: 2.4rem;
 `;
 
-const ControlsButton = styled.button``;
+const ControlsButton = styled.button`
+    display: inline-flex;
+    align-items: center;
+`;
+
+const ControlsSkeleton = styled(FollowHeart)`
+    width: 3.2rem;
+    color: ${p => p.theme.gray200};
+`;
 
 const ControlsFollow = styled(FollowHeart)`
     width: 3.2rem;
@@ -38,6 +47,10 @@ const ControlsPlay = styled.div`
     ${square("5.6rem")};
 `;
 
+interface ParentComposition {
+    Skeleton: typeof ListControlsSkeleton;
+}
+
 interface ListControlsProps {
     owner?: SpotifyApi.UserObjectPublic | null;
     isFollowing?: boolean;
@@ -46,7 +59,7 @@ interface ListControlsProps {
     hideFollow?: boolean;
 }
 
-export const ListControls: React.FC<ListControlsProps> = ({
+export const ListControls: React.FC<ListControlsProps> & ParentComposition = ({
     owner,
     isFollowing,
     onFollow,
@@ -84,3 +97,18 @@ export const ListControls: React.FC<ListControlsProps> = ({
         </ControlsWrapper>
     );
 };
+
+const ListControlsSkeleton: React.FC<Pick<ListControlsProps, "hideFollow">> = ({ hideFollow }) => {
+    return (
+        <SkeletonWrapper>
+            <ControlsWrapper>
+                <ControlsPlay>
+                    <PlayButton disabled />
+                </ControlsPlay>
+                {!hideFollow && <ControlsSkeleton />}
+            </ControlsWrapper>
+        </SkeletonWrapper>
+    );
+};
+
+ListControls.Skeleton = ListControlsSkeleton;

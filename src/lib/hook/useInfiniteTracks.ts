@@ -8,11 +8,11 @@ import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
 
 export interface InfiniteTracksOptions<T> {
-    key: string;
+    key: string | null;
     enabled: boolean;
     queryFn: QueryFunction<T | undefined>;
     getNextPageParam: GetNextPageParamFunction<T | undefined>;
-    initialTracks: T;
+    initialTracks: T | null;
 }
 
 export const useInfiniteTracks = <T>({
@@ -31,13 +31,15 @@ export const useInfiniteTracks = <T>({
         isLoading,
         isFetching,
     } = useInfiniteQuery(["tracks", key, access_token], queryFn, {
-        enabled,
+        enabled: !!key && enabled,
         cacheTime: 0,
         getNextPageParam,
-        initialData: {
-            pages: [initialTracks],
-            pageParams: [0],
-        },
+        initialData: initialTracks
+            ? {
+                  pages: [initialTracks],
+                  pageParams: [0],
+              }
+            : undefined,
     });
 
     const writeToTracksCache = (

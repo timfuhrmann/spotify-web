@@ -30,8 +30,8 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
 
     const {
         data: savedAlbumsContains,
-        saveAlbumToCache,
-        removeAlbumFromCache,
+        handleSaveAlbum,
+        handleRemoveAlbum,
     } = useSavedAlbumsContainsQuery([album.id]);
 
     const {
@@ -40,8 +40,8 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         savedTracks,
         hasNextPage,
         fetchNextPage,
-        addSavedTrackToCache,
-        removeSavedTrackFromCache,
+        handleSaveTrack,
+        handleRemoveTrack,
     } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.AlbumTracksResponse>({
         key: album.id,
         initialTracks: album.tracks,
@@ -92,48 +92,6 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         return mapTracksByDiscNumber(tracksPages.pages.flatMap(page => (page ? page.items : [])));
     }, [tracksPages, album]);
 
-    const handleSaveTrack = useCallback(
-        async (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            addSavedTrackToCache(index);
-            return saveTracks(access_token, [id]);
-        },
-        [access_token]
-    );
-
-    const handleRemoveTrack = useCallback(
-        async (id: string, index: number) => {
-            if (!access_token) {
-                return;
-            }
-
-            removeSavedTrackFromCache(index);
-            return removeTracks(access_token, [id]);
-        },
-        [access_token]
-    );
-
-    const handleSaveAlbum = () => {
-        if (!access_token) {
-            return;
-        }
-
-        saveAlbumToCache();
-        saveAlbum(access_token, [album.id]);
-    };
-
-    const handleRemoveAlbum = () => {
-        if (!access_token) {
-            return;
-        }
-
-        removeAlbumFromCache();
-        removeAlbum(access_token, [album.id]);
-    };
-
     return (
         <AlbumContext.Provider
             value={{
@@ -147,8 +105,8 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
                 fetchNextPage,
                 handleSaveTrack,
                 handleRemoveTrack,
-                handleSaveAlbum,
-                handleRemoveAlbum,
+                handleSaveAlbum: () => handleSaveAlbum(album.id, 0),
+                handleRemoveAlbum: () => handleRemoveAlbum(album.id, 0),
             }}>
             {children}
         </AlbumContext.Provider>

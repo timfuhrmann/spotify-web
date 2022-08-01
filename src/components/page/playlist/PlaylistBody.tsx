@@ -4,17 +4,21 @@ import { PlaylistTracks } from "./PlaylistTracks";
 import { usePlaylist } from "./PlaylistProvider";
 import { ListBody } from "../../shared/ListBody";
 
-export const PlaylistBody: React.FC<Pick<SpotifyApi.PlaylistObjectFull, "owner">> = ({ owner }) => {
-    const { isFollowing, handleFollowPlaylist, handleUnfollowPlaylist } = usePlaylist();
+export const PlaylistBody: React.FC = () => {
+    const { playlist, isFollowing, handleFollowPlaylist, handleUnfollowPlaylist } = usePlaylist();
 
     return (
         <ListBody>
-            <ListControls
-                owner={owner}
-                isFollowing={isFollowing}
-                onFollow={handleFollowPlaylist}
-                onUnfollow={handleUnfollowPlaylist}
-            />
+            {playlist ? (
+                <ListControls
+                    owner={playlist.owner}
+                    isFollowing={isFollowing}
+                    onFollow={handleFollowPlaylist}
+                    onUnfollow={handleUnfollowPlaylist}
+                />
+            ) : (
+                <ListControls.Skeleton />
+            )}
             <PlaylistTracks />
         </ListBody>
     );

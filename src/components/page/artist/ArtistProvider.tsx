@@ -37,11 +37,13 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         saveArtistToCache,
         removeArtistFromCache,
     } = useFollowedArtistsContains([artist.id]);
+
     const {
         data: savedTracks = [],
         handleSaveTrack,
         handleRemoveTrack,
     } = useSavedTracksContainsQuery(topTracks.map(track => track.id));
+
     const { data: artistAlbums } = useArtistsAlbumsQuery(artist.id);
 
     const hasMorePopularTracks = popularTracksLength < topTracks.length;

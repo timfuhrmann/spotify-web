@@ -26,8 +26,8 @@ export const PlaylistTracks: React.FC = () => {
     return (
         <ListInfiniteTracks
             columns={5}
-            rows={tracks.length}
-            totalRows={total}
+            rows={tracks ? tracks.length : null}
+            totalRows={total ? total : null}
             loadMore={handleLoadMore}
             hasMore={hasNextPage}>
             {tracks.map(

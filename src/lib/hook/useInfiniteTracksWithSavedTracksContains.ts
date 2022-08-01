@@ -1,8 +1,8 @@
 import cloneDeep from "lodash.clonedeep";
 import { InfiniteData, useInfiniteQuery } from "react-query";
-import { getSavedTracksContains } from "@lib/api/track";
+import { getSavedTracksContains, removeTracks, saveTracks } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { queryClient } from "@lib/api";
 import { InfiniteTracksOptions, useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
 import { createArray } from "@lib/util";
@@ -42,7 +42,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
 
             return res.flatMap(arr => arr || []);
         },
-        { enabled: !!access_token }
+        { enabled: !!key && !!access_token }
     );
 
     useEffect(() => {
@@ -62,6 +62,38 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
 
         return savedTracksPages.pages.flatMap(page => page || []);
     }, [savedTracksPages]);
+
+    const handleSaveTrack = useCallback(
+        async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            addSavedTrackToCache(index);
+            return saveTracks(access_token, [id]);
+        },
+        [access_token]
+    );
+
+    const handleRemoveTrack = useCallback(
+        async (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            removeSavedTrackFromCache(index);
+            return removeTracks(access_token, [id]);
+        },
+        [access_token]
+    );
+
+    const addSavedTrackToCache = (index: number) => {
+        writeToSavedTracksCache(true, index);
+    };
+
+    const removeSavedTrackFromCache = (index: number) => {
+        writeToSavedTracksCache(false, index);
+    };
 
     const writeToSavedTracksCache = (value: boolean, index: number) => {
         return queryClient.setQueryData<InfiniteData<boolean[] | undefined> | undefined>(
@@ -87,14 +119,6 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
         );
     };
 
-    const addSavedTrackToCache = (index: number) => {
-        writeToSavedTracksCache(true, index);
-    };
-
-    const removeSavedTrackFromCache = (index: number) => {
-        writeToSavedTracksCache(false, index);
-    };
-
     const idsFromInfinitePages = (index: number): string[] | null => {
         if (!tracksPages) {
             return null;
@@ -107,6 +131,8 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
     return {
         tracksPages,
         savedTracks,
+        handleSaveTrack,
+        handleRemoveTrack,
         addSavedTrackToCache,
         removeSavedTrackFromCache,
         ...infiniteTracksResult,

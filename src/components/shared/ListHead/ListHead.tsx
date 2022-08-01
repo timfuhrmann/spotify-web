@@ -5,17 +5,17 @@ import { text } from "@css/helper/typography";
 import { SpotifyImage } from "@lib/image";
 import { HeaderSpacer } from "../../layout/HeaderSpacer";
 import { content } from "@css/helper/content";
-import { FastAverageColor } from "fast-average-color";
 import { useDominantColor } from "@lib/hook/useDominantColor";
+import { Skeleton } from "@lib/skeleton";
 
 const HeadWrapper = styled.div`
     position: relative;
     padding-bottom: 2.4rem;
-    background: var(--dominant-color, ${p => p.theme.gray50});
+    background: var(--dominant-color, ${p => p.theme.gray100});
     background-image: linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.6) 0%,
-        var(--dominant-color, ${p => p.theme.gray50}) 100%
+        var(--dominant-color, ${p => p.theme.gray100}) 100%
     );
 `;
 
@@ -78,7 +78,11 @@ interface PlaylistHeadProps {
     renderFooter?: React.ReactNode;
 }
 
-export const ListHead: React.FC<PlaylistHeadProps> = ({
+interface ParentComposition {
+    Skeleton: typeof ListHeadSkeleton;
+}
+
+export const ListHead: React.FC<PlaylistHeadProps> & ParentComposition = ({
     overline,
     name,
     images,
@@ -112,3 +116,27 @@ export const ListHead: React.FC<PlaylistHeadProps> = ({
         </HeadWrapper>
     );
 };
+
+const ListHeadSkeleton: React.FC = () => {
+    return (
+        <HeadWrapper>
+            <HeaderSpacer />
+            <HeadInner>
+                <HeadCover />
+                <HeadGroup>
+                    <HeadOverline>
+                        <Skeleton style={{ maxWidth: "10rem" }} />
+                    </HeadOverline>
+                    <HeadName>
+                        <Skeleton style={{ maxWidth: "70rem" }} />
+                    </HeadName>
+                    <HeadInfo>
+                        <Skeleton style={{ maxWidth: "30rem" }} />
+                    </HeadInfo>
+                </HeadGroup>
+            </HeadInner>
+        </HeadWrapper>
+    );
+};
+
+ListHead.Skeleton = ListHeadSkeleton;

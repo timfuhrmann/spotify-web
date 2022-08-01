@@ -27,9 +27,9 @@ const ListSkeleton = styled.div`
     width: 100%;
 `;
 
-const ListGrid = styled.div<{ $columns: 3 | 5; $rows: number }>`
+const ListGrid = styled.div<{ $columns: 3 | 5; $totalRows: number }>`
     position: relative;
-    min-height: ${p => `calc(${p.$rows} * ${p.theme.sizes.playlistTrackHeight / 10}rem)`};
+    min-height: ${p => `calc(${p.$totalRows} * ${p.theme.sizes.playlistTrackHeight / 10}rem)`};
 
     ${TrackGrid} {
         grid-template-columns: ${p => getGridTemplateColumns(p.$columns)};
@@ -38,8 +38,8 @@ const ListGrid = styled.div<{ $columns: 3 | 5; $rows: number }>`
 
 interface ListTracksProps {
     columns: 3 | 5;
-    rows: number;
-    totalRows: number;
+    rows: number | null;
+    totalRows: number | null;
     hasMore: boolean;
     loadMore: (page: number) => void;
 }
@@ -54,13 +54,15 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
 }) => {
     const { targetRef } = useOverlayScroll();
 
+    const skeletonLength = rows && totalRows ? totalRows - rows : 20;
+
     return (
         <ListWrapper>
             <ListGrid
                 role="grid"
-                aria-rowcount={totalRows}
                 aria-colcount={columns}
-                $rows={totalRows}
+                aria-rowcount={totalRows ? totalRows : undefined}
+                $totalRows={totalRows ? totalRows : skeletonLength}
                 $columns={columns}>
                 <ListInfiniteTracksHead columns={columns} />
                 <InfiniteScroll
@@ -72,7 +74,7 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
                     {children}
                 </InfiniteScroll>
                 <ListSkeleton aria-hidden>
-                    {createArray(totalRows - rows - 1).map(index => (
+                    {createArray(skeletonLength - 1).map(index => (
                         <Track.Skeleton
                             key={index}
                             hideAlbum={columns === 3}

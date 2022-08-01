@@ -1,7 +1,9 @@
 import { useQuery } from "react-query";
-import { getSavedAlbumsContains } from "@lib/api/album";
+import { getSavedAlbumsContains, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
+import { useCallback } from "react";
+import cloneDeep from "lodash.clonedeep";
 
 export const useSavedAlbumsContainsQuery = (ids: string[]) => {
     const { access_token } = useSession();
@@ -12,19 +14,42 @@ export const useSavedAlbumsContainsQuery = (ids: string[]) => {
         enabled: !!access_token,
     });
 
-    const writeToCache = (value: boolean) => {
-        return queryClient.setQueryData<boolean[] | undefined>(queryKey, () => {
-            return [value];
+    const handleSaveAlbum = useCallback(
+        (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            writeToCache(index, true);
+            saveAlbum(access_token, [id]);
+        },
+        [access_token]
+    );
+
+    const handleRemoveAlbum = useCallback(
+        (id: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            writeToCache(index, false);
+            removeAlbum(access_token, [id]);
+        },
+        [access_token]
+    );
+
+    const writeToCache = (index: number, value: boolean) => {
+        return queryClient.setQueryData<boolean[] | undefined>(queryKey, cachedData => {
+            if (!cachedData) {
+                return;
+            }
+
+            const newData = cloneDeep(cachedData);
+            newData[index] = value;
+
+            return newData;
         });
     };
 
-    const saveAlbumToCache = () => {
-        return writeToCache(true);
-    };
-
-    const removeAlbumFromCache = () => {
-        return writeToCache(false);
-    };
-
-    return { ...data, saveAlbumToCache, removeAlbumFromCache };
+    return { ...data, handleSaveAlbum, handleRemoveAlbum };
 };

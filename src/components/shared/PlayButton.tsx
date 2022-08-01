@@ -21,11 +21,20 @@ const ButtonWrapper = styled.button`
         transform: scale(1);
         background-color: ${p => p.theme.primary300};
     }
+
+    &:disabled {
+        pointer-events: none;
+        background-color: ${p => p.theme.gray200};
+    }
 `;
 
-export const PlayButton: React.FC = () => {
+interface PlayButtonProps {
+    disabled?: boolean;
+}
+
+export const PlayButton: React.FC<PlayButtonProps> = ({ disabled }) => {
     return (
-        <ButtonWrapper type="button">
+        <ButtonWrapper type="button" aria-label="Play" disabled={disabled}>
             <Play width="50%" />
         </ButtonWrapper>
     );

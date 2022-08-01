@@ -6,14 +6,7 @@ import { usePlaylistQuery } from "@lib/api/playlist/hook/usePlaylistQuery";
 import { getIdFromQuery } from "@lib/util";
 
 const Playlist: NextPageWithLayout = () => {
-    const { query } = useRouter();
-    const { data: playlist } = usePlaylistQuery(getIdFromQuery(query));
-
-    if (!playlist) {
-        return null;
-    }
-
-    return <PlaylistComponent playlist={playlist} />;
+    return <PlaylistComponent />;
 };
 
 // eslint-disable-next-line react/display-name

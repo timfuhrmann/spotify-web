@@ -1,32 +1,32 @@
 import React from "react";
-import { PlaylistProvider } from "./PlaylistProvider";
+import { PlaylistProvider, usePlaylist, withPlaylist } from "./PlaylistProvider";
 import { ListHead } from "../../shared/ListHead/ListHead";
 import { PlaylistBody } from "./PlaylistBody";
 import { PlaylistHeadFooter } from "./PlaylistHeadFooter";
 
-export interface PlaylistProps {
-    playlist: SpotifyApi.PlaylistObjectFull;
-}
-
-export const Playlist: React.FC<PlaylistProps> = props => {
-    const { playlist } = props;
+export const Playlist = withPlaylist(() => {
+    const { playlist } = usePlaylist();
 
     return (
-        <PlaylistProvider {...props}>
-            <ListHead
-                overline="Playlist"
-                name={playlist.name}
-                images={playlist.images}
-                description={playlist.description}
-                renderFooter={
-                    <PlaylistHeadFooter
-                        owner={playlist.owner}
-                        followers={playlist.followers}
-                        totalTracks={playlist.tracks.total}
-                    />
-                }
-            />
-            <PlaylistBody owner={playlist.owner} />
+        <PlaylistProvider>
+            {playlist ? (
+                <ListHead
+                    overline="Playlist"
+                    name={playlist.name}
+                    images={playlist.images}
+                    description={playlist.description}
+                    renderFooter={
+                        <PlaylistHeadFooter
+                            owner={playlist.owner}
+                            followers={playlist.followers}
+                            totalTracks={playlist.tracks.total}
+                        />
+                    }
+                />
+            ) : (
+                <ListHead.Skeleton />
+            )}
+            <PlaylistBody />
         </PlaylistProvider>
     );
-};
+});
