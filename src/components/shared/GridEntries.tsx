@@ -37,9 +37,7 @@ export const GridEntries: React.FC<GridEntriesProps> = ({ headline, entries, typ
             )}
             <EntriesGrid aria-busy={!entries}>
                 {entries ? (
-                    entries.map(({ id, type, name, images }) => (
-                        <Entry key={id} id={id} type={type} name={name} images={images} />
-                    ))
+                    entries.map(entry => entry && <Entry key={entry.id} {...entry} />)
                 ) : (
                     <React.Fragment>
                         <SkeletonOverlay />

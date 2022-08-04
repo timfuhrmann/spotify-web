@@ -3,35 +3,29 @@ import styled from "styled-components";
 import { Track } from "../../shared/Track/Track";
 import { useSavedTracks } from "./SavedTracksProvider";
 import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
+import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 
 const TracksWrapper = styled.div``;
 
 export const SavedTracksList: React.FC = () => {
-    const { tracks, total, isLoading, hasNextPage, fetchNextPage, handleRemoveTrack } =
+    const { isTrackPlaying } = useCurrentTrackSelector();
+    const { tracks, total, isLoading, hasNextPage, fetchNextPage, handlePlay, handleRemoveTrack } =
         useSavedTracks();
-
-    const handleLoadMore = () => {
-        if (isLoading || !hasNextPage) {
-            return;
-        }
-
-        fetchNextPage();
-    };
 
     return (
         <TracksWrapper>
             <ListInfiniteTracks
                 columns={5}
                 rows={total}
-                loadMore={handleLoadMore}
-                hasMore={hasNextPage}>
+                hasMore={hasNextPage}
+                isLoading={isLoading}
+                loadMore={fetchNextPage}>
                 {tracks.map(
                     ({ track, added_at }, index) =>
                         track && (
                             <Track
                                 key={index}
                                 index={index}
-                                isSaved={true}
                                 addedAt={added_at}
                                 id={track.id}
                                 name={track.name}
@@ -40,6 +34,9 @@ export const SavedTracksList: React.FC = () => {
                                 duration_ms={track.duration_ms}
                                 artists={track.artists}
                                 album={track.album}
+                                isPlaying={isTrackPlaying(track.uri)}
+                                isSaved={true}
+                                onPlay={handlePlay}
                                 onRemoveTrack={handleRemoveTrack}
                             />
                         )

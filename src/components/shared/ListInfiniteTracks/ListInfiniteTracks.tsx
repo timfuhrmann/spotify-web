@@ -34,13 +34,15 @@ interface ListTracksProps {
     columns: 3 | 5;
     rows: number;
     hasMore: boolean;
-    loadMore: (page: number) => void;
+    isLoading: boolean;
+    loadMore: () => void;
 }
 
 export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = ({
     rows,
     columns,
     hasMore,
+    isLoading,
     loadMore,
     children,
 }) => {
@@ -49,16 +51,24 @@ export const ListInfiniteTracks: React.FC<PropsWithChildren<ListTracksProps>> = 
 
     const pathname = pathnameFromAsPath(asPath);
 
+    const handeLoadMore = () => {
+        if (isLoading || !hasMore) {
+            return;
+        }
+
+        loadMore();
+    };
+
     return (
         <ListWrapper>
             <ListGrid role="grid" aria-colcount={columns} aria-rowcount={rows} $columns={columns}>
                 <ListInfiniteTracksHead key={pathname} columns={columns} />
                 <InfiniteScroll
                     hasMore={hasMore}
-                    loadMore={loadMore}
+                    loadMore={handeLoadMore}
                     threshold={1500}
                     useWindow={false}
-                    loader={<ListInfiniteTracksLoader columns={columns} />}
+                    loader={<ListInfiniteTracksLoader columns={columns} key={0} />}
                     getScrollParent={() => targetRef.current}>
                     {children}
                 </InfiniteScroll>

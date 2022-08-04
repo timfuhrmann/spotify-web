@@ -27,17 +27,36 @@ export const configSpotify = {
 };
 
 export const SPOTIFY_SCOPES = [
+    // playback
     "streaming",
-    "user-read-email",
+
+    // spotify connect
+    "user-modify-playback-state",
+    "user-read-playback-state",
+    "user-read-currently-playing",
+
+    // listening history
+    "user-read-recently-played",
+    "user-read-playback-position",
+    "user-top-read",
+
+    // playlists
     "playlist-read-collaborative",
     "playlist-modify-public",
     "playlist-read-private",
     "playlist-modify-private",
+
+    // users
+    "user-read-email",
+    "user-read-private",
+
+    // library
     "user-library-modify",
     "user-library-read",
+
+    // follow
     "user-follow-modify",
     "user-follow-read",
-    "user-top-read",
 ].join(" ");
 
 const SPOTIFY_AUTHORIZATION =

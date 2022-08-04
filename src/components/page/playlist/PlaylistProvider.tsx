@@ -1,9 +1,10 @@
-import React, { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
 import { getPlaylistTracks, PLAYLIST_TRACKS_OFFSET } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
 import { PlaylistProps } from "./Playlist";
+import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
 
 interface PlaylistContextData {
     isFollowing: boolean;
@@ -13,6 +14,7 @@ interface PlaylistContextData {
     isLoading: boolean;
     hasNextPage: boolean;
     fetchNextPage: () => void;
+    handlePlay: (index?: number) => void;
     handleSaveTrack: (id: string, index: number) => void;
     handleRemoveTrack: (id: string, index: number) => void;
     handleFollowPlaylist: () => void;
@@ -26,6 +28,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     children,
 }) => {
     const { access_token } = useSession();
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
     const {
         isFollowing,
@@ -65,6 +68,16 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         return tracksPages.pages.flatMap(page => (page ? page.items : []));
     }, [playlist, tracksPages]);
 
+    const handlePlay = useCallback(
+        (index: number = 0) => {
+            mutatePlay({
+                offset: { position: index },
+                context_uri: playlist.uri,
+            });
+        },
+        [playlist]
+    );
+
     return (
         <PlaylistContext.Provider
             value={{
@@ -77,6 +90,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
                 isLoading,
                 hasNextPage,
                 fetchNextPage,
+                handlePlay,
                 handleFollowPlaylist: () => handleFollowPlaylistQuery(playlist),
                 handleUnfollowPlaylist: () => handleUnfollowPlaylistQuery(playlist.id),
             }}>

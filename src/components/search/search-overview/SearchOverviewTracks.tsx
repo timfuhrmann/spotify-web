@@ -6,6 +6,7 @@ import { useSearchOverview } from "./SearchOverviewProvider";
 import { useSelector } from "react-redux";
 import { RootState } from "@lib/redux";
 import { createArray } from "@lib/util";
+import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 
 const TracksList = styled.div`
     ${TrackGrid} {
@@ -15,7 +16,8 @@ const TracksList = styled.div`
 
 export const SearchOverviewTracks: React.FC = () => {
     const tracks = useSelector((state: RootState) => state.search.tracks);
-    const { savedTracks, handleSaveTrack, handleRemoveTrack } = useSearchOverview();
+    const { isTrackPlaying } = useCurrentTrackSelector();
+    const { savedTracks, handlePlay, handleSaveTrack, handleRemoveTrack } = useSearchOverview();
 
     return (
         <TracksList
@@ -26,16 +28,19 @@ export const SearchOverviewTracks: React.FC = () => {
                 <React.Fragment>
                     {tracks.items
                         .slice(0, Math.min(4, tracks.total))
-                        .map(({ id, name, explicit, duration_ms, album }, index) => (
+                        .map(({ id, uri, name, explicit, duration_ms, album, artists }, index) => (
                             <Track
                                 key={index}
                                 index={index}
                                 id={id}
                                 name={name}
                                 images={album.images}
+                                artists={artists}
                                 explicit={explicit}
                                 duration_ms={duration_ms}
+                                isPlaying={isTrackPlaying(uri)}
                                 isSaved={savedTracks[index] || false}
+                                onPlay={handlePlay}
                                 onSaveTrack={handleSaveTrack}
                                 onRemoveTrack={handleRemoveTrack}
                             />

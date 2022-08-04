@@ -4,6 +4,7 @@ import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteT
 import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
 import { useSavedAlbumsContainsQuery } from "@lib/api/album/hook/useSavedAlbumsContainsQuery";
+import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 
@@ -15,6 +16,7 @@ interface AlbumContextData {
     isLoading: boolean;
     hasNextPage: boolean;
     fetchNextPage: () => void;
+    handlePlay: (index?: number) => void;
     handleSaveTrack: (id: string, index: number) => void;
     handleRemoveTrack: (id: string, index: number) => void;
     handleSaveAlbum: () => void;
@@ -25,6 +27,7 @@ const AlbumContext = createContext<AlbumContextData>({} as AlbumContextData);
 
 export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, children }) => {
     const { access_token } = useSession();
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
     const {
         data: savedAlbumsContains,
@@ -76,6 +79,16 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         return mapTracksByDiscNumber(tracksPages.pages.flatMap(page => (page ? page.items : [])));
     }, [tracksPages, album]);
 
+    const handlePlay = useCallback(
+        (index: number = 0) => {
+            mutatePlay({
+                offset: { position: index },
+                context_uri: album.uri,
+            });
+        },
+        [album]
+    );
+
     return (
         <AlbumContext.Provider
             value={{
@@ -86,6 +99,7 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
                 isLoading,
                 hasNextPage,
                 fetchNextPage,
+                handlePlay,
                 handleSaveTrack,
                 handleRemoveTrack,
                 handleSaveAlbum: () => handleSaveAlbum(album.id, 0),

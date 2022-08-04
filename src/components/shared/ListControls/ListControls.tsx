@@ -42,6 +42,7 @@ const ControlsPlay = styled.div`
 `;
 
 interface ListControlsProps {
+    onPlay: () => void;
     owner?: SpotifyApi.UserObjectPublic | null;
     isFollowing?: boolean;
     onFollow?: () => void;
@@ -52,16 +53,17 @@ interface ListControlsProps {
 export const ListControls: React.FC<ListControlsProps> = ({
     owner,
     isFollowing,
+    hideFollow,
+    onPlay,
     onFollow,
     onUnfollow,
-    hideFollow,
 }) => {
     const { session } = useSession();
 
     return (
         <ControlsWrapper>
             <ControlsPlay>
-                <PlayButton />
+                <PlayButton onClick={() => onPlay()} />
             </ControlsPlay>
             {(!owner || (session && session.id !== owner.id)) && !hideFollow && (
                 <React.Fragment>

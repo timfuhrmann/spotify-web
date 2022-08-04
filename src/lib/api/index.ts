@@ -11,5 +11,7 @@ export const request = <T = unknown>(
     options: AxiosRequestConfig
 ): Promise<T> => {
     client.defaults.headers.common.Authorization = `Bearer ${access_token}`;
-    return client(options).then(response => response.data);
+    return client(options)
+        .then(response => response.data)
+        .catch(console.log);
 };

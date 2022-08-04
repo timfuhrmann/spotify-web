@@ -1,4 +1,4 @@
-import React, { NamedExoticComponent } from "react";
+import React, { NamedExoticComponent, useState } from "react";
 import styled from "styled-components";
 import { TrackTitle } from "./TrackTitle";
 import { TrackAlbum } from "./TrackAlbum";
@@ -11,13 +11,20 @@ import { UnfollowHeart } from "@icon/UnfollowHeart";
 import { TrackGrid } from "@css/helper/track";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 import { Skeleton } from "@lib/skeleton";
+import { Pause } from "@icon/Pause";
 
-const TrackPlay = styled(Play)`
+const TrackPlay = styled.button`
     display: none;
-    width: 1.6rem;
 `;
 
-const TrackNumber = styled.span``;
+const TrackPlaying = styled.img`
+    position: absolute;
+    width: 1.4rem;
+`;
+
+const TrackNumber = styled.span<{ $isPlaying: boolean }>`
+    display: ${p => p.$isPlaying && "none"};
+`;
 
 const TrackButton = styled.button`
     display: flex;
@@ -29,18 +36,19 @@ const TrackWrapper = styled(TrackGrid)`
     ${text("textSm")};
 
     ${p => hover`
-        color: ${p.theme.gray900};
-        background-color: ${p.theme.gray100};
-      
-        ${TrackPlay},
-        ${TrackButton} {
-            display: flex;
-        }
+    color: ${p.theme.gray900};
+    background-color: ${p.theme.gray100};
 
-        ${TrackNumber} {
-            display: none;
-        }
-    `};
+    ${TrackPlay},
+    ${TrackButton} {
+      display: flex;
+    }
+
+    ${TrackNumber},
+    ${TrackPlaying} {
+      display: none;
+    }
+  `};
 
     &:focus {
         color: ${p => p.theme.gray900};
@@ -51,7 +59,8 @@ const TrackWrapper = styled(TrackGrid)`
             display: flex;
         }
 
-        ${TrackNumber} {
+        ${TrackNumber},
+        ${TrackPlaying} {
             display: none;
         }
     }
@@ -91,8 +100,8 @@ const TrackSave = styled(FollowHeart)`
     color: ${p => p.theme.gray700};
 
     ${p => hover`
-        color: ${p.theme.gray900};
-    `};
+    color: ${p.theme.gray900};
+  `};
 `;
 
 const TrackRemove = styled(UnfollowHeart)`
@@ -100,8 +109,8 @@ const TrackRemove = styled(UnfollowHeart)`
     color: ${p => p.theme.primary200};
 
     ${p => hover`
-        color: ${p.theme.primary100};
-    `};
+    color: ${p.theme.primary100};
+  `};
 `;
 
 interface ParentComposition {
@@ -115,15 +124,17 @@ interface TrackProps {
     explicit: boolean;
     duration_ms: number;
     isSaved: boolean;
+    isPlaying: boolean;
     images?: SpotifyApi.ImageObject[];
     artists?: SpotifyApi.ArtistObjectSimplified[];
     album?: SpotifyApi.AlbumObjectSimplified;
     addedAt?: string;
+    onPlay?: (index: number) => void;
     onSaveTrack?: (id: string, index: number) => void;
     onRemoveTrack?: (id: string, index: number) => void;
 }
 
-//@ts-ignore
+// @ts-ignore
 export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React.memo(
     ({
         index,
@@ -135,19 +146,50 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
         explicit,
         duration_ms,
         isSaved,
+        isPlaying,
         addedAt,
+        onPlay,
         onSaveTrack,
         onRemoveTrack,
     }) => {
+        const [isFocused, setIsFocused] = useState<boolean>(false);
+
         const buttonSaveLabel = isSaved ? "Remove from library" : "Add to library";
 
+        const handlePlay = () => {
+            if (!onPlay) {
+                return;
+            }
+
+            onPlay(index);
+        };
+
         return (
-            <TrackWrapper role="row" aria-rowindex={index} tabIndex={1}>
+            <TrackWrapper
+                role="row"
+                aria-selected={isFocused}
+                aria-rowindex={index}
+                tabIndex={0}
+                draggable="true"
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                onDoubleClick={handlePlay}>
                 <TrackIndex>
-                    <TrackNumber>{index + 1}</TrackNumber>
-                    <TrackPlay />
+                    {isPlaying && (
+                        <TrackPlaying src="https://open.spotifycdn.com/cdn/images/equaliser-animated-green.f93a2ef4.gif" />
+                    )}
+                    <TrackNumber $isPlaying={isPlaying}>{index + 1}</TrackNumber>
+                    <TrackPlay type="button" onClick={handlePlay}>
+                        {isPlaying ? <Pause width="16" /> : <Play width="16" />}
+                    </TrackPlay>
                 </TrackIndex>
-                <TrackTitle name={name} images={images} artists={artists} explicit={explicit} />
+                <TrackTitle
+                    name={name}
+                    images={images}
+                    artists={artists}
+                    explicit={explicit}
+                    isPlaying={isPlaying}
+                />
                 {album && <TrackAlbum {...album} />}
                 {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
                 <TrackDuration>
@@ -179,7 +221,7 @@ interface TrackSkeletonProps {
     hideAddedAt?: boolean;
 }
 
-const TrackSkeleton: React.FC<TrackSkeletonProps> = ({
+export const TrackSkeleton: React.FC<TrackSkeletonProps> = ({
     hideAlbum,
     hideAddedAt,
     hideAlbumCover,
@@ -213,5 +255,5 @@ const TrackSkeleton: React.FC<TrackSkeletonProps> = ({
     );
 };
 
-Track.Skeleton = TrackSkeleton;
 Track.displayName = "Track";
+Track.Skeleton = TrackSkeleton;

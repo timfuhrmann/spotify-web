@@ -1,5 +1,5 @@
 import React from "react";
-import { SavedTracksProvider } from "./SavedTracksProvider";
+import { SavedTracksProvider, useSavedTracks } from "./SavedTracksProvider";
 import { ListHead } from "../../shared/ListHead/ListHead";
 import { SavedTracksHeadFooter } from "./SavedTracksHeadFooter";
 import { ListBody } from "../../shared/ListBody";
@@ -29,6 +29,8 @@ export interface SavedTracksProps {
 }
 
 export const SavedTracks: React.FC<SavedTracksProps> = props => {
+    const { handlePlay } = useSavedTracks();
+
     return (
         <SavedTracksProvider {...props}>
             <ListHead
@@ -38,7 +40,7 @@ export const SavedTracks: React.FC<SavedTracksProps> = props => {
                 renderFooter={<SavedTracksHeadFooter />}
             />
             <ListBody>
-                <ListControls hideFollow />
+                <ListControls hideFollow onPlay={handlePlay} />
                 <SavedTracksList />
             </ListBody>
         </SavedTracksProvider>

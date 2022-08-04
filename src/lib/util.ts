@@ -46,13 +46,3 @@ export const createArray = (length: number) => {
 export const pathnameFromAsPath = (asPath: string) => {
     return asPath.split(/[?#]/)[0] || asPath;
 };
-
-export const removeLastSlugFromPath = (path: string) => {
-    const arr = path.split("/");
-
-    if (arr.length < 2) {
-        return path;
-    }
-
-    return arr.slice(0, -1).join("/");
-};

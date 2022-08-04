@@ -29,12 +29,13 @@ interface ArtistBodyProps {
 }
 
 export const ArtistBody: React.FC<ArtistBodyProps> = ({ id, name, tracks }) => {
-    const { isFollowing, handleFollowArtist, handleUnfollowArtist } = useArtist();
+    const { isFollowing, handlePlay, handleFollowArtist, handleUnfollowArtist } = useArtist();
 
     return (
         <ListBody>
             <BodyControls>
                 <ListControls
+                    onPlay={handlePlay}
                     isFollowing={isFollowing}
                     onFollow={handleFollowArtist}
                     onUnfollow={handleUnfollowArtist}

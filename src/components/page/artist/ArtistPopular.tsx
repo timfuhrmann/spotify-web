@@ -6,6 +6,7 @@ import { useArtist } from "./ArtistProvider";
 import { text } from "@css/helper/typography";
 import { content } from "@css/helper/content";
 import { SecondaryButton } from "../../shared/SecondaryButton";
+import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 
 const PopularWrapper = styled.div`
     ${content()};
@@ -39,6 +40,7 @@ interface ArtistPopularProps {
 }
 
 export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
+    const { isTrackPlaying } = useCurrentTrackSelector();
     const {
         savedTracks,
         popularTracksLength,
@@ -46,6 +48,7 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
         hasLessPopularTracks,
         showMorePopularTracks,
         showLessPopularTracks,
+        handlePlay,
         handleSaveTrack,
         handleRemoveTrack,
     } = useArtist();
@@ -56,7 +59,7 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
             <PopularList aria-rowcount={popularTracksLength} aria-colcount={3}>
                 {tracks
                     .slice(0, popularTracksLength)
-                    .map(({ id, name, explicit, duration_ms, album }, index) => (
+                    .map(({ uri, id, name, explicit, duration_ms, album }, index) => (
                         <Track
                             key={index}
                             index={index}
@@ -65,7 +68,9 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
                             images={album.images}
                             explicit={explicit}
                             duration_ms={duration_ms}
+                            isPlaying={isTrackPlaying(uri)}
                             isSaved={savedTracks[index] || false}
+                            onPlay={handlePlay}
                             onSaveTrack={handleSaveTrack}
                             onRemoveTrack={handleRemoveTrack}
                         />

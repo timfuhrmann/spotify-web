@@ -6,6 +6,7 @@ import { text } from "@css/helper/typography";
 import { TrackGrid } from "@css/helper/track";
 import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
 import { Disc } from "@icon/Disc";
+import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 
 const TracksWrapper = styled.div``;
 
@@ -26,11 +27,13 @@ const TracksIndex = styled(TracksColumn)`
 `;
 
 export const AlbumTracks: React.FC = () => {
+    const { isTrackPlaying } = useCurrentTrackSelector();
     const {
         total,
         discs,
         savedTracks,
         isLoading,
+        handlePlay,
         hasNextPage,
         fetchNextPage,
         handleSaveTrack,
@@ -39,21 +42,14 @@ export const AlbumTracks: React.FC = () => {
 
     const hasDisc = Object.keys(discs).length > 1;
 
-    const handleLoadMore = () => {
-        if (isLoading || !hasNextPage) {
-            return;
-        }
-
-        fetchNextPage();
-    };
-
     return (
         <TracksWrapper>
             <ListInfiniteTracks
-                loadMore={handleLoadMore}
-                hasMore={hasNextPage}
+                columns={3}
                 rows={hasDisc ? total + Object.keys(discs).length : total}
-                columns={3}>
+                isLoading={isLoading}
+                hasMore={hasNextPage}
+                loadMore={fetchNextPage}>
                 {Object.keys(discs).map(discNumber => (
                     <TracksDisc key={discNumber} role="rowgroup" aria-label={`Disc ${discNumber}`}>
                         {hasDisc && (
@@ -66,7 +62,7 @@ export const AlbumTracks: React.FC = () => {
                         )}
                         <React.Fragment>
                             {discs[discNumber].map(
-                                ({ id, name, explicit, duration_ms, artists }, index) => (
+                                ({ uri, id, name, explicit, duration_ms, artists }, index) => (
                                     <Track
                                         key={index}
                                         index={index}
@@ -75,7 +71,9 @@ export const AlbumTracks: React.FC = () => {
                                         explicit={explicit}
                                         duration_ms={duration_ms}
                                         artists={artists}
+                                        isPlaying={isTrackPlaying(uri)}
                                         isSaved={savedTracks[index] || false}
+                                        onPlay={handlePlay}
                                         onSaveTrack={handleSaveTrack}
                                         onRemoveTrack={handleRemoveTrack}
                                     />

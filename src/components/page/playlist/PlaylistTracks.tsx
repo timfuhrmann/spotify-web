@@ -2,8 +2,10 @@ import React from "react";
 import { usePlaylist } from "./PlaylistProvider";
 import { Track } from "../../shared/Track/Track";
 import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
+import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 
 export const PlaylistTracks: React.FC = () => {
+    const { isTrackPlaying } = useCurrentTrackSelector();
     const {
         tracks,
         total,
@@ -11,31 +13,24 @@ export const PlaylistTracks: React.FC = () => {
         isLoading,
         hasNextPage,
         fetchNextPage,
+        handlePlay,
         handleSaveTrack,
         handleRemoveTrack,
     } = usePlaylist();
-
-    const handleLoadMore = () => {
-        if (isLoading || !hasNextPage) {
-            return;
-        }
-
-        fetchNextPage();
-    };
 
     return (
         <ListInfiniteTracks
             columns={5}
             rows={total}
-            loadMore={handleLoadMore}
-            hasMore={hasNextPage}>
+            isLoading={isLoading}
+            hasMore={hasNextPage}
+            loadMore={fetchNextPage}>
             {tracks.map(
                 ({ track, added_at }, index) =>
                     track && (
                         <Track
                             key={index}
                             index={index}
-                            isSaved={savedTracks[index] || false}
                             addedAt={added_at}
                             id={track.id}
                             name={track.name}
@@ -44,6 +39,9 @@ export const PlaylistTracks: React.FC = () => {
                             artists={track.artists}
                             images={track.album.images}
                             album={track.album}
+                            isSaved={savedTracks[index] || false}
+                            isPlaying={isTrackPlaying(track.uri)}
+                            onPlay={handlePlay}
                             onSaveTrack={handleSaveTrack}
                             onRemoveTrack={handleRemoveTrack}
                         />

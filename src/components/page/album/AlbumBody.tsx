@@ -5,11 +5,12 @@ import { AlbumTracks } from "./AlbumTracks";
 import { useAlbum } from "./AlbumProvider";
 
 export const AlbumBody: React.FC = () => {
-    const { isFollowing, handleSaveAlbum, handleRemoveAlbum } = useAlbum();
+    const { isFollowing, handlePlay, handleSaveAlbum, handleRemoveAlbum } = useAlbum();
 
     return (
         <ListBody>
             <ListControls
+                onPlay={handlePlay}
                 isFollowing={isFollowing}
                 onFollow={handleSaveAlbum}
                 onUnfollow={handleRemoveAlbum}

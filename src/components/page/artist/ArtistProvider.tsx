@@ -1,4 +1,11 @@
-import React, { createContext, PropsWithChildren, useContext, useMemo, useState } from "react";
+import React, {
+    createContext,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from "react";
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
 import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
@@ -6,6 +13,7 @@ import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuer
 import { followArtist, unfollowArtist } from "@lib/api/artist";
 import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
 import { AlbumGroupType } from "@lib/api/album";
+import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
 
 interface ArtistContextData {
     isFollowing: boolean;
@@ -16,6 +24,7 @@ interface ArtistContextData {
     hasLessPopularTracks: boolean;
     showMorePopularTracks: () => void;
     showLessPopularTracks: () => void;
+    handlePlay: (index?: number) => void;
     handleSaveTrack: (id: string, index: number) => void;
     handleRemoveTrack: (id: string, index: number) => void;
     handleFollowArtist: () => void;
@@ -30,6 +39,7 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     children,
 }) => {
     const { access_token } = useSession();
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
     const [popularTracksLength, setPopularTracksLength] = useState(Math.min(5, topTracks.length));
 
     const {
@@ -83,6 +93,15 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         setPopularTracksLength(Math.min(5, topTracks.length));
     };
 
+    const handlePlay = useCallback(
+        (index: number = 0) => {
+            mutatePlay({
+                uris: topTracks.slice(index).map(track => track.uri),
+            });
+        },
+        [topTracks]
+    );
+
     const handleFollowArtist = () => {
         if (!access_token) {
             return;
@@ -112,6 +131,7 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
                 hasLessPopularTracks,
                 showMorePopularTracks,
                 showLessPopularTracks,
+                handlePlay,
                 handleSaveTrack,
                 handleRemoveTrack,
                 handleFollowArtist,

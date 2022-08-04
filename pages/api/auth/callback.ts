@@ -19,10 +19,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.redirect("/");
         }
 
-        return res.status(500).send("Error trying to authenticate.");
+        return res
+            .status(500)
+            .send(
+                "Error trying to authenticate. Demo can only be accessed with registered Spotify developer accounts."
+            );
     } catch (e) {
         removeAuthCookies(res);
         console.error(e);
-        return res.status(500).send("Error trying to authenticate.");
+        return res
+            .status(500)
+            .send(
+                "Error trying to authenticate. Demo can only be accessed with registered Spotify developer accounts."
+            );
     }
 }

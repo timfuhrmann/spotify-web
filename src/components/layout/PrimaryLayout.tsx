@@ -7,6 +7,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { withOverlayScroll } from "@lib/context/overlay-scroll/OverlayScrollProvider";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
 import { pathnameFromAsPath } from "@lib/util";
+import { Playing } from "./Playing/Playing";
 
 const LayoutGrid = styled.div`
     display: grid;
@@ -41,9 +42,6 @@ const LayoutMain = styled.div`
 const LayoutPlaying = styled.div`
     grid-area: playing;
     z-index: 4;
-    background-color: ${p => p.theme.gray50};
-    border-top: 0.1rem solid ${p => p.theme.gray200};
-    height: 7rem;
 `;
 
 interface PrimaryLayoutProps {
@@ -72,7 +70,9 @@ export const PrimaryLayout = withOverlayScroll<PropsWithChildren<PrimaryLayoutPr
                         {children}
                     </OverlayScrollbarsComponent>
                 </LayoutMain>
-                <LayoutPlaying />
+                <LayoutPlaying>
+                    <Playing />
+                </LayoutPlaying>
             </LayoutGrid>
         );
     }

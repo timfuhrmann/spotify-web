@@ -11,6 +11,7 @@ import { SessionProvider } from "@lib/context/session/SessionProvider";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "@lib/api";
 import { Provider as ReduxProvider } from "react-redux";
+import { PlayerProvider } from "@lib/player";
 
 interface AppPropsWithLayout extends AppProps {
     Component: NextPageWithLayout;
@@ -24,8 +25,10 @@ const App: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
             <QueryClientProvider client={queryClient}>
                 <SessionProvider>
                     <ReduxProvider store={store}>
-                        <GlobalStyle />
-                        {getLayout(<Component {...pageProps} />)}
+                        <PlayerProvider>
+                            <GlobalStyle />
+                            {getLayout(<Component {...pageProps} />)}{" "}
+                        </PlayerProvider>
                     </ReduxProvider>
                 </SessionProvider>
             </QueryClientProvider>

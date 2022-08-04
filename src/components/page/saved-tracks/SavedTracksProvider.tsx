@@ -4,6 +4,7 @@ import { SavedTracksProps } from "./SavedTracks";
 import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
 import { getSavedTracks, removeTracks } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
+import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
 
 interface SavedTracksContextData {
     tracks: SpotifyApi.SavedTrackObject[];
@@ -11,6 +12,7 @@ interface SavedTracksContextData {
     isLoading: boolean;
     hasNextPage: boolean;
     fetchNextPage: () => void;
+    handlePlay: (index?: number) => void;
     handleRemoveTrack: (id: string, index: number) => void;
 }
 
@@ -21,6 +23,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
     children,
 }) => {
     const { access_token } = useSession();
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
     const { isLoading, tracksPages, hasNextPage, fetchNextPage, writeToTracksCache } =
         useInfiniteTracks<SpotifyApi.UsersSavedTracksResponse>({
@@ -83,6 +86,15 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
         [access_token]
     );
 
+    const handlePlay = useCallback(
+        (index: number = 0) => {
+            mutatePlay({
+                uris: tracks.slice(index).map(item => item.track.uri),
+            });
+        },
+        [tracks]
+    );
+
     return (
         <SavedTracksContext.Provider
             value={{
@@ -91,6 +103,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
                 isLoading,
                 hasNextPage,
                 fetchNextPage,
+                handlePlay,
                 handleRemoveTrack,
             }}>
             {children}

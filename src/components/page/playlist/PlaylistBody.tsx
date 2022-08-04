@@ -9,13 +9,14 @@ interface PlaylistBodyProps {
 }
 
 export const PlaylistBody: React.FC<PlaylistBodyProps> = ({ owner }) => {
-    const { isFollowing, handleFollowPlaylist, handleUnfollowPlaylist } = usePlaylist();
+    const { isFollowing, handlePlay, handleFollowPlaylist, handleUnfollowPlaylist } = usePlaylist();
 
     return (
         <ListBody>
             <ListControls
                 owner={owner}
                 isFollowing={isFollowing}
+                onPlay={handlePlay}
                 onFollow={handleFollowPlaylist}
                 onUnfollow={handleUnfollowPlaylist}
             />

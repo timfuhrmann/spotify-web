@@ -27,13 +27,13 @@ const TitleFrame = styled.div`
     min-width: 0;
 `;
 
-const TitleName = styled.div`
+const TitleName = styled.div<{ $isPlaying?: boolean }>`
     ${text("textMd")};
     line-height: 1.1;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: ${p => p.theme.gray900};
+    color: ${p => (p.$isPlaying ? p.theme.primary300 : p.theme.gray900)};
     margin-bottom: 0.4rem;
 
     &:last-child {
@@ -69,6 +69,7 @@ interface ParentComposition {
 interface PlaylistTrackTitleProps {
     name: string;
     explicit: boolean;
+    isPlaying: boolean;
     artists?: SpotifyApi.ArtistObjectSimplified[];
     images?: SpotifyApi.ImageObject[];
 }
@@ -78,6 +79,7 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> & ParentComposition =
     images,
     artists,
     explicit,
+    isPlaying,
 }) => {
     const { targetRef } = useOverlayScroll();
 
@@ -91,11 +93,12 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> & ParentComposition =
                         sizes="40px"
                         rootMargin="1000px"
                         rootRef={targetRef}
+                        draggable={false}
                     />
                 </TitleCover>
             )}
             <TitleFrame>
-                <TitleName>{name}</TitleName>
+                <TitleName $isPlaying={isPlaying}>{name}</TitleName>
                 {(explicit || artists) && (
                     <TitleFooter>
                         {explicit && <Explicit />}
@@ -107,7 +110,9 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> & ParentComposition =
                                             href={"/artist/" + artist.id}
                                             passHref
                                             prefetch={false}>
-                                            <TitleArtist>{artist.name}</TitleArtist>
+                                            <TitleArtist draggable="false">
+                                                {artist.name}
+                                            </TitleArtist>
                                         </Link>
                                         {index < artists.length - 1 && ", "}
                                     </React.Fragment>

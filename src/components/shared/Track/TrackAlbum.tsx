@@ -33,7 +33,7 @@ export const TrackAlbum: React.FC<SpotifyApi.AlbumObjectSimplified> & ParentComp
     return (
         <AlbumWrapper>
             <Link href={"/album/" + id} label={name} prefetch={false}>
-                <AlbumName>{name}</AlbumName>
+                <AlbumName draggable="false">{name}</AlbumName>
             </Link>
         </AlbumWrapper>
     );
