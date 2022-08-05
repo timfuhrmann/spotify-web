@@ -8,6 +8,6 @@ export const usePlaybackStateQuery = () => {
     return useQuery(
         ["playback-state", access_token],
         () => request<SpotifyApi.CurrentPlaybackResponse>(access_token!, { url: "/me/player" }),
-        { enabled: !!access_token, refetchOnWindowFocus: false }
+        { enabled: !!access_token }
     );
 };

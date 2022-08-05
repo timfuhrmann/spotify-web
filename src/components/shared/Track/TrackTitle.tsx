@@ -33,7 +33,7 @@ const TitleName = styled.div<{ $isPlaying?: boolean }>`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: ${p => (p.$isPlaying ? p.theme.primary300 : p.theme.gray900)};
+    color: ${p => (p.$isPlaying ? p.theme.primary200 : p.theme.gray900)};
     margin-bottom: 0.4rem;
 
     &:last-child {

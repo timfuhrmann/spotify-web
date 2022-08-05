@@ -33,6 +33,7 @@ export const SearchOverviewTracks: React.FC = () => {
                                 key={index}
                                 index={index}
                                 id={id}
+                                uri={uri}
                                 name={name}
                                 images={album.images}
                                 artists={artists}

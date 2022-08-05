@@ -98,7 +98,7 @@ export const Entry: NamedExoticComponent<EntryProps> & ParentComposition = React
                     )}
                 </EntryFrame>
                 <EntryName>{name}</EntryName>
-                <Link label={name} href={`/${type}/${id}`}>
+                <Link label={name} href={`/${type}/${id}`} prefetch={false}>
                     <EntryAnchor />
                 </Link>
             </EntryWrapper>

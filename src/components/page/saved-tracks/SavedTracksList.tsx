@@ -28,6 +28,7 @@ export const SavedTracksList: React.FC = () => {
                                 index={index}
                                 addedAt={added_at}
                                 id={track.id}
+                                uri={track.uri}
                                 name={track.name}
                                 images={track.album.images}
                                 explicit={track.explicit}

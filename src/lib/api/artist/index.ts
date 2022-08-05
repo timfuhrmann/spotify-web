@@ -1,5 +1,6 @@
 import { request } from "@lib/api";
 import { AlbumGroup } from "@lib/api/album";
+import { number } from "prop-types";
 
 export const ALBUM_TRACKS_OFFSET = 50;
 
@@ -25,11 +26,12 @@ export const getArtistsTopTracks = async (
 export const getArtistsAlbums = async (
     access_token: string,
     id: string,
-    include_groups: AlbumGroup[] = [AlbumGroup.Album, AlbumGroup.Single, AlbumGroup.Compilation]
+    include_groups: AlbumGroup[] = [AlbumGroup.Album, AlbumGroup.Single, AlbumGroup.Compilation],
+    limit: number = ALBUM_TRACKS_OFFSET
 ): Promise<SpotifyApi.ArtistsAlbumsResponse> => {
     return request(access_token, {
         url: "/artists/" + id + "/albums",
-        params: { include_groups: include_groups.join(","), limit: ALBUM_TRACKS_OFFSET },
+        params: { include_groups: include_groups.join(","), limit },
     });
 };
 

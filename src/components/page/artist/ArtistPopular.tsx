@@ -64,6 +64,7 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
                             key={index}
                             index={index}
                             id={id}
+                            uri={uri}
                             name={name}
                             images={album.images}
                             explicit={explicit}

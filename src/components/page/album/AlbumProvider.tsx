@@ -5,6 +5,8 @@ import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@li
 import { useSession } from "@lib/context/session";
 import { useSavedAlbumsContainsQuery } from "@lib/api/album/hook/useSavedAlbumsContainsQuery";
 import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
+import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
+import { getIdFromQuery } from "@lib/util";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 
@@ -12,6 +14,8 @@ interface AlbumContextData {
     isFollowing: boolean;
     total: number;
     discs: AlbumDiscs;
+    artist: SpotifyApi.ArtistObjectSimplified;
+    otherAlbums: SpotifyApi.AlbumObjectSimplified[] | null;
     savedTracks: boolean[];
     isLoading: boolean;
     hasNextPage: boolean;
@@ -29,11 +33,15 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
     const { access_token } = useSession();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
+    const artist = album.artists[0];
+
     const {
         data: savedAlbumsContains,
         handleSaveAlbum,
         handleRemoveAlbum,
     } = useSavedAlbumsContainsQuery([album.id]);
+
+    const { data: otherAlbumsData } = useArtistsAlbumsQuery(artist.id, undefined, 8);
 
     const {
         isLoading,
@@ -79,6 +87,21 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         return mapTracksByDiscNumber(tracksPages.pages.flatMap(page => (page ? page.items : [])));
     }, [tracksPages, album]);
 
+    const otherAlbums = useMemo(() => {
+        if (!otherAlbumsData) {
+            return null;
+        }
+
+        const albums = [...otherAlbumsData.items];
+        const index = albums.findIndex(item => item.id === album.id);
+
+        if (index > -1) {
+            albums.splice(index, 1);
+        }
+
+        return albums;
+    }, [album, otherAlbumsData]);
+
     const handlePlay = useCallback(
         (index: number = 0) => {
             mutatePlay({
@@ -95,6 +118,8 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
                 isFollowing: !!savedAlbumsContains && savedAlbumsContains[0],
                 total: album.total_tracks,
                 discs,
+                artist,
+                otherAlbums,
                 savedTracks,
                 isLoading,
                 hasNextPage,

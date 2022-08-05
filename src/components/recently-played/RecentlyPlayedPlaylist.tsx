@@ -6,7 +6,6 @@ import { fillParent, hover, square, transition } from "@css/helper";
 import { PlayButton } from "../shared/PlayButton";
 import { Link } from "@lib/link";
 import { Skeleton } from "@lib/skeleton";
-import { FastAverageColor } from "fast-average-color";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 import { useDominantColor } from "@lib/hook/useDominantColor";
 
@@ -108,7 +107,7 @@ export const RecentlyPlayedPlaylist: React.FC<RecentlyPlayedPlaylistProps> & Par
                     <PlayButton />
                 </PlaylistPlay>
             </PlaylistBody>
-            <Link href={"/playlist/" + id} label={name}>
+            <Link href={"/playlist/" + id} label={name} prefetch={false}>
                 <PlaylistAnchor />
             </Link>
         </PlaylistWrapper>

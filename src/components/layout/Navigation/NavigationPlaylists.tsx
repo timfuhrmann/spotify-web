@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { NavigationPlaylistItem } from "./NavigationPlaylistItem";
 import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
+import { useCurrentContext } from "@lib/redux/reducer/player/hook/useCurrentContext";
+import { usePaused } from "@lib/redux/reducer/player/hook/usePaused";
 
 const PlaylistsWrapper = styled.div`
     position: relative;
@@ -31,14 +33,21 @@ const PlaylistFrame = styled.div`
 
 export const NavigationPlaylists: React.FC = () => {
     const { data: playlists } = useRootPlaylistsQuery();
+    const currentContext = useCurrentContext();
+    const paused = usePaused();
 
     return (
         <PlaylistsWrapper>
             {playlists ? (
                 <PlaylistStage className="custom-scrollbar">
                     <PlaylistFrame>
-                        {playlists.map(({ id, name }) => (
-                            <NavigationPlaylistItem key={id} id={id} name={name} />
+                        {playlists.map(({ uri, id, name }) => (
+                            <NavigationPlaylistItem
+                                key={id}
+                                id={id}
+                                name={name}
+                                isPlaying={!paused && currentContext === uri}
+                            />
                         ))}
                     </PlaylistFrame>
                 </PlaylistStage>

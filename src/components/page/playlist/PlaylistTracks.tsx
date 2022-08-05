@@ -33,6 +33,7 @@ export const PlaylistTracks: React.FC = () => {
                             index={index}
                             addedAt={added_at}
                             id={track.id}
+                            uri={track.uri}
                             name={track.name}
                             explicit={track.explicit}
                             duration_ms={track.duration_ms}

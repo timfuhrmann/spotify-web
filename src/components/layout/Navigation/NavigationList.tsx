@@ -57,6 +57,11 @@ const ListPlus = styled(ListIconFrame)`
     background-color: currentColor;
 `;
 
+const PlusIcon = styled(Plus)`
+    width: 1.2rem;
+    color: ${p => p.theme.gray50};
+`;
+
 const ListHeart = styled(ListIconFrame)`
     background: ${p => p.theme.likedSongsGradient};
 `;
@@ -101,7 +106,7 @@ export const NavigationList: React.FC = () => {
                 <ListItem>
                     <ListAnchor as="div" aria-current={asPath === "/gdfd" && "page"}>
                         <ListPlus>
-                            <Plus width="12" />
+                            <PlusIcon />
                         </ListPlus>
                         Create playlist
                     </ListAnchor>

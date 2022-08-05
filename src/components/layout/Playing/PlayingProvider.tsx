@@ -1,8 +1,9 @@
-import React, { PropsWithChildren, useEffect } from "react";
+import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { usePlaybackStateQuery } from "@lib/api/player/usePlaybackStateQuery";
 import { RootState, useAppDispatch } from "@lib/redux";
 import {
     increaseProgress,
+    setCurrentContext,
     setCurrentTrack,
     setDuration,
     setPaused,
@@ -11,10 +12,14 @@ import {
 } from "@lib/redux/reducer/player";
 import { useSelector } from "react-redux";
 
+interface PlayingContextData {}
+
+const PlayingContext = createContext<PlayingContextData>({} as PlayingContextData);
+
 export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const dispatch = useAppDispatch();
-    const { paused, currentTrack } = useSelector((state: RootState) => state.player);
     const { data: playbackState } = usePlaybackStateQuery();
+    const { paused, currentTrack } = useSelector((state: RootState) => state.player);
 
     useEffect(() => {
         if (!playbackState || !playbackState.item || playbackState.item.type !== "track") {
@@ -22,10 +27,11 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
 
         dispatch(setDuration(playbackState.item.duration_ms));
-        dispatch(setCurrentTrack(playbackState.item));
         dispatch(setShuffle(playbackState.shuffle_state));
         dispatch(setPaused(!playbackState.is_playing));
         dispatch(setProgress(playbackState.progress_ms));
+        dispatch(setCurrentTrack(playbackState.item));
+        dispatch(setCurrentContext(playbackState.context ? playbackState.context.uri : null));
     }, [playbackState]);
 
     useEffect(() => {
@@ -40,5 +46,7 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
         return () => clearInterval(interval);
     }, [paused, currentTrack]);
 
-    return <React.Fragment>{children}</React.Fragment>;
+    return <PlayingContext.Provider value={{}}>{children}</PlayingContext.Provider>;
 };
+
+export const usePlaying = () => useContext(PlayingContext);

@@ -15,6 +15,7 @@ interface PlayerState {
     duration: number;
     progress_ms: number | null;
     currentTrack: Track | null;
+    currentContext: string | null;
 }
 
 const initialState: PlayerState = {
@@ -24,6 +25,7 @@ const initialState: PlayerState = {
     duration: 0,
     progress_ms: null,
     currentTrack: null,
+    currentContext: null,
 };
 
 const playerSlice = createSlice({
@@ -48,6 +50,9 @@ const playerSlice = createSlice({
         setCurrentTrack: (state, action: PayloadAction<Track | null>) => {
             state.currentTrack = action.payload;
         },
+        setCurrentContext: (state, action: PayloadAction<string | null>) => {
+            state.currentContext = action.payload;
+        },
         increaseProgress: state => {
             state.progress_ms = state.progress_ms !== null ? state.progress_ms + 1000 : 1000;
         },
@@ -61,6 +66,7 @@ export const {
     setProgress,
     setDuration,
     setCurrentTrack,
+    setCurrentContext,
     increaseProgress,
 } = playerSlice.actions;
 export default playerSlice.reducer;

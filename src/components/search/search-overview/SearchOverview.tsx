@@ -36,7 +36,7 @@ const OverviewHeadline = styled.div`
 `;
 
 export const SearchOverview: React.FC = () => {
-    const { topArtist, loading, tracks, artists, albums, playlists } = useSelector(
+    const { loading, topArtist, tracks, artists, albums, playlists } = useSelector(
         (state: RootState) => state.search
     );
 

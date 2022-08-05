@@ -67,6 +67,7 @@ export const AlbumTracks: React.FC = () => {
                                         key={index}
                                         index={index}
                                         id={id}
+                                        uri={uri}
                                         name={name}
                                         explicit={explicit}
                                         duration_ms={duration_ms}

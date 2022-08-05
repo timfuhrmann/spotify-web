@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "@lib/context/session";
 import { useAppDispatch } from "@lib/redux";
-import player, {
+import {
     setCurrentTrack,
     setDuration,
     setPaused,
@@ -9,7 +9,7 @@ import player, {
     setRepeatMode,
     setShuffle,
 } from "@lib/redux/reducer/player";
-import { log } from "util";
+import { queryClient } from "@lib/api";
 
 interface SpotifyPlaybackData {
     deviceId: string | null;
@@ -80,7 +80,8 @@ export const useSpotifyPlayback = (): SpotifyPlayback => {
     };
 
     const handlePlaybackState = (playbackState: Spotify.PlaybackState | null) => {
-        if (!playbackState) {
+        if (!playbackState || !playbackState.track_window.current_track) {
+            queryClient.invalidateQueries(["devices"]);
             return;
         }
 

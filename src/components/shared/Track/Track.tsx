@@ -12,6 +12,8 @@ import { TrackGrid } from "@css/helper/track";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 import { Skeleton } from "@lib/skeleton";
 import { Pause } from "@icon/Pause";
+import { TrackPopover } from "./TrackPopover";
+import { More } from "@icon/More";
 
 const TrackPlay = styled.button`
     display: none;
@@ -50,7 +52,8 @@ const TrackWrapper = styled(TrackGrid)`
     }
   `};
 
-    &:focus {
+    &:focus,
+    &[aria-selected="true"] {
         color: ${p => p.theme.gray900};
         background-color: ${p => p.theme.gray400};
 
@@ -113,13 +116,24 @@ const TrackRemove = styled(UnfollowHeart)`
   `};
 `;
 
+const TrackMore = styled.button`
+    display: flex;
+    margin: 0 auto;
+`;
+
 interface ParentComposition {
     Skeleton: typeof TrackSkeleton;
+}
+
+export interface PopoverPosition {
+    x: number;
+    y: number;
 }
 
 interface TrackProps {
     index: number;
     id: string;
+    uri: string;
     name: string;
     explicit: boolean;
     duration_ms: number;
@@ -139,6 +153,7 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
     ({
         index,
         id,
+        uri,
         name,
         images,
         album,
@@ -152,6 +167,7 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
         onSaveTrack,
         onRemoveTrack,
     }) => {
+        const [popoverPosition, setPopoverPosition] = useState<PopoverPosition | null>(null);
         const [isFocused, setIsFocused] = useState<boolean>(false);
 
         const buttonSaveLabel = isSaved ? "Remove from library" : "Add to library";
@@ -164,53 +180,78 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
             onPlay(index);
         };
 
+        const handleContextMenu = (e: React.MouseEvent) => {
+            e.preventDefault();
+            setPopoverPosition({ x: e.clientX, y: e.clientY });
+        };
+
         return (
-            <TrackWrapper
-                role="row"
-                aria-selected={isFocused}
-                aria-rowindex={index}
-                tabIndex={0}
-                draggable="true"
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                onDoubleClick={handlePlay}>
-                <TrackIndex>
-                    {isPlaying && (
-                        <TrackPlaying src="https://open.spotifycdn.com/cdn/images/equaliser-animated-green.f93a2ef4.gif" />
-                    )}
-                    <TrackNumber $isPlaying={isPlaying}>{index + 1}</TrackNumber>
-                    <TrackPlay type="button" onClick={handlePlay}>
-                        {isPlaying ? <Pause width="16" /> : <Play width="16" />}
-                    </TrackPlay>
-                </TrackIndex>
-                <TrackTitle
-                    name={name}
-                    images={images}
-                    artists={artists}
-                    explicit={explicit}
-                    isPlaying={isPlaying}
-                />
-                {album && <TrackAlbum {...album} />}
-                {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
-                <TrackDuration>
-                    {isSaved ? (
-                        <TrackButton
-                            title={buttonSaveLabel}
-                            aria-label={buttonSaveLabel}
-                            onClick={() => onRemoveTrack && onRemoveTrack(id, index)}>
-                            <TrackRemove />
-                        </TrackButton>
-                    ) : (
-                        <TrackButton
-                            title={buttonSaveLabel}
-                            aria-label={buttonSaveLabel}
-                            onClick={() => onSaveTrack && onSaveTrack(id, index)}>
-                            <TrackSave />
-                        </TrackButton>
-                    )}
-                    <TrackDurationText>{msToMinutesAndSeconds(duration_ms)}</TrackDurationText>
-                </TrackDuration>
-            </TrackWrapper>
+            <React.Fragment>
+                {popoverPosition && (
+                    <TrackPopover
+                        uri={uri}
+                        position={popoverPosition}
+                        artists={artists}
+                        isSaved={isSaved}
+                        onSaveTrack={() => onSaveTrack && onSaveTrack(id, index)}
+                        onRemoveTrack={() => onRemoveTrack && onRemoveTrack(id, index)}
+                        onClose={() => setPopoverPosition(null)}
+                    />
+                )}
+                <TrackWrapper
+                    role="row"
+                    aria-selected={isFocused}
+                    aria-rowindex={index}
+                    tabIndex={0}
+                    draggable="true"
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    onDoubleClick={handlePlay}
+                    onContextMenu={handleContextMenu}>
+                    <TrackIndex>
+                        {isPlaying && (
+                            <TrackPlaying src="https://open.spotifycdn.com/cdn/images/equaliser-animated-green.f93a2ef4.gif" />
+                        )}
+                        <TrackNumber $isPlaying={isPlaying}>{index + 1}</TrackNumber>
+                        <TrackPlay type="button" onClick={handlePlay}>
+                            {isPlaying ? <Pause width="16" /> : <Play width="16" />}
+                        </TrackPlay>
+                    </TrackIndex>
+                    <TrackTitle
+                        name={name}
+                        images={images}
+                        artists={artists}
+                        explicit={explicit}
+                        isPlaying={isPlaying}
+                    />
+                    {album && <TrackAlbum {...album} />}
+                    {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
+                    <TrackDuration>
+                        {isSaved ? (
+                            <TrackButton
+                                title={buttonSaveLabel}
+                                aria-label={buttonSaveLabel}
+                                onClick={() => onRemoveTrack && onRemoveTrack(id, index)}>
+                                <TrackRemove />
+                            </TrackButton>
+                        ) : (
+                            <TrackButton
+                                title={buttonSaveLabel}
+                                aria-label={buttonSaveLabel}
+                                onClick={() => onSaveTrack && onSaveTrack(id, index)}>
+                                <TrackSave />
+                            </TrackButton>
+                        )}
+                        <TrackDurationText>{msToMinutesAndSeconds(duration_ms)}</TrackDurationText>
+                        <TrackMore
+                            type="button"
+                            aria-label="More settings"
+                            onClick={handleContextMenu}>
+                            <More width="16" aria-hidden />
+                        </TrackMore>
+                    </TrackDuration>
+                </TrackWrapper>
+            </React.Fragment>
         );
     }
 );

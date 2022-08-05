@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Popover } from "../../shared/Popover/Popover";
-import { PopoverItem } from "../../shared/Popover/PopoverItem";
 import { Link } from "@lib/link";
 import { ExternalLink } from "@icon/ExternalLink";
 
@@ -18,19 +17,19 @@ interface HeaderUserPopoverProps {
 export const HeaderUserPopover: React.FC<HeaderUserPopoverProps> = ({ onClose }) => {
     return (
         <Popover placement="bottom-end" onClose={onClose}>
-            <PopoverItem>
+            <Popover.Item>
                 <Link label="Download" href="https://www.spotify.com/de/download">
                     <UserAnchor target="_blank" rel="noreferrer noopener">
                         Download
                         <ExternalLink width="16" />
                     </UserAnchor>
                 </Link>
-            </PopoverItem>
-            <PopoverItem>
+            </Popover.Item>
+            <Popover.Item>
                 <Link label="Logout" href="/api/auth/logout">
                     <UserAnchor>Logout</UserAnchor>
                 </Link>
-            </PopoverItem>
+            </Popover.Item>
         </Popover>
     );
 };

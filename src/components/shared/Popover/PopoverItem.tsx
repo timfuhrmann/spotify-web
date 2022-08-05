@@ -8,6 +8,7 @@ const withStyles = (
     display: flex;
     padding: 1.2rem;
     border-radius: 0.4rem;
+    white-space: nowrap;
 
     ${p => hover`
         background-color: ${p.theme.gray200};

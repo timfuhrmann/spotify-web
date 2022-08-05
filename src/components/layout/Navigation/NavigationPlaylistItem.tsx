@@ -5,9 +5,12 @@ import { useRouter } from "next/router";
 import { text } from "@css/helper/typography";
 import { hover } from "@css/helper";
 import { Skeleton } from "@lib/skeleton";
+import { Volume } from "@icon/Volume";
 
 const ItemWrapper = styled.a`
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.6rem 2.4rem;
     color: ${p => p.theme.gray700};
     ${text("textSm")};
@@ -25,6 +28,11 @@ const ItemWrapper = styled.a`
     }
 `;
 
+const ItemIcon = styled(Volume)`
+    width: 1.2rem;
+    color: ${p => p.theme.primary200};
+`;
+
 interface ParentComposition {
     Skeleton: typeof NavigationPlaylistItemSkeleton;
 }
@@ -32,18 +40,21 @@ interface ParentComposition {
 interface NavigationPlaylistItemProps {
     id: string;
     name: string;
+    isPlaying: boolean;
 }
 
 export const NavigationPlaylistItem: React.FC<NavigationPlaylistItemProps> & ParentComposition = ({
     id,
     name,
+    isPlaying,
 }) => {
     const { asPath } = useRouter();
 
     return (
-        <Link href={"/playlist/" + id} passHref>
+        <Link href={"/playlist/" + id} passHref prefetch={false}>
             <ItemWrapper aria-current={asPath.includes("/playlist/" + id) && "page"}>
                 {name}
+                {isPlaying && <ItemIcon />}
             </ItemWrapper>
         </Link>
     );
