@@ -8,6 +8,7 @@ import { Link } from "@lib/link";
 
 const PopoverWrapper = styled.div`
     position: fixed;
+    z-index: 20;
 `;
 
 const PopoverButton = styled.button`

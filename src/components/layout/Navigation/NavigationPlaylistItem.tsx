@@ -1,11 +1,11 @@
 import React from "react";
-import Link from "next/link";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { text } from "@css/helper/typography";
 import { hover } from "@css/helper";
 import { Skeleton } from "@lib/skeleton";
 import { Volume } from "@icon/Volume";
+import { Link } from "@lib/link";
 
 const ItemWrapper = styled.a`
     display: flex;
@@ -51,10 +51,10 @@ export const NavigationPlaylistItem: React.FC<NavigationPlaylistItemProps> & Par
     const { asPath } = useRouter();
 
     return (
-        <Link href={"/playlist/" + id} passHref prefetch={false}>
+        <Link href={"/playlist/" + id} label={name} prefetch={false}>
             <ItemWrapper aria-current={asPath.includes("/playlist/" + id) && "page"}>
                 {name}
-                {isPlaying && <ItemIcon />}
+                {isPlaying && <ItemIcon aria-hidden />}
             </ItemWrapper>
         </Link>
     );

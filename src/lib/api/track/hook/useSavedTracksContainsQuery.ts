@@ -15,28 +15,37 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
     });
 
     const handleSaveTrack = useCallback(
-        (id: string, index: number) => {
+        async (id: string, index: number) => {
             if (!access_token) {
                 return;
             }
 
             writeToCache(index, true);
-            saveTracks(access_token, [id]);
+            await saveTracks(access_token, [id]);
+            invalidateCache();
         },
         [access_token, ids]
     );
 
     const handleRemoveTrack = useCallback(
-        (id: string, index: number) => {
+        async (id: string, index: number) => {
             if (!access_token) {
                 return;
             }
 
             writeToCache(index, false);
-            removeTracks(access_token, [id]);
+            await removeTracks(access_token, [id]);
+            invalidateCache();
         },
         [access_token, ids]
     );
+
+    const invalidateCache = () => {
+        queryClient.invalidateQueries({
+            predicate: ({ queryKey }) =>
+                queryKey.includes("saved-tracks") || queryKey.includes("saved-tracks-contains"),
+        });
+    };
 
     const writeToCache = (index: number, value: boolean) => {
         return queryClient.setQueryData<boolean[] | undefined>(queryKey, cachedData => {

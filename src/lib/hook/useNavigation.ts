@@ -51,27 +51,14 @@ export const useNavigation = () => {
             return;
         }
 
-        const previousPath = history[1];
-
-        if (!previousPath) {
-            return;
-        }
-
-        return push(previousPath);
+        return push(history[1]);
     };
 
     const navigateForth = () => {
         if (!hasForth) {
             return;
         }
-
-        const nextPath = history[history.length - 1];
-
-        if (!nextPath) {
-            return;
-        }
-
-        return push(nextPath);
+        return push(history[history.length - 1]);
     };
 
     return {

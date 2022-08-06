@@ -32,7 +32,8 @@ export const SearchOverviewProvider: React.FC<PropsWithChildren> = ({ children }
             }
 
             mutatePlay({
-                uris: tracks.items.slice(index).map(track => track.uri),
+                uris: tracks.items.map(track => track.uri),
+                offset: { position: index },
             });
         },
         [tracks]

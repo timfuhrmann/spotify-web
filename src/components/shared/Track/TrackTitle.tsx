@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
 import { SpotifyImage } from "@lib/image";
 import { hover, square } from "@css/helper";
 import { text } from "@css/helper/typography";
 import { Explicit } from "../Explicit";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
 import { Skeleton } from "@lib/skeleton";
+import { Link } from "@lib/link";
 
 const TitleWrapper = styled.div`
     display: flex;
@@ -108,7 +108,7 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> & ParentComposition =
                                     <React.Fragment key={artist.id}>
                                         <Link
                                             href={"/artist/" + artist.id}
-                                            passHref
+                                            label={artist.name}
                                             prefetch={false}>
                                             <TitleArtist draggable="false">
                                                 {artist.name}

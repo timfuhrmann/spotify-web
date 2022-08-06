@@ -11,7 +11,7 @@ import { SessionProvider } from "@lib/context/session/SessionProvider";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "@lib/api";
 import { Provider as ReduxProvider } from "react-redux";
-import { PlayerProvider } from "@lib/player";
+import { PlayerProvider } from "@lib/player/PlayerProvider";
 
 interface AppPropsWithLayout extends AppProps {
     Component: NextPageWithLayout;

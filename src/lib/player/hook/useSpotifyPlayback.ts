@@ -5,11 +5,12 @@ import {
     setCurrentTrack,
     setDuration,
     setPaused,
-    setProgress,
     setRepeatMode,
     setShuffle,
 } from "@lib/redux/reducer/player";
 import { queryClient } from "@lib/api";
+import { setProgress } from "@lib/redux/reducer/player/progress";
+import { repeatModeFromPlaybackSdk } from "@lib/util";
 
 interface SpotifyPlaybackData {
     deviceId: string | null;
@@ -87,7 +88,7 @@ export const useSpotifyPlayback = (): SpotifyPlayback => {
 
         dispatch(setDuration(playbackState.duration));
         dispatch(setPaused(playbackState.paused));
-        dispatch(setRepeatMode(playbackState.repeat_mode));
+        dispatch(setRepeatMode(repeatModeFromPlaybackSdk(playbackState.repeat_mode)));
         dispatch(setShuffle(playbackState.shuffle));
         dispatch(setProgress(playbackState.position));
         dispatch(setCurrentTrack(playbackState.track_window.current_track));

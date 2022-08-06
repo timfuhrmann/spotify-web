@@ -96,7 +96,8 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     const handlePlay = useCallback(
         (index: number = 0) => {
             mutatePlay({
-                uris: topTracks.slice(index).map(track => track.uri),
+                uris: topTracks.map(track => track.uri),
+                offset: { position: index },
             });
         },
         [topTracks]

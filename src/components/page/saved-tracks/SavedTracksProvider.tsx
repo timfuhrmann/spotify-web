@@ -22,12 +22,12 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
     initialTracks,
     children,
 }) => {
-    const { access_token } = useSession();
+    const { session, access_token } = useSession();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
     const { isLoading, tracksPages, hasNextPage, fetchNextPage, writeToTracksCache } =
         useInfiniteTracks<SpotifyApi.UsersSavedTracksResponse>({
-            key: "saved-tracks-list",
+            key: "saved-tracks",
             initialTracks,
             enabled: !!access_token,
             queryFn: ({ pageParam = 1 }) => getSavedTracks(access_token!, pageParam),
@@ -88,11 +88,16 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
 
     const handlePlay = useCallback(
         (index: number = 0) => {
+            if (!session) {
+                return;
+            }
+
             mutatePlay({
-                uris: tracks.slice(index).map(item => item.track.uri),
+                context_uri: session.uri + ":collection",
+                offset: { position: index },
             });
         },
-        [tracks]
+        [session, tracks]
     );
 
     return (

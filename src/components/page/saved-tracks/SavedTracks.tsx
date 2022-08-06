@@ -1,10 +1,8 @@
 import React from "react";
-import { SavedTracksProvider, useSavedTracks } from "./SavedTracksProvider";
+import { SavedTracksProvider } from "./SavedTracksProvider";
 import { ListHead } from "../../shared/ListHead/ListHead";
 import { SavedTracksHeadFooter } from "./SavedTracksHeadFooter";
-import { ListBody } from "../../shared/ListBody";
-import { ListControls } from "../../shared/ListControls/ListControls";
-import { SavedTracksList } from "./SavedTracksList";
+import { SavedTracksBody } from "./SavedTracksBody";
 
 const images = [
     {
@@ -29,8 +27,6 @@ export interface SavedTracksProps {
 }
 
 export const SavedTracks: React.FC<SavedTracksProps> = props => {
-    const { handlePlay } = useSavedTracks();
-
     return (
         <SavedTracksProvider {...props}>
             <ListHead
@@ -39,10 +35,7 @@ export const SavedTracks: React.FC<SavedTracksProps> = props => {
                 images={images}
                 renderFooter={<SavedTracksHeadFooter />}
             />
-            <ListBody>
-                <ListControls hideFollow onPlay={handlePlay} />
-                <SavedTracksList />
-            </ListBody>
+            <SavedTracksBody />
         </SavedTracksProvider>
     );
 };

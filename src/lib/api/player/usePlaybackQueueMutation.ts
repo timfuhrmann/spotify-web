@@ -9,7 +9,7 @@ interface PlaybackQueueProps {
 
 export const usePlaybackQueueMutation = () => {
     const { access_token } = useSession();
-    const { device_id } = usePlayer();
+    const { targetDeviceId } = usePlayer();
 
     return useMutation(
         ["playback-queue", access_token],
@@ -20,7 +20,7 @@ export const usePlaybackQueueMutation = () => {
 
             return request(access_token, {
                 url: "/me/player/queue",
-                params: { device_id, uri },
+                params: { device_id: targetDeviceId, uri },
                 method: "POST",
             });
         },

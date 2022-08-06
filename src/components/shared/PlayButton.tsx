@@ -25,7 +25,7 @@ const ButtonWrapper = styled.button<{ $isSecondary?: boolean }>`
 
     &:disabled {
         pointer-events: none;
-        background-color: ${p => p.theme.gray200};
+        background-color: ${p => p.theme.gray400};
     }
 `;
 

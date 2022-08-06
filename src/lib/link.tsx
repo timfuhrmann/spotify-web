@@ -1,8 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { default as NextLink, LinkProps } from "next/link";
-import { useRouter } from "next/router";
 import { UrlObject } from "url";
-import { pathnameFromAsPath } from "@lib/util";
 
 interface LabeledLink extends Omit<LinkProps, "href" | "passHref"> {
     label: string;

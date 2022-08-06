@@ -1,4 +1,5 @@
 import { ParsedUrlQuery } from "querystring";
+import { RepeatMode } from "@lib/redux/reducer/player";
 
 export const getAppUrl = () => {
     const variable = process.env.NEXT_PUBLIC_APP_URL;
@@ -45,4 +46,19 @@ export const createArray = (length: number) => {
 
 export const pathnameFromAsPath = (asPath: string) => {
     return asPath.split(/[?#]/)[0] || asPath;
+};
+
+export const idFromUri = (uri: string): string => {
+    return uri.split(":").slice(-1).join("");
+};
+
+export const repeatModeFromPlaybackSdk = (state: 0 | 1 | 2): RepeatMode => {
+    switch (state) {
+        case 0:
+            return "off";
+        case 1:
+            return "context";
+        case 2:
+            return "track";
+    }
 };

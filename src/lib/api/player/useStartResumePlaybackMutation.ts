@@ -20,10 +20,7 @@ interface StartResumePlaybackProps {
 export const useStartResumePlaybackMutation = () => {
     const dispatch = useAppDispatch();
     const { access_token } = useSession();
-    const { player, device_id: playerDeviceId, activeDevice } = usePlayer();
-
-    const device_id =
-        activeDevice && activeDevice.id !== playerDeviceId ? activeDevice.id : playerDeviceId;
+    const { player, targetDeviceId, device_id } = usePlayer();
 
     return useMutation(
         ["start-resume-playback", access_token],
@@ -39,7 +36,7 @@ export const useStartResumePlaybackMutation = () => {
 
             return request(access_token, {
                 url: "/me/player/play",
-                params: { device_id },
+                params: { device_id: targetDeviceId },
                 data: { context_uri, uris, offset, position_ms },
                 method: "PUT",
             });
@@ -47,7 +44,7 @@ export const useStartResumePlaybackMutation = () => {
         {
             retry: 1,
             onSettled: () => {
-                if (device_id !== playerDeviceId) {
+                if (targetDeviceId !== device_id) {
                     queryClient.invalidateQueries(["playback-state"]);
                 }
             },

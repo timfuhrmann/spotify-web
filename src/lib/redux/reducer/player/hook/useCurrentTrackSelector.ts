@@ -13,5 +13,5 @@ export const useCurrentTrackSelector = () => {
         [paused, currentTrack]
     );
 
-    return { paused, currentTrack, isTrackPlaying };
+    return { currentTrack, paused, isTrackPlaying };
 };
