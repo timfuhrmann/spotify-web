@@ -4,6 +4,7 @@ interface PlayerContextData {
     player: Spotify.Player | null;
     device_id: string | null;
     targetDeviceId: string | null;
+    devices: SpotifyApi.UserDevice[] | null;
     activeDevice: SpotifyApi.UserDevice | null;
     togglePlay: () => Promise<void>;
     nextTrack: () => Promise<void>;

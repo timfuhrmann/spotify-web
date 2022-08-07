@@ -2,16 +2,27 @@ import React, { PropsWithChildren, useMemo } from "react";
 import Script from "next/script";
 import { useSpotifyPlayback } from "@lib/player/hook/useSpotifyPlayback";
 import { useSession } from "@lib/context/session";
-import { useDevicesQuery } from "@lib/api/player/useDevicesQuery";
+import { useDevicesQuery } from "@lib/api/player/query/useDevicesQuery";
 import { PlayerContext } from "@lib/player/index";
-import { OverlayScrollProvider } from "@lib/context/overlay-scroll/OverlayScrollProvider";
 
 export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const { session } = useSession();
     const { data: devicesData } = useDevicesQuery();
     const [player, { deviceId: device_id }] = useSpotifyPlayback();
 
-    const devices = devicesData ? devicesData.devices : null;
+    const devices = useMemo<SpotifyApi.UserDevice[] | null>(() => {
+        if (!devicesData) {
+            return null;
+        }
+
+        return devicesData.devices.sort((a, b) => {
+            if (b.id && b.id === device_id) {
+                return 1;
+            }
+
+            return a.name.localeCompare(b.name);
+        });
+    }, [devicesData, device_id]);
 
     const activeDevice = useMemo<SpotifyApi.UserDevice | null>(() => {
         if (!devices) {
@@ -70,6 +81,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
                 player,
                 device_id,
                 targetDeviceId,
+                devices,
                 activeDevice,
                 togglePlay,
                 previousTrack,
@@ -87,20 +99,4 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
             {children}
         </PlayerContext.Provider>
     );
-};
-
-export const withPlayer = <T,>(WrappedComponent: React.ComponentType<T>) => {
-    const displayName = WrappedComponent.displayName || WrappedComponent.name || "Component";
-
-    const ComponentWithProvider = (props: T) => {
-        return (
-            <OverlayScrollProvider>
-                <WrappedComponent {...props} />
-            </OverlayScrollProvider>
-        );
-    };
-
-    ComponentWithProvider.displayName = `withOverlayScroll(${displayName})`;
-
-    return ComponentWithProvider;
 };

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Popover } from "../Popover/Popover";
 import { useClickOutside } from "@lib/hook/useClickOutside";
 import { PopoverPosition } from "./Track";
-import { usePlaybackQueueMutation } from "@lib/api/player/usePlaybackQueueMutation";
+import { usePlaybackQueueMutation } from "@lib/api/player/mutation/usePlaybackQueueMutation";
 import { Link } from "@lib/link";
 
 const PopoverWrapper = styled.div`

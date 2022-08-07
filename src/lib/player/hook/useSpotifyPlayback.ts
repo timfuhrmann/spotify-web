@@ -61,6 +61,7 @@ export const useSpotifyPlayback = (): SpotifyPlayback => {
 
     const handleReady = ({ device_id }: Spotify.WebPlaybackInstance) => {
         setDeviceId(device_id);
+        queryClient.invalidateQueries(["devices"]);
 
         if (process.env.NODE_ENV !== "production") {
             console.log("Spotify Playback connected with device id: ", device_id);

@@ -4,7 +4,7 @@ import { SavedTracksProps } from "./SavedTracks";
 import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
 import { getSavedTracks, removeTracks } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
-import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 
 interface SavedTracksContextData {
     tracks: SpotifyApi.SavedTrackObject[];

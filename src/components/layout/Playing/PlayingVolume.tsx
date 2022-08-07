@@ -50,7 +50,7 @@ export const PlayingVolume: React.FC = () => {
                     aria-label="Unmute"
                     disabled={isDisabled}
                     onClick={() => handleUnmute(volume)}>
-                    <VolumeMuted width="16" />
+                    <VolumeMuted width="16" aria-hidden />
                 </VolumeButton>
             ) : (
                 <VolumeButton
@@ -58,7 +58,7 @@ export const PlayingVolume: React.FC = () => {
                     aria-label="Mute"
                     disabled={isDisabled}
                     onClick={handleMute}>
-                    <Volume width="16" />
+                    <Volume width="16" aria-hidden />
                 </VolumeButton>
             )}
             <VolumeFrame>

@@ -3,7 +3,7 @@ import { queryClient, request } from "@lib/api";
 import { useSession } from "@lib/context/session";
 import { usePlayer } from "@lib/player";
 
-export const usePlaybackPrevious = () => {
+export const usePlaybackPreviousMutation = () => {
     const { access_token } = useSession();
     const { targetDeviceId, device_id } = usePlayer();
 

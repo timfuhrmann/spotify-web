@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useContext, useEffect } from "react";
-import { usePlaybackStateQuery } from "@lib/api/player/usePlaybackStateQuery";
+import { usePlaybackStateQuery } from "@lib/api/player/query/usePlaybackStateQuery";
 import { useAppDispatch } from "@lib/redux";
 import {
     RepeatMode,
@@ -13,16 +13,16 @@ import {
 import { usePlayer } from "@lib/player";
 import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
 import { increaseProgress, setProgress } from "@lib/redux/reducer/player/progress";
-import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
-import { usePlaybackPauseMutation } from "@lib/api/player/usePlaybackPauseMutation";
-import { usePlaybackRepeatModeMutation } from "@lib/api/player/usePlaybackRepeatModeMutation";
-import { usePlaybackShuffleMutation } from "@lib/api/player/usePlaybackShuffleMutation";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
+import { usePlaybackPauseMutation } from "@lib/api/player/mutation/usePlaybackPauseMutation";
+import { usePlaybackRepeatModeMutation } from "@lib/api/player/mutation/usePlaybackRepeatModeMutation";
+import { usePlaybackShuffleMutation } from "@lib/api/player/mutation/usePlaybackShuffleMutation";
 import { useShuffleSelector } from "@lib/redux/reducer/player/hook/useShuffleSelector";
 import { useRepeatModeSelector } from "@lib/redux/reducer/player/hook/useRepeatModeSelector";
 import { useDurationSelector } from "@lib/redux/reducer/player/hook/useDurationSelector";
 import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
-import { usePlaybackNext } from "@lib/api/player/usePlaybackNext";
-import { usePlaybackPrevious } from "@lib/api/player/usePlaybackPrevious";
+import { usePlaybackNextMutation } from "@lib/api/player/mutation/usePlaybackNextMutation";
+import { usePlaybackPreviousMutation } from "@lib/api/player/mutation/usePlaybackPreviousMutation";
 import volume, { setMuted, setVolume } from "@lib/redux/reducer/player/volume";
 
 interface PlayingContextData {
@@ -51,8 +51,8 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const { mutate: mutatePause } = usePlaybackPauseMutation();
     const { mutate: mutateRepeatMode } = usePlaybackRepeatModeMutation();
     const { mutate: mutateShuffle } = usePlaybackShuffleMutation();
-    const { mutate: mutateNext } = usePlaybackNext();
-    const { mutate: mutatePrevious } = usePlaybackPrevious();
+    const { mutate: mutateNext } = usePlaybackNextMutation();
+    const { mutate: mutatePrevious } = usePlaybackPreviousMutation();
     const { data: playbackState } = usePlaybackStateQuery();
     const { activeDevice, device_id, togglePlay, previousTrack, nextTrack, mute, unmute } =
         usePlayer();

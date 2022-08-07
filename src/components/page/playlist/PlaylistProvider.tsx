@@ -4,7 +4,7 @@ import { useSession } from "@lib/context/session";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
 import { PlaylistProps } from "./Playlist";
-import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 
 interface PlaylistContextData {
     isFollowing: boolean;

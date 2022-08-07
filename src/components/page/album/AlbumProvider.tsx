@@ -4,7 +4,7 @@ import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteT
 import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
 import { useSavedAlbumsContainsQuery } from "@lib/api/album/hook/useSavedAlbumsContainsQuery";
-import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
 import { getIdFromQuery } from "@lib/util";
 

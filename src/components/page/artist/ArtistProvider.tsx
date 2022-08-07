@@ -13,7 +13,7 @@ import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuer
 import { followArtist, unfollowArtist } from "@lib/api/artist";
 import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
 import { AlbumGroupType } from "@lib/api/album";
-import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 
 interface ArtistContextData {
     isFollowing: boolean;

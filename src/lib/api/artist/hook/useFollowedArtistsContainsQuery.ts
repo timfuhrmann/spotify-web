@@ -1,8 +1,8 @@
+import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "react-query";
 import { getFollowedArtistsContains } from "@lib/api/artist";
 import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
-import cloneDeep from "lodash.clonedeep";
 
 export const useFollowedArtistsContains = (ids: string[]) => {
     const { access_token } = useSession();
