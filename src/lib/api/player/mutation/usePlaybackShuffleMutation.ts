@@ -2,7 +2,6 @@ import { useMutation } from "react-query";
 import { queryClient, request } from "@lib/api";
 import { useSession } from "@lib/context/session";
 import { usePlayer } from "@lib/player";
-import { RepeatMode as RepeatModeType } from "@lib/redux/reducer/player";
 
 interface PlaybackShuffleProps {
     state: boolean;
@@ -13,7 +12,6 @@ export const usePlaybackShuffleMutation = () => {
     const { targetDeviceId } = usePlayer();
 
     return useMutation(
-        ["playback-shuffle", access_token],
         async ({ state }: PlaybackShuffleProps) => {
             if (!access_token) {
                 return;

@@ -12,6 +12,7 @@ import { QueryClientProvider } from "react-query";
 import { queryClient } from "@lib/api";
 import { Provider as ReduxProvider } from "react-redux";
 import { PlayerProvider } from "@lib/player/PlayerProvider";
+import { SnackbarProvider } from "notistack";
 
 interface AppPropsWithLayout extends AppProps {
     Component: NextPageWithLayout;
@@ -26,8 +27,12 @@ const App: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
                 <SessionProvider>
                     <ReduxProvider store={store}>
                         <PlayerProvider>
-                            <GlobalStyle />
-                            {getLayout(<Component {...pageProps} />)}{" "}
+                            <SnackbarProvider
+                                maxSnack={1}
+                                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+                                <GlobalStyle />
+                                {getLayout(<Component {...pageProps} />)}
+                            </SnackbarProvider>
                         </PlayerProvider>
                     </ReduxProvider>
                 </SessionProvider>

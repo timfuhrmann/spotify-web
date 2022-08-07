@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { text } from "@css/helper/typography";
 import { useTransferPlaybackMutation } from "@lib/api/player/mutation/useTransferPlaybackMutation";
 import { queryClient } from "@lib/api";
+import { enqueueSnackbar } from "notistack";
+import { usePausedSelector } from "@lib/redux/reducer/player/hook/usePausedSelector";
 
 const PopoverHeadline = styled.div`
     padding: 2rem;
@@ -33,6 +35,7 @@ interface PlayingDevicesPopoverProps {
 }
 
 export const PlayingDevicesPopover: React.FC<PlayingDevicesPopoverProps> = ({ onClose }) => {
+    const paused = usePausedSelector();
     const { devices, activeDevice, device_id } = usePlayer();
     const { mutate: mutateTransfer } = useTransferPlaybackMutation();
 
@@ -41,6 +44,12 @@ export const PlayingDevicesPopover: React.FC<PlayingDevicesPopoverProps> = ({ on
     }, []);
 
     const handleClick = (id: string) => {
+        if (paused && id === device_id) {
+            enqueueSnackbar(
+                "Assigning the active device to this player might not work reliably with the player being currently paused"
+            );
+        }
+
         mutateTransfer({ device_ids: [id] });
         onClose();
     };

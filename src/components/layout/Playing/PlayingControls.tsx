@@ -57,7 +57,6 @@ export const PlayingControls: React.FC = () => {
         handleNextTrack,
     } = usePlaying();
 
-    //@todo think about disabling repeat
     return (
         <ControlsWrapper>
             <ControlsHead>

@@ -23,7 +23,6 @@ export const useStartResumePlaybackMutation = () => {
     const { player, targetDeviceId, device_id } = usePlayer();
 
     return useMutation(
-        ["start-resume-playback", access_token],
         async ({ uris, context_uri, offset, position_ms }: StartResumePlaybackProps) => {
             if (!access_token || !player) {
                 return;

@@ -13,7 +13,6 @@ export const usePlaybackRepeatModeMutation = () => {
     const { targetDeviceId } = usePlayer();
 
     return useMutation(
-        ["playback-repeat-mode", access_token],
         async ({ state }: RepeatModeProps) => {
             if (!access_token) {
                 return;

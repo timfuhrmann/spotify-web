@@ -11,6 +11,6 @@ export const useDevicesQuery = () => {
             request<SpotifyApi.UserDevicesResponse>(access_token!, {
                 url: "/me/player/devices",
             }),
-        { enabled: !!access_token }
+        { enabled: !!access_token, staleTime: 0, cacheTime: 0 }
     );
 };

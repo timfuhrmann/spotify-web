@@ -8,7 +8,6 @@ export const usePlaybackPauseMutation = () => {
     const { targetDeviceId, device_id } = usePlayer();
 
     return useMutation(
-        ["playback-pause", access_token],
         async () => {
             if (!access_token) {
                 return;

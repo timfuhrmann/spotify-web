@@ -12,7 +12,6 @@ export const usePlaybackQueueMutation = () => {
     const { targetDeviceId } = usePlayer();
 
     return useMutation(
-        ["playback-queue", access_token],
         async ({ uri }: PlaybackQueueProps) => {
             if (!access_token) {
                 return;

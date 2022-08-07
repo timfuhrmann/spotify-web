@@ -11,6 +11,6 @@ export const useRecentlyPlayedQuery = () => {
             request<SpotifyApi.UsersRecentlyPlayedTracksResponse>(access_token!, {
                 url: "/me/player/recently-played",
             }),
-        { enabled: !!access_token }
+        { enabled: !!access_token, staleTime: 0, cacheTime: 0 }
     );
 };

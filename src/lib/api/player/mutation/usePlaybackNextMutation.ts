@@ -8,7 +8,6 @@ export const usePlaybackNextMutation = () => {
     const { targetDeviceId, device_id } = usePlayer();
 
     return useMutation(
-        ["playback-next", access_token],
         async () => {
             if (!access_token) {
                 return;

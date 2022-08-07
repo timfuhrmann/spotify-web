@@ -2,7 +2,6 @@ import React, { createContext, PropsWithChildren, useContext, useEffect } from "
 import { usePlaybackStateQuery } from "@lib/api/player/query/usePlaybackStateQuery";
 import { useAppDispatch } from "@lib/redux";
 import {
-    RepeatMode,
     setCurrentContext,
     setCurrentTrack,
     setDuration,
@@ -15,15 +14,14 @@ import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksC
 import { increaseProgress, setProgress } from "@lib/redux/reducer/player/progress";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 import { usePlaybackPauseMutation } from "@lib/api/player/mutation/usePlaybackPauseMutation";
-import { usePlaybackRepeatModeMutation } from "@lib/api/player/mutation/usePlaybackRepeatModeMutation";
 import { usePlaybackShuffleMutation } from "@lib/api/player/mutation/usePlaybackShuffleMutation";
 import { useShuffleSelector } from "@lib/redux/reducer/player/hook/useShuffleSelector";
-import { useRepeatModeSelector } from "@lib/redux/reducer/player/hook/useRepeatModeSelector";
 import { useDurationSelector } from "@lib/redux/reducer/player/hook/useDurationSelector";
 import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 import { usePlaybackNextMutation } from "@lib/api/player/mutation/usePlaybackNextMutation";
 import { usePlaybackPreviousMutation } from "@lib/api/player/mutation/usePlaybackPreviousMutation";
-import volume, { setMuted, setVolume } from "@lib/redux/reducer/player/volume";
+import { setMuted, setVolume } from "@lib/redux/reducer/player/volume";
+import { enqueueSnackbar } from "notistack";
 
 interface PlayingContextData {
     isDisabled: boolean;
@@ -45,11 +43,9 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const dispatch = useAppDispatch();
     const shuffle = useShuffleSelector();
     const duration = useDurationSelector();
-    const repeatMode = useRepeatModeSelector();
     const { currentTrack, paused } = useCurrentTrackSelector();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
     const { mutate: mutatePause } = usePlaybackPauseMutation();
-    const { mutate: mutateRepeatMode } = usePlaybackRepeatModeMutation();
     const { mutate: mutateShuffle } = usePlaybackShuffleMutation();
     const { mutate: mutateNext } = usePlaybackNextMutation();
     const { mutate: mutatePrevious } = usePlaybackPreviousMutation();
@@ -134,18 +130,7 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     };
 
     const handleRepeat = () => {
-        let state: RepeatMode = "context";
-
-        switch (repeatMode) {
-            case "context":
-                state = "track";
-                break;
-            case "track":
-                state = "off";
-                break;
-        }
-
-        mutateRepeatMode({ state });
+        enqueueSnackbar("Nah, can't do");
     };
 
     const handleShuffle = () => {

@@ -12,7 +12,6 @@ export const useTransferPlaybackMutation = () => {
 
     //@todo cant assign to own device when not playing
     return useMutation(
-        ["playback-transfer", access_token],
         async ({ device_ids }: TransferPlaybackProps) => {
             if (!access_token) {
                 return;
