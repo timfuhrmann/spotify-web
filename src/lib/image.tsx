@@ -26,7 +26,6 @@ interface CoverImageProps {
     sizes?: string;
     eager?: boolean;
     priority?: boolean;
-    draggable?: boolean;
 }
 
 export const SpotifyImage: React.FC<CoverImageProps> = ({
@@ -35,7 +34,6 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({
     sizes,
     eager,
     priority,
-    draggable,
     rootRef,
     rootMargin = "300px",
     onLoad,
@@ -75,13 +73,7 @@ export const SpotifyImage: React.FC<CoverImageProps> = ({
 
     return (
         <CoverWrapper>
-            <Image
-                decoding="async"
-                ref={setIntersection}
-                {...imgAttributes}
-                draggable={draggable}
-                onLoad={onLoad}
-            />
+            <Image decoding="async" ref={setIntersection} {...imgAttributes} onLoad={onLoad} />
             {priority && (
                 <Head>
                     <link

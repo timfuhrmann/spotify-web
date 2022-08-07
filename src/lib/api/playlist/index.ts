@@ -7,6 +7,7 @@ export const getRootPlaylists = async (
 ): Promise<SpotifyApi.PlaylistObjectSimplified[] | undefined> => {
     const { items } = await request<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>(access_token, {
         url: "/me/playlists",
+        params: { limit: 50 },
     });
 
     return items;

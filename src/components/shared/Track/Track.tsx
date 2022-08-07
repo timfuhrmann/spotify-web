@@ -203,7 +203,6 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
                     aria-selected={isFocused}
                     aria-rowindex={index}
                     tabIndex={0}
-                    draggable="true"
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     onDoubleClick={handlePlay}

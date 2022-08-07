@@ -23,7 +23,7 @@ export const usePlaybackPreviousMutation = () => {
             retry: 1,
             onSettled: () => {
                 if (targetDeviceId !== device_id) {
-                    queryClient.invalidateQueries(["playback-state"]);
+                    queryClient.refetchQueries(["playback-state"]);
                 }
             },
         }

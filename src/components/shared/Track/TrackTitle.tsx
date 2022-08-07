@@ -93,7 +93,6 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> & ParentComposition =
                         sizes="40px"
                         rootMargin="1000px"
                         rootRef={targetRef}
-                        draggable={false}
                     />
                 </TitleCover>
             )}
@@ -110,9 +109,7 @@ export const TrackTitle: React.FC<PlaylistTrackTitleProps> & ParentComposition =
                                             href={"/artist/" + artist.id}
                                             label={artist.name}
                                             prefetch={false}>
-                                            <TitleArtist draggable="false">
-                                                {artist.name}
-                                            </TitleArtist>
+                                            <TitleArtist>{artist.name}</TitleArtist>
                                         </Link>
                                         {index < artists.length - 1 && ", "}
                                     </React.Fragment>

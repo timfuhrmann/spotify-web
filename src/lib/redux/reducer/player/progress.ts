@@ -28,6 +28,10 @@ const progressSlice = createSlice({
             state.progress_ms = action.payload;
         },
         increaseProgress: state => {
+            if (state.dragging) {
+                return;
+            }
+
             state.progress_ms = state.progress_ms !== null ? state.progress_ms + 1000 : 1000;
         },
     },

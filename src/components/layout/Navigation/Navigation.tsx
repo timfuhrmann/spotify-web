@@ -9,7 +9,7 @@ const NavigationWrapper = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 320px;
+    width: 30rem;
     padding-top: 2.4rem;
     background-color: ${p => p.theme.black};
 `;

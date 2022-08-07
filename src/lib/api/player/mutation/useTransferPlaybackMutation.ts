@@ -51,7 +51,11 @@ export const useTransferPlaybackMutation = () => {
                 );
             },
             onSettled: () => {
-                queryClient.invalidateQueries(["playback-state", "devices"]);
+                queryClient.refetchQueries(["playback-state"]);
+
+                setTimeout(() => {
+                    queryClient.refetchQueries(["devices"]);
+                }, 1000);
             },
         }
     );

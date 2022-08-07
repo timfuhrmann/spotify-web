@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import { hover } from "@css/helper";
+import { text } from "@css/helper/typography";
 
 const withStyles = (
     Component: React.ComponentType<PropsWithChildren<{ className?: string }>>
@@ -9,6 +10,7 @@ const withStyles = (
     padding: 1.2rem;
     border-radius: 0.4rem;
     white-space: nowrap;
+    ${text("textMd", "regular")};
 
     ${p => hover`
         background-color: ${p.theme.gray200};

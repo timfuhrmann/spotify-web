@@ -17,19 +17,31 @@ export const useSearchInput = () => {
     const pathname = pathnameFromAsPath(asPath);
 
     useEffect(() => {
-        if (!access_token || !query || typeof query !== "string") {
+        if (!isReady || !query || typeof query !== "string") {
             return;
         }
 
-        debouncedQuery(access_token, query);
-    }, [access_token, query]);
+        setValue(query);
+    }, [isReady]);
+
+    useEffect(() => {
+        if (!query || typeof query !== "string") {
+            return;
+        }
+
+        debouncedQuery(query);
+    }, [query]);
 
     const debouncedQuery = useCallback(
-        debounce((access_token: string, query: string) => {
+        debounce((query: string) => {
+            if (!access_token) {
+                return;
+            }
+
             // @ts-ignore
             dispatch(searchByTypeThunk({ access_token, query }));
-        }, 75),
-        []
+        }, 200),
+        [access_token]
     );
 
     const handleInput = (input: string) => {

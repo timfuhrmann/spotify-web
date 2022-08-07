@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "@lib/link";
 import { useRouter } from "next/router";
@@ -37,10 +37,14 @@ interface SearchNavigationItemProps {
 }
 
 export const SearchNavigationItem: React.FC<SearchNavigationItemProps> = ({ label, type }) => {
-    const { asPath, query, isReady } = useRouter();
+    const { asPath, query, isReady, prefetch } = useRouter();
 
-    const href = `/browse/search${type ? `/${type}` : ""}`;
     const pathname = pathnameFromAsPath(asPath);
+    const href = `/browse/search${type ? `/${type}` : ""}`;
+
+    useEffect(() => {
+        prefetch(href);
+    }, []);
 
     return (
         <Link label={label} href={isReady ? { pathname: href, query } : undefined} prefetch={false}>

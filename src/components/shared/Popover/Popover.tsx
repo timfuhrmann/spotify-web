@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
 import { PopoverItem } from "./PopoverItem";
 import { PopoverSeparator } from "./PopoverSeparator";
+import { PopoverList } from "./PopoverList";
 
 const PopoverWrapper = styled.div`
     position: relative;
@@ -23,6 +24,7 @@ const PopoverFrame = styled.div`
 
 interface ParentComposition {
     Item: typeof PopoverItem;
+    List: typeof PopoverList;
     Separator: typeof PopoverSeparator;
 }
 
@@ -72,4 +74,5 @@ export const Popover: React.FC<PropsWithChildren<PopoverProps>> & ParentComposit
 };
 
 Popover.Item = PopoverItem;
+Popover.List = PopoverList;
 Popover.Separator = PopoverSeparator;
