@@ -48,6 +48,22 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         return player.previousTrack();
     };
 
+    const mute = async () => {
+        if (!player) {
+            return;
+        }
+
+        return player.setVolume(0);
+    };
+
+    const unmute = async (previousVolume: number = 1) => {
+        if (!player) {
+            return;
+        }
+
+        return player.setVolume(previousVolume);
+    };
+
     return (
         <PlayerContext.Provider
             value={{
@@ -58,6 +74,8 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
                 togglePlay,
                 previousTrack,
                 nextTrack,
+                mute,
+                unmute,
             }}>
             {session && (
                 <Script

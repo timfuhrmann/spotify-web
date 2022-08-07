@@ -23,6 +23,7 @@ import { useDurationSelector } from "@lib/redux/reducer/player/hook/useDurationS
 import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 import { usePlaybackNext } from "@lib/api/player/usePlaybackNext";
 import { usePlaybackPrevious } from "@lib/api/player/usePlaybackPrevious";
+import volume, { setMuted, setVolume } from "@lib/redux/reducer/player/volume";
 
 interface PlayingContextData {
     isDisabled: boolean;
@@ -34,6 +35,8 @@ interface PlayingContextData {
     handleShuffle: () => void;
     handlePreviousTrack: () => void;
     handleNextTrack: () => void;
+    handleMute: () => void;
+    handleUnmute: (previousVolume: number) => void;
 }
 
 const PlayingContext = createContext<PlayingContextData>({} as PlayingContextData);
@@ -51,7 +54,8 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const { mutate: mutateNext } = usePlaybackNext();
     const { mutate: mutatePrevious } = usePlaybackPrevious();
     const { data: playbackState } = usePlaybackStateQuery();
-    const { activeDevice, device_id, togglePlay, previousTrack, nextTrack } = usePlayer();
+    const { activeDevice, device_id, togglePlay, previousTrack, nextTrack, mute, unmute } =
+        usePlayer();
 
     const {
         data: savedTracks,
@@ -75,6 +79,19 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
             dispatch(setProgress(playbackState.progress_ms));
         }
     }, [playbackState, activeDevice, device_id]);
+
+    useEffect(() => {
+        if (!activeDevice || activeDevice.volume_percent === null) {
+            return;
+        }
+
+        if (activeDevice.volume_percent === 0) {
+            dispatch(setMuted(true));
+        } else {
+            dispatch(setVolume(activeDevice.volume_percent / 100));
+            dispatch(setMuted(false));
+        }
+    }, [activeDevice]);
 
     useEffect(() => {
         if (paused || !currentTrack) {
@@ -151,6 +168,16 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
     };
 
+    const handleMute = async () => {
+        await mute();
+        dispatch(setMuted(true));
+    };
+
+    const handleUnmute = async (previousVolume: number) => {
+        await unmute(previousVolume);
+        dispatch(setMuted(false));
+    };
+
     return (
         <PlayingContext.Provider
             value={{
@@ -163,6 +190,8 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
                 handleRepeat,
                 handlePreviousTrack,
                 handleNextTrack,
+                handleMute,
+                handleUnmute,
             }}>
             {children}
         </PlayingContext.Provider>

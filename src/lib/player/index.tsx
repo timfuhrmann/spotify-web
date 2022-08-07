@@ -8,6 +8,8 @@ interface PlayerContextData {
     togglePlay: () => Promise<void>;
     nextTrack: () => Promise<void>;
     previousTrack: () => Promise<void>;
+    mute: () => Promise<void>;
+    unmute: (previousVolume?: number) => Promise<void>;
 }
 
 export const PlayerContext = createContext<PlayerContextData>({} as PlayerContextData);

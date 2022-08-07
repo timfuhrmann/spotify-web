@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { PlayingTitle } from "./PlayingTitle";
 import { PlayingControls } from "./PlayingControls";
+import { PlayingSecondaryControls } from "./PlayingSecondaryControls";
 
 const BarWrapper = styled.div`
     display: grid;
@@ -17,7 +18,7 @@ export const PlayingBar: React.FC = () => {
         <BarWrapper>
             <PlayingTitle />
             <PlayingControls />
-            <div></div>
+            <PlayingSecondaryControls />
         </BarWrapper>
     );
 };

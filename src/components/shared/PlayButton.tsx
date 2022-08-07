@@ -49,7 +49,7 @@ export const PlayButton: React.FC<PlayButtonProps> = ({
             disabled={disabled}
             $isSecondary={isSecondary}
             onClick={onClick}>
-            {playing ? <Pause width="60%" /> : <Play width="60%" />}
+            {playing ? <Pause width="55%" /> : <Play width="55%" />}
         </ButtonWrapper>
     );
 };

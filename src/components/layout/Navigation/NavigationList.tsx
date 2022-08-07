@@ -9,6 +9,10 @@ import { Search } from "@icon/Search";
 import { Library } from "@icon/Library";
 import { Plus } from "@icon/Plus";
 import { Heart } from "@icon/Heart";
+import { useCurrentContextSelector } from "@lib/redux/reducer/player/hook/useCurrentContextSelector";
+import { usePausedSelector } from "@lib/redux/reducer/player/hook/usePausedSelector";
+import { useSession } from "@lib/context/session";
+import { Volume } from "@icon/Volume";
 
 const ListWrapper = styled.div``;
 
@@ -66,8 +70,17 @@ const ListHeart = styled(ListIconFrame)`
     background: ${p => p.theme.likedSongsGradient};
 `;
 
+const ListPlaying = styled(Volume)`
+    width: 1.2rem;
+    color: ${p => p.theme.primary200};
+    margin-left: auto;
+`;
+
 export const NavigationList: React.FC = () => {
     const { asPath } = useRouter();
+    const { session } = useSession();
+    const currentContext = useCurrentContextSelector();
+    const paused = usePausedSelector();
 
     return (
         <ListWrapper>
@@ -118,6 +131,11 @@ export const NavigationList: React.FC = () => {
                                 <Heart width="12" />
                             </ListHeart>
                             Liked Songs
+                            {session &&
+                                !paused &&
+                                currentContext === session.uri + ":collection" && (
+                                    <ListPlaying aria-hidden />
+                                )}
                         </ListAnchor>
                     </Link>
                 </ListItem>

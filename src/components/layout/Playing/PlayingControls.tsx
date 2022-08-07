@@ -1,24 +1,16 @@
 import React from "react";
-import { usePlayer } from "@lib/player";
 import styled from "styled-components";
 import { PlayingProgress } from "./PlayingProgress";
 import { PlayButton } from "../../shared/PlayButton";
 import { hover, square } from "@css/helper";
-import { useSelector } from "react-redux";
-import { RootState } from "@lib/redux";
 import { PreviousTrack } from "@icon/PreviousTrack";
 import { NextTrack } from "@icon/NextTrack";
-import { usePlaybackPauseMutation } from "@lib/api/player/usePlaybackPauseMutation";
-import { useStartResumePlaybackMutation } from "@lib/api/player/useStartResumePlaybackMutation";
 import { Repeat } from "@icon/Repeat";
 import { usePausedSelector } from "@lib/redux/reducer/player/hook/usePausedSelector";
 import { useRepeatModeSelector } from "@lib/redux/reducer/player/hook/useRepeatModeSelector";
 import { Shuffle } from "@icon/Shuffle";
 import { useShuffleSelector } from "@lib/redux/reducer/player/hook/useShuffleSelector";
 import { usePlaying } from "./PlayingProvider";
-import { RepeatMode } from "@lib/redux/reducer/player";
-import { usePlaybackRepeatModeMutation } from "@lib/api/player/usePlaybackRepeatModeMutation";
-import { usePlaybackShuffleMutation } from "@lib/api/player/usePlaybackShuffleMutation";
 
 const ControlsWrapper = styled.div`
     display: flex;
