@@ -1,5 +1,5 @@
 import { request } from "@lib/api";
-import { AlbumGroup } from "@lib/api/album";
+import { AlbumGroup } from "@type/album";
 import { number } from "prop-types";
 
 export const ALBUM_TRACKS_OFFSET = 50;

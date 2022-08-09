@@ -1,12 +1,11 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
 import { AlbumProps } from "./Album";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
-import { ALBUM_TRACKS_OFFSET, getAlbumTracks, removeAlbum, saveAlbum } from "@lib/api/album";
 import { useSession } from "@lib/context/session";
-import { useSavedAlbumsContainsQuery } from "@lib/api/album/hook/useSavedAlbumsContainsQuery";
+import { useSavedAlbumsContainsQuery } from "@lib/api/album/query/useSavedAlbumsContainsQuery";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
-import { getIdFromQuery } from "@lib/util";
+import { request } from "@lib/api";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 
@@ -28,6 +27,8 @@ interface AlbumContextData {
 }
 
 const AlbumContext = createContext<AlbumContextData>({} as AlbumContextData);
+
+const ALBUM_TRACKS_OFFSET = 50;
 
 export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, children }) => {
     const { access_token } = useSession();
@@ -56,7 +57,11 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         initialTracks: album.tracks,
         limit: ALBUM_TRACKS_OFFSET,
         enabled: !!access_token,
-        queryFn: ({ pageParam = 1 }) => getAlbumTracks(access_token!, album.id, pageParam),
+        queryFn: ({ pageParam = 1 }) =>
+            request(access_token!, {
+                url: `/albums/${album.id}/tracks`,
+                params: { offset: pageParam * ALBUM_TRACKS_OFFSET, limit: ALBUM_TRACKS_OFFSET },
+            }),
         idsFn: page => page.items.flatMap(item => item.id),
         getNextPageParam: (data, allPages) => {
             const lastPage = allPages[allPages.length - 1];

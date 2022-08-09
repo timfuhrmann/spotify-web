@@ -3,7 +3,7 @@ import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
-import { useSavedAlbumsQuery } from "@lib/api/album/hook/useSavedAlbumsQuery";
+import { useSavedAlbumsQuery } from "@lib/api/album/query/useSavedAlbumsQuery";
 import { useMemo } from "react";
 import { EntryProps } from "../../src/components/shared/Entry";
 

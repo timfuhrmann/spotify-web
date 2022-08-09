@@ -1,18 +1,29 @@
-import { useQuery } from "react-query";
-import { getSavedAlbumsContains, removeAlbum, saveAlbum } from "@lib/api/album";
-import { useSession } from "@lib/context/session";
-import { queryClient } from "@lib/api";
-import { useCallback } from "react";
 import cloneDeep from "lodash.clonedeep";
+import { useQuery } from "react-query";
+import { useSession } from "@lib/context/session";
+import { queryClient, request } from "@lib/api";
+import { useCallback } from "react";
+import { useSaveAlbumMutation } from "@lib/api/album/mutation/useSaveAlbumMutation";
+import { useRemoveAlbumMutation } from "@lib/api/album/mutation/useRemoveAlbumMutation";
 
 export const useSavedAlbumsContainsQuery = (ids: string[]) => {
     const { access_token } = useSession();
+    const { mutate: mutateSave } = useSaveAlbumMutation();
+    const { mutate: mutateRemove } = useRemoveAlbumMutation();
 
     const queryKey = ["saved-albums-contains", ids.join(","), access_token];
 
-    const data = useQuery(queryKey, () => getSavedAlbumsContains(access_token!, ids), {
-        enabled: !!access_token,
-    });
+    const data = useQuery(
+        queryKey,
+        () =>
+            request<boolean[]>(access_token!, {
+                url: "/me/albums/contains",
+                params: { ids: ids.join(",") },
+            }),
+        {
+            enabled: !!access_token,
+        }
+    );
 
     const handleSaveAlbum = useCallback(
         (id: string, index: number) => {
@@ -21,7 +32,7 @@ export const useSavedAlbumsContainsQuery = (ids: string[]) => {
             }
 
             writeToCache(index, true);
-            saveAlbum(access_token, [id]);
+            mutateSave({ ids: [id] });
         },
         [access_token]
     );
@@ -33,7 +44,7 @@ export const useSavedAlbumsContainsQuery = (ids: string[]) => {
             }
 
             writeToCache(index, false);
-            removeAlbum(access_token, [id]);
+            mutateRemove({ ids: [id] });
         },
         [access_token]
     );

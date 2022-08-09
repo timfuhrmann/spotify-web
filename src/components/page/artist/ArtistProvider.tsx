@@ -12,7 +12,7 @@ import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksC
 import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
 import { followArtist, unfollowArtist } from "@lib/api/artist";
 import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
-import { AlbumGroupType } from "@lib/api/album";
+import { AlbumGroupType } from "@type/album";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 
 interface ArtistContextData {

@@ -7,7 +7,7 @@ import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuer
 import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
-import { AlbumGroup } from "@lib/api/album";
+import { AlbumGroup } from "@type/album";
 
 const SingleWrapper = styled.div`
     padding: 2.4rem 0;

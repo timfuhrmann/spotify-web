@@ -6,7 +6,7 @@ import { useFeaturedPlaylistsQuery } from "@lib/api/playlist/hook/useFeaturedPla
 import { ListEntries } from "../src/components/shared/ListEntries/ListEntries";
 import { HeaderSpacer } from "../src/components/layout/HeaderSpacer";
 import { content } from "@css/helper/content";
-import { useNewReleasesQuery } from "@lib/api/album/hook/useNewReleasesQuery";
+import { useNewReleasesQuery } from "@lib/api/album/query/useNewReleasesQuery";
 import { RecentlyPlayed } from "../src/components/recently-played/RecentlyPlayed";
 import { text } from "@css/helper/typography";
 import { transition } from "@css/helper";

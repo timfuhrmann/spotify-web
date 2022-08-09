@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { getArtistsAlbums } from "@lib/api/artist";
 import { useSession } from "@lib/context/session";
-import { AlbumGroup } from "@lib/api/album";
+import { AlbumGroup } from "@type/album";
 
 export const useArtistsAlbumsQuery = (
     id: string | undefined,
