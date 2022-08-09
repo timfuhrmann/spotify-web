@@ -3,7 +3,7 @@ import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
-import { useFollowedArtistsQuery } from "@lib/api/artist/hook/useFollowedArtistsQuery";
+import { useFollowedArtistsQuery } from "@lib/api/artist/query/useFollowedArtistsQuery";
 
 const ArtistsWrapper = styled.div`
     padding: 2.4rem 0;

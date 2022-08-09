@@ -3,9 +3,9 @@ import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { NextPageWithLayout } from "@type/page";
 import { useRouter } from "next/router";
 import { Artist as ArtistComponent } from "../../../src/components/page/artist/Artist";
-import { useArtistQuery } from "@lib/api/artist/hook/useArtistQuery";
+import { useArtistQuery } from "@lib/api/artist/query/useArtistQuery";
 import { getIdFromQuery } from "@lib/util";
-import { useArtistsTopTracksQuery } from "@lib/api/artist/hook/useArtistsTopTracksQuery";
+import { useArtistsTopTracksQuery } from "@lib/api/artist/query/useArtistsTopTracksQuery";
 
 const Artist: NextPageWithLayout = () => {
     const { query } = useRouter();

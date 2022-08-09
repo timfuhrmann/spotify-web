@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ListEntries } from "../../shared/ListEntries/ListEntries";
 import { content } from "@css/helper/content";
-import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
+import { useArtistsAlbumsQuery } from "@lib/api/artist/query/useArtistsAlbumsQuery";
 import { AlbumGroup } from "@type/album";
 
 const AppearsWrapper = styled.div`

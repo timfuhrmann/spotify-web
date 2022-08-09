@@ -9,11 +9,12 @@ import React, {
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
 import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
-import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
-import { followArtist, unfollowArtist } from "@lib/api/artist";
-import { useFollowedArtistsContains } from "@lib/api/artist/hook/useFollowedArtistsContainsQuery";
+import { useArtistsAlbumsQuery } from "@lib/api/artist/query/useArtistsAlbumsQuery";
+import { useFollowedArtistsContains } from "@lib/api/artist/query/useFollowedArtistsContainsQuery";
 import { AlbumGroupType } from "@type/album";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
+import { useFollowArtistMutation } from "@lib/api/artist/mutation/useFollowArtistMutation";
+import { useUnfollowArtistMutation } from "@lib/api/artist/mutation/useUnfollowArtistMutation";
 
 interface ArtistContextData {
     isFollowing: boolean;
@@ -39,6 +40,8 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
     children,
 }) => {
     const { access_token } = useSession();
+    const { mutate: mutateFollow } = useFollowArtistMutation();
+    const { mutate: mutateUnfollow } = useUnfollowArtistMutation();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
     const [popularTracksLength, setPopularTracksLength] = useState(Math.min(5, topTracks.length));
 
@@ -109,7 +112,7 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         }
 
         saveArtistToCache(0);
-        followArtist(access_token, [artist.id]);
+        mutateFollow({ ids: [artist.id] });
     };
 
     const handleUnfollowArtist = () => {
@@ -118,7 +121,7 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
         }
 
         removeArtistFromCache(0);
-        unfollowArtist(access_token, [artist.id]);
+        mutateUnfollow({ ids: [artist.id] });
     };
 
     return (

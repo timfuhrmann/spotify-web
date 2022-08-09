@@ -4,7 +4,7 @@ import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteT
 import { useSession } from "@lib/context/session";
 import { useSavedAlbumsContainsQuery } from "@lib/api/album/query/useSavedAlbumsContainsQuery";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
-import { useArtistsAlbumsQuery } from "@lib/api/artist/hook/useArtistsAlbumsQuery";
+import { useArtistsAlbumsQuery } from "@lib/api/artist/query/useArtistsAlbumsQuery";
 import { request } from "@lib/api";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
