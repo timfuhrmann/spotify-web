@@ -1,11 +1,13 @@
 import cloneDeep from "lodash.clonedeep";
 import { InfiniteData, useInfiniteQuery } from "react-query";
-import { getSavedTracksContains, removeTracks, saveTracks } from "@lib/api/track";
+import { getSavedTracksContains } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
 import { useCallback, useEffect, useMemo } from "react";
 import { queryClient } from "@lib/api";
 import { InfiniteTracksOptions, useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
 import { createArray } from "@lib/util";
+import { useSaveTracksMutation } from "@lib/api/track/mutation/useSaveTracksMutation";
+import { useRemoveTracksMutation } from "@lib/api/track/mutation/useRemoveTracksMutation";
 
 interface InfiniteTracksWithSavedTracksContainsOptions<T> extends InfiniteTracksOptions<T> {
     idsFn: (data: T) => string[];
@@ -19,6 +21,8 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
     ...infiniteTracksOptions
 }: InfiniteTracksWithSavedTracksContainsOptions<T>) => {
     const { access_token } = useSession();
+    const { mutate: mutateSave } = useSaveTracksMutation();
+    const { mutate: mutateRemove } = useRemoveTracksMutation();
 
     const { tracksPages, ...infiniteTracksResult } = useInfiniteTracks({
         key,
@@ -70,7 +74,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
             }
 
             addSavedTrackToCache(index);
-            return saveTracks(access_token, [id]);
+            mutateSave({ ids: [id] });
         },
         [access_token]
     );
@@ -82,7 +86,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
             }
 
             removeSavedTrackFromCache(index);
-            return removeTracks(access_token, [id]);
+            mutateRemove({ ids: [id] });
         },
         [access_token]
     );

@@ -1,10 +1,10 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
-import { getPlaylistTracks, PLAYLIST_TRACKS_OFFSET } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
-import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQuery";
 import { PlaylistProps } from "./Playlist";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
+import { request } from "@lib/api";
 
 interface PlaylistContextData {
     isFollowing: boolean;
@@ -22,6 +22,8 @@ interface PlaylistContextData {
 }
 
 const PlaylistContext = createContext<PlaylistContextData>({} as PlaylistContextData);
+
+const PLAYLIST_TRACKS_OFFSET = 100;
 
 export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     playlist,
@@ -49,7 +51,14 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         initialTracks: playlist.tracks,
         limit: PLAYLIST_TRACKS_OFFSET,
         enabled: !!access_token,
-        queryFn: ({ pageParam = 1 }) => getPlaylistTracks(access_token!, playlist.id, pageParam),
+        queryFn: ({ pageParam = 1 }) =>
+            request<SpotifyApi.PlaylistTrackResponse>(access_token!, {
+                url: `/playlists/${playlist.id}/tracks`,
+                params: {
+                    offset: pageParam * PLAYLIST_TRACKS_OFFSET,
+                    limit: PLAYLIST_TRACKS_OFFSET,
+                },
+            }),
         idsFn: page => page.items.flatMap(item => (item.track ? item.track.id : [])),
         getNextPageParam: (data, allPages) => {
             const lastPage = allPages[allPages.length - 1];

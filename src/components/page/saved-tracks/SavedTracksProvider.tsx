@@ -2,9 +2,10 @@ import cloneDeep from "lodash.clonedeep";
 import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
 import { SavedTracksProps } from "./SavedTracks";
 import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
-import { getSavedTracks, removeTracks } from "@lib/api/track";
+import { getSavedTracks } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
+import { useRemoveTracksMutation } from "@lib/api/track/mutation/useRemoveTracksMutation";
 
 interface SavedTracksContextData {
     tracks: SpotifyApi.SavedTrackObject[];
@@ -23,6 +24,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
     children,
 }) => {
     const { session, access_token } = useSession();
+    const { mutate: mutateRemove } = useRemoveTracksMutation();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
     const { isLoading, tracksPages, hasNextPage, fetchNextPage, writeToTracksCache } =
@@ -81,9 +83,9 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
             }
 
             removeTrackFromCache(index);
-            removeTracks(access_token, [id]);
+            mutateRemove({ ids: [id] });
         },
-        [access_token]
+        [access_token, tracksPages]
     );
 
     const handlePlay = useCallback(

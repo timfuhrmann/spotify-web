@@ -10,7 +10,7 @@ import {
     setShuffle,
 } from "@lib/redux/reducer/player";
 import { usePlayer } from "@lib/player";
-import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
+import { useSavedTracksContainsQuery } from "@lib/api/track/query/useSavedTracksContainsQuery";
 import { increaseProgress, setProgress } from "@lib/redux/reducer/player/progress";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 import { usePlaybackPauseMutation } from "@lib/api/player/mutation/usePlaybackPauseMutation";

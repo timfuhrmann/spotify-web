@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../src/components/layout/PrimaryLayout";
-import { useFeaturedPlaylistsQuery } from "@lib/api/playlist/hook/useFeaturedPlaylistsQuery";
+import { useFeaturedPlaylistsQuery } from "@lib/api/playlist/query/useFeaturedPlaylistsQuery";
 import { ListEntries } from "../src/components/shared/ListEntries/ListEntries";
 import { HeaderSpacer } from "../src/components/layout/HeaderSpacer";
 import { content } from "@css/helper/content";

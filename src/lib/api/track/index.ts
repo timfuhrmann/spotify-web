@@ -21,11 +21,3 @@ export const getSavedTracksContains = async (
         params: { ids: ids.join(",") },
     });
 };
-
-export const saveTracks = async (access_token: string, ids: string[]): Promise<void> => {
-    return request(access_token, { url: "/me/tracks", data: { ids }, method: "PUT" });
-};
-
-export const removeTracks = async (access_token: string, ids: string[]): Promise<void> => {
-    return request(access_token, { url: "/me/tracks", data: { ids }, method: "DELETE" });
-};

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { ArtistProps } from "./Artist";
 import { useSession } from "@lib/context/session";
-import { useSavedTracksContainsQuery } from "@lib/api/track/hook/useSavedTracksContainsQuery";
+import { useSavedTracksContainsQuery } from "@lib/api/track/query/useSavedTracksContainsQuery";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/query/useArtistsAlbumsQuery";
 import { useFollowedArtistsContains } from "@lib/api/artist/query/useFollowedArtistsContainsQuery";
 import { AlbumGroupType } from "@type/album";

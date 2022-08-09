@@ -6,7 +6,7 @@ import { useClickOutside } from "@lib/hook/useClickOutside";
 import { PopoverPosition } from "./Track";
 import { usePlaybackQueueMutation } from "@lib/api/player/mutation/usePlaybackQueueMutation";
 import { Link } from "@lib/link";
-import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQuery";
 import { useAddTracksToPlaylistMutation } from "@lib/api/player/mutation/useAddTracksToPlaylistMutation";
 import { useSession } from "@lib/context/session";
 import { useRouter } from "next/router";

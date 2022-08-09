@@ -1,12 +1,16 @@
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "react-query";
-import { getSavedTracksContains, removeTracks, saveTracks } from "@lib/api/track";
+import { getSavedTracksContains } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
 import { queryClient } from "@lib/api";
 import { useCallback } from "react";
+import { useSaveTracksMutation } from "@lib/api/track/mutation/useSaveTracksMutation";
+import { useRemoveTracksMutation } from "@lib/api/track/mutation/useRemoveTracksMutation";
 
 export const useSavedTracksContainsQuery = (ids: string[]) => {
     const { access_token } = useSession();
+    const { mutateAsync: mutateSave } = useSaveTracksMutation();
+    const { mutateAsync: mutateRemove } = useRemoveTracksMutation();
 
     const queryKey = ["saved-tracks-contains", ids.join(","), access_token];
 
@@ -21,7 +25,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
             }
 
             writeToCache(index, true);
-            await saveTracks(access_token, [id]);
+            await mutateSave({ ids: [id] });
             invalidateCache();
         },
         [access_token, ids]
@@ -34,7 +38,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
             }
 
             writeToCache(index, false);
-            await removeTracks(access_token, [id]);
+            await mutateRemove({ ids: [id] });
             invalidateCache();
         },
         [access_token, ids]

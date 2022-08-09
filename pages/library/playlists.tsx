@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
-import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQuery";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
 

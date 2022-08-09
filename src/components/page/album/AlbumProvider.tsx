@@ -58,7 +58,7 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         limit: ALBUM_TRACKS_OFFSET,
         enabled: !!access_token,
         queryFn: ({ pageParam = 1 }) =>
-            request(access_token!, {
+            request<SpotifyApi.AlbumTracksResponse>(access_token!, {
                 url: `/albums/${album.id}/tracks`,
                 params: { offset: pageParam * ALBUM_TRACKS_OFFSET, limit: ALBUM_TRACKS_OFFSET },
             }),

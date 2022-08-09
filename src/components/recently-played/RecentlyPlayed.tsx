@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { RecentlyPlayedProvider } from "./RecentlyPlayedProvider";
 import { RecentlyPlayedPlaylist } from "./RecentlyPlayedPlaylist";
 import { createArray } from "@lib/util";
-import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQuery";
 
 const PlayedWrapper = styled.div``;
 

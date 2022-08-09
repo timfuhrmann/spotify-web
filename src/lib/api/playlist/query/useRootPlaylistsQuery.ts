@@ -1,16 +1,29 @@
 import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "react-query";
-import { followPlaylist, getRootPlaylists, unfollowPlaylist } from "@lib/api/playlist";
 import { useSession } from "@lib/context/session";
-import { queryClient } from "@lib/api";
-import { useCallback, useMemo } from "react";
+import { queryClient, request } from "@lib/api";
+import { useCallback } from "react";
+import { useFollowPlaylistMutation } from "@lib/api/playlist/mutation/useFollowPlaylistMutation";
+import { useUnfollowPlaylistMutation } from "@lib/api/playlist/mutation/useUnfollowPlaylistMutation";
 
 export const useRootPlaylistsQuery = () => {
     const { access_token } = useSession();
+    const { mutate: mutateFollow } = useFollowPlaylistMutation();
+    const { mutate: mutateUnfollow } = useUnfollowPlaylistMutation();
 
     const queryData = useQuery(
         ["root-playlists", access_token],
-        () => getRootPlaylists(access_token!),
+        async () => {
+            const { items } = await request<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>(
+                access_token!,
+                {
+                    url: "/me/playlists",
+                    params: { limit: 50 },
+                }
+            );
+
+            return items;
+        },
         {
             enabled: !!access_token,
         }
@@ -33,7 +46,7 @@ export const useRootPlaylistsQuery = () => {
         }
 
         addPlaylistToCache(playlist);
-        return followPlaylist(access_token, playlist.id);
+        mutateFollow({ id: playlist.id });
     };
 
     const handleUnfollowPlaylist = (id: string) => {
@@ -42,7 +55,7 @@ export const useRootPlaylistsQuery = () => {
         }
 
         removePlaylistFromCache(id);
-        return unfollowPlaylist(access_token, id);
+        mutateUnfollow({ id });
     };
 
     const addPlaylistToCache = (playlist: SpotifyApi.PlaylistObjectSimplified) => {

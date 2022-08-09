@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { NavigationPlaylistItem } from "./NavigationPlaylistItem";
-import { useRootPlaylistsQuery } from "@lib/api/playlist/hook/useRootPlaylistsQuery";
+import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQuery";
 import { useCurrentContextSelector } from "@lib/redux/reducer/player/hook/useCurrentContextSelector";
 import { usePausedSelector } from "@lib/redux/reducer/player/hook/usePausedSelector";
 
