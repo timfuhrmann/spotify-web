@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
-import { useMultipleCategoriesQuery } from "@lib/api/browse/hook/useMultipleCategoriesQuery";
+import { useMultipleCategoriesQuery } from "@lib/api/browse/query/useMultipleCategoriesQuery";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
 import { useEffect, useMemo } from "react";
