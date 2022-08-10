@@ -1,4 +1,3 @@
-import cloneDeep from "lodash.clonedeep";
 import { InfiniteData, useInfiniteQuery } from "react-query";
 import { getSavedTracksContains } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
@@ -107,18 +106,21 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
                     return;
                 }
 
-                const newData = cloneDeep(cachedData);
                 const pageIndex = Math.floor(index / limit);
-                const page = newData.pages[pageIndex];
-
-                if (!page) {
-                    return newData;
-                }
-
                 const trackIndex = index - pageIndex * limit;
-                page[trackIndex] = value;
 
-                return newData;
+                return {
+                    ...cachedData,
+                    pages: cachedData.pages.map((page, index) => {
+                        if (!page || index !== pageIndex) {
+                            return page;
+                        }
+
+                        return page.map((previousValue, idx) =>
+                            idx === trackIndex ? value : previousValue
+                        );
+                    }),
+                };
             }
         );
     };

@@ -1,4 +1,3 @@
-import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "react-query";
 import { useSession } from "@lib/context/session";
 import { queryClient, request } from "@lib/api";
@@ -55,10 +54,7 @@ export const useSavedAlbumsContainsQuery = (ids: string[]) => {
                 return;
             }
 
-            const newData = cloneDeep(cachedData);
-            newData[index] = value;
-
-            return newData;
+            return cachedData.map((previousValue, idx) => (idx === index ? value : previousValue));
         });
     };
 

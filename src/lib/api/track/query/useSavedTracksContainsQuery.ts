@@ -1,4 +1,3 @@
-import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "react-query";
 import { getSavedTracksContains } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
@@ -57,10 +56,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
                 return;
             }
 
-            const newData = cloneDeep(cachedData);
-            newData[index] = value;
-
-            return newData;
+            return cachedData.map((previousValue, idx) => (idx === index ? value : previousValue));
         });
     };
 

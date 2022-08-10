@@ -1,4 +1,3 @@
-import cloneDeep from "lodash.clonedeep";
 import React, {
     createContext,
     PropsWithChildren,
@@ -72,29 +71,27 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
         return tracksPages.pages.flatMap(page => (page ? page.items : []));
     }, [tracksPages, initialTracks]);
 
-    const removeTrackFromCache = (index: number) => {
-        writeToTracksCache(data => {
-            if (!data) {
-                return data;
+    const removeTrackFromCache = (id: string, index: number) => {
+        writeToTracksCache(cachedData => {
+            if (!cachedData) {
+                return cachedData;
             }
-
-            const newData = cloneDeep(data);
 
             const pageIndex = Math.floor(index / initialTracks.limit);
-            const page = newData.pages[pageIndex];
 
-            if (!page) {
-                return newData;
-            }
+            return {
+                ...cachedData,
+                pages: cachedData.pages.map((page, index) => {
+                    if (!page || index !== pageIndex) {
+                        return page;
+                    }
 
-            const cachedItem = tracks[index];
-            const at = page.items.findIndex(({ track }) => track.id === cachedItem.track.id);
-
-            if (at > -1) {
-                page.items.splice(at, 1);
-            }
-
-            return newData;
+                    return {
+                        ...page,
+                        items: page.items.flatMap(item => (item.track.id === id ? [] : item)),
+                    };
+                }),
+            };
         });
     };
 
@@ -104,7 +101,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
                 return;
             }
 
-            removeTrackFromCache(index);
+            removeTrackFromCache(id, index);
             mutateRemove({ ids: [id] });
         },
         [access_token, tracksPages]

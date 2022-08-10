@@ -1,4 +1,3 @@
-import cloneDeep from "lodash.clonedeep";
 import { useQuery } from "react-query";
 import { useSession } from "@lib/context/session";
 import { queryClient, request } from "@lib/api";
@@ -66,14 +65,7 @@ export const useRootPlaylistsQuery = () => {
                     return;
                 }
 
-                const newData = cloneDeep(cachedData);
-                const index = newData.findIndex(item => item.id === playlist.id);
-
-                if (index === -1) {
-                    newData.unshift(playlist);
-                }
-
-                return newData;
+                return [playlist, ...cachedData];
             }
         );
     };
@@ -86,14 +78,7 @@ export const useRootPlaylistsQuery = () => {
                     return;
                 }
 
-                const newData = cloneDeep(cachedData);
-                const index = newData.findIndex(playlist => playlist.id === id);
-
-                if (index > -1) {
-                    newData.splice(index, 1);
-                }
-
-                return newData;
+                return cachedData.flatMap(playlist => (playlist.id === id ? [] : playlist));
             }
         );
     };
