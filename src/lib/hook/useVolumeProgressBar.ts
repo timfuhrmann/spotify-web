@@ -9,26 +9,23 @@ export const useVolumeProgressBar = () => {
     const { player } = usePlayer();
     const dragging = useVolumeDraggingSelector();
 
-    const handleProgress = (position: number | null, seek?: boolean) => {
+    const handleProgress = (position: number | null) => {
         if (!player || position === null) {
             return;
         }
 
         dispatch(setVolume(position));
         dispatch(setMuted(false));
-
-        if (seek) {
-            player.setVolume(position);
-        }
+        player.setVolume(position);
     };
 
     return useDrag(
         {
-            onClick: position => handleProgress(position, true),
+            onClick: position => handleProgress(position),
             onDragStart: () => dispatch(setDragging(true)),
             onDragStop: position => {
                 if (dragging) {
-                    handleProgress(position, true);
+                    handleProgress(position);
                 }
 
                 dispatch(setDragging(false));

@@ -9,7 +9,7 @@ import { Search } from "@icon/Search";
 import { Library } from "@icon/Library";
 import { Plus } from "@icon/Plus";
 import { Heart } from "@icon/Heart";
-import { useCurrentContextSelector } from "@lib/redux/reducer/player/hook/useCurrentContextSelector";
+import { useCurrentTrackContextSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackContextSelector";
 import { usePausedSelector } from "@lib/redux/reducer/player/hook/usePausedSelector";
 import { useSession } from "@lib/context/session";
 import { Volume } from "@icon/Volume";
@@ -79,7 +79,7 @@ const ListPlaying = styled(Volume)`
 export const NavigationList: React.FC = () => {
     const { asPath } = useRouter();
     const { session } = useSession();
-    const currentContext = useCurrentContextSelector();
+    const currentContext = useCurrentTrackContextSelector();
     const paused = usePausedSelector();
 
     return (

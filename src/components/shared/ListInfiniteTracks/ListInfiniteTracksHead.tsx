@@ -78,6 +78,16 @@ export const ListInfiniteTracksHead: React.FC<TracksHeadProps> = ({ columns }) =
         return () => scrollStage.removeEventListener("scroll", onScroll);
     }, [stuck]);
 
+    useEffect(() => {
+        if (stuck) {
+            document.body.style.setProperty("--header-context", "1");
+        }
+
+        return () => {
+            document.body.style.setProperty("--header-context", "0");
+        };
+    }, [stuck]);
+
     return (
         <HeadWrapper ref={headRef} $stuck={stuck}>
             <HeadInner $stuck={stuck}>

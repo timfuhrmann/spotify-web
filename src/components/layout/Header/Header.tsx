@@ -1,11 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { ChevronRight } from "@icon/ChevronRight";
-import { fillParent, transition } from "@css/helper";
+import { fillParent, square, transition } from "@css/helper";
 import { HeaderUser } from "./HeaderUser";
 import { HeaderLibraryNavigation } from "./HeaderLibraryNavigation";
 import { useNavigation } from "@lib/hook/useNavigation";
 import { HeaderSearch } from "./HeaderSearch";
+import { useContextSelector } from "@lib/redux/reducer/context/hook/useContextSelector";
+import { PlayButton } from "../../shared/PlayButton";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
+import { text } from "@css/helper/typography";
 
 const HeaderWrapper = styled.header`
     position: relative;
@@ -64,12 +68,27 @@ const HeaderBack = styled(HeaderForth)`
     transform: scale(-1);
 `;
 
+const HeaderContext = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    opacity: var(--header-context, 0);
+    ${transition("opacity", "0.2s")};
+    ${text("displayXs", "bold")};
+`;
+
+const HeaderPlay = styled.div`
+    ${square("4.2rem")};
+`;
+
 interface HeaderProps {
     hasSearch?: boolean;
     hasLibraryNavigation?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({ hasSearch, hasLibraryNavigation }) => {
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
+    const { name, context_uri } = useContextSelector();
     const { hasBack, hasForth, navigateBack, navigateForth } = useNavigation();
 
     return (
@@ -83,6 +102,14 @@ export const Header: React.FC<HeaderProps> = ({ hasSearch, hasLibraryNavigation 
                         <HeaderButton type="button" onClick={navigateForth} disabled={!hasForth}>
                             <HeaderForth />
                         </HeaderButton>
+                        {context_uri && name && (
+                            <HeaderContext>
+                                <HeaderPlay>
+                                    <PlayButton onClick={() => mutatePlay({ context_uri })} />
+                                </HeaderPlay>
+                                {name}
+                            </HeaderContext>
+                        )}
                     </HeaderControls>
                     {hasSearch && <HeaderSearch />}
                     {hasLibraryNavigation && <HeaderLibraryNavigation />}

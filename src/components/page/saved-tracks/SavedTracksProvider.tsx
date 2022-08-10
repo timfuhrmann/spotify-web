@@ -1,11 +1,20 @@
 import cloneDeep from "lodash.clonedeep";
-import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
+import React, {
+    createContext,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+} from "react";
 import { SavedTracksProps } from "./SavedTracks";
 import { useInfiniteTracks } from "@lib/hook/useInfiniteTracks";
 import { getSavedTracks } from "@lib/api/track";
 import { useSession } from "@lib/context/session";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 import { useRemoveTracksMutation } from "@lib/api/track/mutation/useRemoveTracksMutation";
+import { resetContext, setContext } from "@lib/redux/reducer/context";
+import { useAppDispatch } from "@lib/redux";
 
 interface SavedTracksContextData {
     tracks: SpotifyApi.SavedTrackObject[];
@@ -23,6 +32,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
     initialTracks,
     children,
 }) => {
+    const dispatch = useAppDispatch();
     const { session, access_token } = useSession();
     const { mutate: mutateRemove } = useRemoveTracksMutation();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
@@ -41,6 +51,18 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
                     : null;
             },
         });
+
+    useEffect(() => {
+        if (!session) {
+            return;
+        }
+
+        dispatch(setContext({ context_uri: session.uri + ":collection", name: "Liked Songs" }));
+
+        return () => {
+            dispatch(resetContext());
+        };
+    }, [session]);
 
     const tracks = useMemo<SpotifyApi.SavedTrackObject[]>(() => {
         if (!tracksPages) {

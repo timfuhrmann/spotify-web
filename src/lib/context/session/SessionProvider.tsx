@@ -1,16 +1,11 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren } from "react";
 import axios from "axios";
-import { Session, SessionContext } from "@lib/context/session/index";
+import { SessionContext } from "@lib/context/session/index";
 import { getCurrentUser } from "@lib/api/user";
+import { useQuery } from "react-query";
 
 export const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const [session, setSession] = useState<Session | null>(null);
-
-    useEffect(() => {
-        handleUserSession();
-    }, []);
-
-    const handleUserSession = async () => {
+    const { data: session, refetch } = useQuery("session", async () => {
         const { data } = await axios.get("/api/auth/session");
 
         if (!data || !data.access_token) {
@@ -18,13 +13,12 @@ export const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
 
         if (data.user) {
-            setSession({ ...data.user, access_token: data.access_token });
-            return;
+            return { ...data.user, access_token: data.access_token };
         }
 
         const usersProfileResponse = await getCurrentUser(data.access_token);
-        setSession({ ...usersProfileResponse, access_token: data.access_token });
-    };
+        return { ...usersProfileResponse, access_token: data.access_token };
+    });
 
     return (
         <SessionContext.Provider

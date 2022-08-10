@@ -1,10 +1,19 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
+import React, {
+    createContext,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+} from "react";
 import { useSession } from "@lib/context/session";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQuery";
 import { PlaylistProps } from "./Playlist";
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 import { request } from "@lib/api";
+import { useAppDispatch } from "@lib/redux";
+import { resetContext, setContext } from "@lib/redux/reducer/context";
 
 interface PlaylistContextData {
     isFollowing: boolean;
@@ -29,6 +38,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     playlist,
     children,
 }) => {
+    const dispatch = useAppDispatch();
     const { access_token } = useSession();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
@@ -68,6 +78,14 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
                 : null;
         },
     });
+
+    useEffect(() => {
+        dispatch(setContext({ context_uri: playlist.uri, name: playlist.name }));
+
+        return () => {
+            dispatch(resetContext());
+        };
+    }, [playlist]);
 
     const tracks = useMemo<SpotifyApi.PlaylistTrackObject[]>(() => {
         if (!tracksPages) {

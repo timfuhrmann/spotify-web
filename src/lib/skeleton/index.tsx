@@ -24,10 +24,13 @@ interface SkeletonProps {
 
 export const Skeleton: React.FC<SkeletonProps> = ({ style, fill, invisible }) => {
     return (
-        <SkeletonWrapper aria-live="polite" aria-busy="true">
-            <SkeletonInner style={style} $fill={fill} $invisible={invisible}>
-                &zwnj;
-            </SkeletonInner>
-        </SkeletonWrapper>
+        <SkeletonInner
+            aria-live="polite"
+            aria-busy="true"
+            style={style}
+            $fill={fill}
+            $invisible={invisible}>
+            &zwnj;
+        </SkeletonInner>
     );
 };

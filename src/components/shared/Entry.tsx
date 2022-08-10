@@ -7,6 +7,7 @@ import { Link } from "@lib/link";
 import { PlayButton } from "./PlayButton";
 import { Skeleton } from "@lib/skeleton";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 
 const EntryPlay = styled.div`
     position: absolute;
@@ -80,20 +81,23 @@ export interface EntryProps {
     id: string;
     name: string;
     images: SpotifyApi.ImageObject[];
+    uri?: string;
 }
 
 //@ts-ignore
 export const Entry: NamedExoticComponent<EntryProps> & ParentComposition = React.memo(
-    ({ id, name, images, type }) => {
+    ({ id, uri, name, images, type }) => {
+        const { mutate: mutatePlay } = useStartResumePlaybackMutation();
+
         return (
             <EntryWrapper>
                 <EntryFrame>
                     <EntryImage $type={type}>
                         <SpotifyImage images={images} alt={name} sizes="300px" />
                     </EntryImage>
-                    {type !== "category" && (
+                    {type !== "category" && uri && (
                         <EntryPlay>
-                            <PlayButton />
+                            <PlayButton onClick={() => mutatePlay({ context_uri: uri })} />
                         </EntryPlay>
                     )}
                 </EntryFrame>

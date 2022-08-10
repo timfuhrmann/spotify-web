@@ -1,4 +1,11 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
+import React, {
+    createContext,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+} from "react";
 import { AlbumProps } from "./Album";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
 import { useSession } from "@lib/context/session";
@@ -6,6 +13,8 @@ import { useSavedAlbumsContainsQuery } from "@lib/api/album/query/useSavedAlbums
 import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 import { useArtistsAlbumsQuery } from "@lib/api/artist/query/useArtistsAlbumsQuery";
 import { request } from "@lib/api";
+import { resetContext, setContext } from "@lib/redux/reducer/context";
+import { useAppDispatch } from "@lib/redux";
 
 type AlbumDiscs = Record<string, SpotifyApi.TrackObjectSimplified[]>;
 
@@ -31,6 +40,7 @@ const AlbumContext = createContext<AlbumContextData>({} as AlbumContextData);
 const ALBUM_TRACKS_OFFSET = 50;
 
 export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, children }) => {
+    const dispatch = useAppDispatch();
     const { access_token } = useSession();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
@@ -71,6 +81,14 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
                 : null;
         },
     });
+
+    useEffect(() => {
+        dispatch(setContext({ context_uri: album.uri, name: album.name }));
+
+        return () => {
+            dispatch(resetContext());
+        };
+    }, [album]);
 
     const mapTracksByDiscNumber = (tracks: SpotifyApi.TrackObjectSimplified[]): AlbumDiscs => {
         return tracks.reduce((acc, track) => {

@@ -1,5 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { COOKIES_REFRESH_TOKEN, removeAuthCookies, setAuthCookies } from "@lib/api/auth/cookie";
+import {
+    COOKIES_REFRESH_TOKEN,
+    removeAuthCookies,
+    setAccessTokenCookie,
+} from "@lib/api/auth/cookie";
 import { getRefreshedSpotifyAccessToken } from "@lib/api/auth/access-token";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         const auth = await getRefreshedSpotifyAccessToken(refresh_token);
-        setAuthCookies(res, auth);
+        setAccessTokenCookie(res, auth.access_token, auth.expires_in);
 
         return res.status(200).json({ access_token: auth.access_token });
     } catch (e) {

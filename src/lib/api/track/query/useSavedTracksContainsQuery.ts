@@ -45,7 +45,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
     );
 
     const invalidateCache = () => {
-        queryClient.invalidateQueries({
+        return queryClient.invalidateQueries({
             predicate: ({ queryKey }) =>
                 queryKey.includes("saved-tracks") || queryKey.includes("saved-tracks-contains"),
         });
