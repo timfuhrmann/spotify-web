@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import { request } from "@lib/api";
+import { queryClient, request } from "@lib/api";
 import { useSession } from "@lib/context/session";
 import { enqueueSnackbar } from "notistack";
 
@@ -25,8 +25,12 @@ export const useAddTracksToPlaylistMutation = () => {
         },
         {
             retry: 1,
-            onSuccess: () => {
+            onSuccess: (_, { playlistId }) => {
                 enqueueSnackbar("Added to playlist");
+
+                queryClient.invalidateQueries({
+                    predicate: ({ queryKey }) => queryKey.includes(playlistId),
+                });
             },
             onError: () => {
                 enqueueSnackbar("Couldn't add to playlist");
