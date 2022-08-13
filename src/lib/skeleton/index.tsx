@@ -2,8 +2,6 @@ import React, { CSSProperties } from "react";
 import styled from "styled-components";
 import { fillParent } from "@css/helper";
 
-const SkeletonWrapper = styled.span``;
-
 const SkeletonInner = styled.span<{ $fill?: boolean; $invisible?: boolean }>`
     display: inline-flex;
     width: 100%;

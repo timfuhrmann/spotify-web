@@ -5,6 +5,7 @@ import { useAlbum } from "./AlbumProvider";
 import { getTotalSongsString } from "@lib/util";
 import { hover } from "@css/helper";
 import { Link } from "@lib/link";
+import { Bullet } from "../../shared/Bullet";
 
 const HeadUser = styled.a`
     ${text("textSm", "bold")};
@@ -31,8 +32,8 @@ export const AlbumHeadFooter: React.FC<AlbumHeadFooterProps> = ({ artists }) => 
                     <React.Fragment key={artist.id}>
                         <Link href={"/artist/" + artist.id} label={artist.name}>
                             <HeadUser>{artist.name}</HeadUser>
-                        </Link>{" "}
-                        &#183;{" "}
+                        </Link>
+                        <Bullet />
                     </React.Fragment>
                 ))}
             </React.Fragment>
