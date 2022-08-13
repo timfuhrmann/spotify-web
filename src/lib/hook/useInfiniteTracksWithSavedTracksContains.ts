@@ -66,7 +66,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
         return savedTracksPages.pages.flatMap(page => page || []);
     }, [savedTracksPages]);
 
-    const handleSaveTrack = useCallback(
+    const handleLikeTrack = useCallback(
         async (id: string, index: number) => {
             if (!access_token) {
                 return;
@@ -78,7 +78,7 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
         [access_token]
     );
 
-    const handleRemoveTrack = useCallback(
+    const handleUnlikeTrack = useCallback(
         async (id: string, index: number) => {
             if (!access_token) {
                 return;
@@ -137,8 +137,8 @@ export const useInfiniteTracksWithSavedTracksContains = <T>({
     return {
         tracksPages,
         savedTracks,
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
         addSavedTrackToCache,
         removeSavedTrackFromCache,
         ...infiniteTracksResult,

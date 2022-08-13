@@ -3,37 +3,36 @@ import { queryClient, request } from "@lib/api";
 import { useSession } from "@lib/context/session";
 import { enqueueSnackbar } from "notistack";
 
-interface AddTrackToPlaylist {
+interface RemoveTracksFromPlaylist {
     playlistId: string;
     uris: string[];
 }
 
-export const useAddTracksToPlaylistMutation = () => {
+export const useRemoveTracksFromPlaylistMutation = () => {
     const { access_token } = useSession();
 
     return useMutation(
-        async ({ playlistId, uris }: AddTrackToPlaylist) => {
+        async ({ playlistId, uris }: RemoveTracksFromPlaylist) => {
             if (!access_token) {
                 return;
             }
 
             return request(access_token!, {
                 url: `/playlists/${playlistId}/tracks`,
-                params: { uris: uris.join(",") },
-                method: "POST",
+                data: { uris },
+                method: "DELETE",
             });
         },
         {
-            retry: 1,
             onSuccess: (_, { playlistId }) => {
-                enqueueSnackbar("Added to playlist");
+                enqueueSnackbar("Removed from playlist");
 
                 queryClient.invalidateQueries({
                     predicate: ({ queryKey }) => queryKey.includes(playlistId),
                 });
             },
             onError: () => {
-                enqueueSnackbar("Couldn't add to playlist");
+                enqueueSnackbar("Couldn't remove from playlist");
             },
         }
     );

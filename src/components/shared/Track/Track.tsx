@@ -144,8 +144,9 @@ interface TrackProps {
     album?: SpotifyApi.AlbumObjectSimplified;
     addedAt?: string;
     onPlay?: (index: number) => void;
-    onSaveTrack?: (id: string, index: number) => void;
-    onRemoveTrack?: (id: string, index: number) => void;
+    onRemove?: (uri: string, index: number) => void;
+    onLikeTrack?: (id: string, index: number) => void;
+    onUnlikeTrack?: (id: string, index: number) => void;
 }
 
 // @ts-ignore
@@ -164,13 +165,12 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
         isPlaying,
         addedAt,
         onPlay,
-        onSaveTrack,
-        onRemoveTrack,
+        onRemove,
+        onLikeTrack,
+        onUnlikeTrack,
     }) => {
         const [popoverPosition, setPopoverPosition] = useState<PopoverPosition | null>(null);
         const [isFocused, setIsFocused] = useState<boolean>(false);
-
-        const buttonSaveLabel = isSaved ? "Remove from library" : "Add to library";
 
         const handlePlay = () => {
             if (!onPlay) {
@@ -193,8 +193,9 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
                         position={popoverPosition}
                         artists={artists}
                         isSaved={isSaved}
-                        onSaveTrack={() => onSaveTrack && onSaveTrack(id, index)}
-                        onRemoveTrack={() => onRemoveTrack && onRemoveTrack(id, index)}
+                        onRemove={onRemove && (() => onRemove(uri, index))}
+                        onLikeTrack={onLikeTrack && (() => onLikeTrack(id, index))}
+                        onUnlikeTrack={onUnlikeTrack && (() => onUnlikeTrack(id, index))}
                         onClose={() => setPopoverPosition(null)}
                     />
                 )}
@@ -228,16 +229,16 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
                     <TrackDuration>
                         {isSaved ? (
                             <TrackButton
-                                title={buttonSaveLabel}
-                                aria-label={buttonSaveLabel}
-                                onClick={() => onRemoveTrack && onRemoveTrack(id, index)}>
+                                title="Remove from library"
+                                aria-label="Remove from library"
+                                onClick={() => onUnlikeTrack && onUnlikeTrack(id, index)}>
                                 <TrackRemove />
                             </TrackButton>
                         ) : (
                             <TrackButton
-                                title={buttonSaveLabel}
-                                aria-label={buttonSaveLabel}
-                                onClick={() => onSaveTrack && onSaveTrack(id, index)}>
+                                title="Add to library"
+                                aria-label="Add to library"
+                                onClick={() => onUnlikeTrack && onUnlikeTrack(id, index)}>
                                 <TrackSave />
                             </TrackButton>
                         )}

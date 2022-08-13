@@ -26,8 +26,8 @@ import { enqueueSnackbar } from "notistack";
 interface PlayingContextData {
     isDisabled: boolean;
     isSaved: boolean;
-    onSaveTrack: () => void;
-    onRemoveTrack: () => void;
+    onLikeTrack: () => void;
+    onUnlikeTrack: () => void;
     handlePlay: () => void;
     handleRepeat: () => void;
     handleShuffle: () => void;
@@ -55,8 +55,8 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const {
         data: savedTracks,
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
     } = useSavedTracksContainsQuery(currentTrack && currentTrack.id ? [currentTrack.id] : []);
 
     useEffect(() => {
@@ -101,20 +101,20 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
         return () => clearInterval(interval);
     }, [duration, paused, currentTrack]);
 
-    const onSaveTrack = () => {
+    const onLikeTrack = () => {
         if (!currentTrack || !currentTrack.id) {
             return;
         }
 
-        handleSaveTrack(currentTrack.id, 0);
+        handleLikeTrack(currentTrack.id, 0);
     };
 
-    const onRemoveTrack = () => {
+    const onUnlikeTrack = () => {
         if (!currentTrack || !currentTrack.id) {
             return;
         }
 
-        handleRemoveTrack(currentTrack.id, 0);
+        handleUnlikeTrack(currentTrack.id, 0);
     };
 
     const handlePlay = () => {
@@ -168,8 +168,8 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
             value={{
                 isDisabled: !activeDevice && !currentTrack,
                 isSaved: savedTracks && savedTracks.length > 0 ? savedTracks[0] : false,
-                onSaveTrack,
-                onRemoveTrack,
+                onLikeTrack,
+                onUnlikeTrack,
                 handlePlay,
                 handleShuffle,
                 handleRepeat,

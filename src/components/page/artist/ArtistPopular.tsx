@@ -49,8 +49,8 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
         showMorePopularTracks,
         showLessPopularTracks,
         handlePlay,
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
     } = useArtist();
 
     return (
@@ -72,8 +72,8 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
                             isPlaying={isTrackPlaying(uri)}
                             isSaved={savedTracks[index] || false}
                             onPlay={handlePlay}
-                            onSaveTrack={handleSaveTrack}
-                            onRemoveTrack={handleRemoveTrack}
+                            onLikeTrack={handleLikeTrack}
+                            onUnlikeTrack={handleUnlikeTrack}
                         />
                     ))}
             </PopularList>

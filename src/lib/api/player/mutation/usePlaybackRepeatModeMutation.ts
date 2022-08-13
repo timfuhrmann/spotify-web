@@ -25,7 +25,6 @@ export const usePlaybackRepeatModeMutation = () => {
             });
         },
         {
-            retry: 1,
             onSettled: () => {
                 queryClient.refetchQueries(["playback-state"]);
             },

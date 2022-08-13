@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { Popover } from "../Popover/Popover";
@@ -7,7 +7,7 @@ import { PopoverPosition } from "./Track";
 import { usePlaybackQueueMutation } from "@lib/api/player/mutation/usePlaybackQueueMutation";
 import { Link } from "@lib/link";
 import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQuery";
-import { useAddTracksToPlaylistMutation } from "@lib/api/player/mutation/useAddTracksToPlaylistMutation";
+import { useAddTracksToPlaylistMutation } from "@lib/api/playlist/mutation/useAddTracksToPlaylistMutation";
 import { useSession } from "@lib/context/session";
 import { useRouter } from "next/router";
 
@@ -30,10 +30,11 @@ interface TrackPopoverProps {
     uri: string;
     position: PopoverPosition;
     isSaved: boolean;
-    artists?: SpotifyApi.ArtistObjectSimplified[];
     onClose: () => void;
-    onSaveTrack: () => void;
-    onRemoveTrack: () => void;
+    artists?: SpotifyApi.ArtistObjectSimplified[];
+    onRemove?: () => void;
+    onLikeTrack?: () => void;
+    onUnlikeTrack?: () => void;
 }
 
 export const TrackPopover: React.FC<TrackPopoverProps> = ({
@@ -42,17 +43,18 @@ export const TrackPopover: React.FC<TrackPopoverProps> = ({
     isSaved,
     artists,
     onClose,
-    onSaveTrack,
-    onRemoveTrack,
+    onRemove,
+    onLikeTrack,
+    onUnlikeTrack,
 }) => {
     const { push } = useRouter();
     const { session } = useSession();
-    const ref = useClickOutside<HTMLDivElement>({ callback: onClose });
-    const [playlistPopover, setPlaylistPopover] = useState<boolean>(false);
-    const [artistsPopover, setArtistsPopover] = useState<boolean>(false);
     const { data: playlists } = useRootPlaylistsQuery();
     const { mutate: mutateQueue } = usePlaybackQueueMutation();
     const { mutate: mutatePlaylist } = useAddTracksToPlaylistMutation();
+    const ref = useClickOutside<HTMLDivElement>({ callback: onClose });
+    const [playlistPopover, setPlaylistPopover] = useState<boolean>(false);
+    const [artistsPopover, setArtistsPopover] = useState<boolean>(false);
 
     const playlistOptions = useMemo(() => {
         if (!playlists || !session) {
@@ -86,12 +88,20 @@ export const TrackPopover: React.FC<TrackPopoverProps> = ({
     };
 
     const handleSaveTrack = () => {
-        onSaveTrack();
+        if (!onLikeTrack) {
+            return;
+        }
+
+        onLikeTrack();
         onClose();
     };
 
     const handleRemoveTrack = () => {
-        onRemoveTrack();
+        if (!onUnlikeTrack) {
+            return;
+        }
+
+        onUnlikeTrack();
         onClose();
     };
 
@@ -132,24 +142,28 @@ export const TrackPopover: React.FC<TrackPopoverProps> = ({
                         <PopoverButton
                             type="button"
                             onClick={handleRemoveTrack}
-                            onMouseEnter={() => {
-                                setPlaylistPopover(false);
-                                setArtistsPopover(false);
-                            }}>
+                            onMouseEnter={() => setArtistsPopover(false)}>
                             Remove from your liked songs
                         </PopoverButton>
                     ) : (
                         <PopoverButton
                             type="button"
                             onClick={handleSaveTrack}
-                            onMouseEnter={() => {
-                                setPlaylistPopover(false);
-                                setArtistsPopover(false);
-                            }}>
+                            onMouseEnter={() => setArtistsPopover(false)}>
                             Save to your liked songs
                         </PopoverButton>
                     )}
                 </Popover.Item>
+                {onRemove && (
+                    <Popover.Item>
+                        <PopoverButton
+                            type="button"
+                            onClick={onRemove}
+                            onMouseEnter={() => setPlaylistPopover(false)}>
+                            Remove from playlist
+                        </PopoverButton>
+                    </Popover.Item>
+                )}
                 <Popover.List
                     open={playlistPopover}
                     label="Add to playlist"

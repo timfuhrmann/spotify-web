@@ -14,6 +14,7 @@ import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStar
 import { request } from "@lib/api";
 import { useAppDispatch } from "@lib/redux";
 import { resetContext, setContext } from "@lib/redux/reducer/context";
+import { useRemoveTracksFromPlaylistMutation } from "@lib/api/playlist/mutation/useRemoveTracksFromPlaylistMutation";
 
 interface PlaylistContextData {
     isFollowing: boolean;
@@ -24,8 +25,9 @@ interface PlaylistContextData {
     hasNextPage: boolean;
     fetchNextPage: () => void;
     handlePlay: (index?: number) => void;
-    handleSaveTrack: (id: string, index: number) => void;
-    handleRemoveTrack: (id: string, index: number) => void;
+    handleRemove: (uri: string, index: number) => void;
+    handleLikeTrack: (id: string, index: number) => void;
+    handleUnlikeTrack: (id: string, index: number) => void;
     handleFollowPlaylist: () => void;
     handleUnfollowPlaylist: () => void;
 }
@@ -41,6 +43,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     const dispatch = useAppDispatch();
     const { access_token } = useSession();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
+    const { mutate: mutateRemove } = useRemoveTracksFromPlaylistMutation();
 
     const {
         isFollowing,
@@ -54,8 +57,9 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         savedTracks,
         hasNextPage,
         fetchNextPage,
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
+        writeToTracksCache,
     } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.PlaylistTrackResponse>({
         key: playlist.id,
         initialTracks: playlist.tracks,
@@ -105,6 +109,45 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         [playlist]
     );
 
+    const handleRemove = useCallback(
+        (uri: string, index: number) => {
+            if (!access_token) {
+                return;
+            }
+
+            removeTrackFromCache(index);
+            mutateRemove({ uris: [uri], playlistId: playlist.id });
+        },
+        [playlist, access_token]
+    );
+
+    const removeTrackFromCache = (index: number) => {
+        writeToTracksCache(cachedData => {
+            if (!cachedData) {
+                return cachedData;
+            }
+
+            const pageIndex = Math.floor(index / playlist.tracks.limit);
+            const trackIndex = index - pageIndex * playlist.tracks.limit;
+
+            return {
+                ...cachedData,
+                pages: cachedData.pages.map((page, index) => {
+                    if (!page || index !== pageIndex) {
+                        return page;
+                    }
+
+                    return {
+                        ...page,
+                        items: page.items.flatMap((item, index) =>
+                            index === trackIndex ? [] : item
+                        ),
+                    };
+                }),
+            };
+        });
+    };
+
     return (
         <PlaylistContext.Provider
             value={{
@@ -112,8 +155,9 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
                 total: playlist.tracks.total,
                 tracks,
                 savedTracks,
-                handleSaveTrack,
-                handleRemoveTrack,
+                handleLikeTrack,
+                handleUnlikeTrack,
+                handleRemove,
                 isLoading,
                 hasNextPage,
                 fetchNextPage,

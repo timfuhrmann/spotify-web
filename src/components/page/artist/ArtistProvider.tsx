@@ -26,8 +26,8 @@ interface ArtistContextData {
     showMorePopularTracks: () => void;
     showLessPopularTracks: () => void;
     handlePlay: (index?: number) => void;
-    handleSaveTrack: (id: string, index: number) => void;
-    handleRemoveTrack: (id: string, index: number) => void;
+    handleLikeTrack: (id: string, index: number) => void;
+    handleUnlikeTrack: (id: string, index: number) => void;
     handleFollowArtist: () => void;
     handleUnfollowArtist: () => void;
 }
@@ -53,8 +53,8 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
 
     const {
         data: savedTracks = [],
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
     } = useSavedTracksContainsQuery(topTracks.map(track => track.id));
 
     const { data: artistAlbums } = useArtistsAlbumsQuery(artist.id);
@@ -136,8 +136,8 @@ export const ArtistProvider: React.FC<PropsWithChildren<ArtistProps>> = ({
                 showMorePopularTracks,
                 showLessPopularTracks,
                 handlePlay,
-                handleSaveTrack,
-                handleRemoveTrack,
+                handleLikeTrack,
+                handleUnlikeTrack,
                 handleFollowArtist,
                 handleUnfollowArtist,
             }}>

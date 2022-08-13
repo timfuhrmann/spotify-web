@@ -20,7 +20,6 @@ export const usePlaybackNextMutation = () => {
             });
         },
         {
-            retry: 1,
             onSettled: () => {
                 if (targetDeviceId !== device_id) {
                     queryClient.refetchQueries(["playback-state"]);

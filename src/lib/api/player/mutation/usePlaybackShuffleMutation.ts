@@ -24,7 +24,6 @@ export const usePlaybackShuffleMutation = () => {
             });
         },
         {
-            retry: 1,
             onSettled: () => {
                 queryClient.refetchQueries(["playback-state"]);
             },

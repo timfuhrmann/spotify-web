@@ -7,8 +7,8 @@ import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStar
 interface SearchOverviewContextData {
     savedTracks: boolean[];
     handlePlay: (index?: number) => void;
-    handleSaveTrack: (id: string, index: number) => void;
-    handleRemoveTrack: (id: string, index: number) => void;
+    handleLikeTrack: (id: string, index: number) => void;
+    handleUnlikeTrack: (id: string, index: number) => void;
 }
 
 const SearchOverviewContext = createContext<SearchOverviewContextData>(
@@ -21,8 +21,8 @@ export const SearchOverviewProvider: React.FC<PropsWithChildren> = ({ children }
 
     const {
         data: savedTracks = [],
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
     } = useSavedTracksContainsQuery(tracks ? tracks.items.map(track => track.id) : []);
 
     const handlePlay = useCallback(
@@ -41,7 +41,12 @@ export const SearchOverviewProvider: React.FC<PropsWithChildren> = ({ children }
 
     return (
         <SearchOverviewContext.Provider
-            value={{ savedTracks, handlePlay, handleSaveTrack, handleRemoveTrack }}>
+            value={{
+                savedTracks,
+                handlePlay,
+                handleLikeTrack,
+                handleUnlikeTrack,
+            }}>
             {children}
         </SearchOverviewContext.Provider>
     );

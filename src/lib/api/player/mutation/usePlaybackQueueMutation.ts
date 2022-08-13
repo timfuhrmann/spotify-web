@@ -25,7 +25,6 @@ export const usePlaybackQueueMutation = () => {
             });
         },
         {
-            retry: 1,
             onSuccess: () => {
                 enqueueSnackbar("Added to queue");
             },

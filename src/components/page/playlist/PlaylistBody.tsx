@@ -20,7 +20,7 @@ export const PlaylistBody: React.FC<PlaylistBodyProps> = ({ owner }) => {
                 onFollow={handleFollowPlaylist}
                 onUnfollow={handleUnfollowPlaylist}
             />
-            <PlaylistTracks />
+            <PlaylistTracks owner={owner} />
         </ListBody>
     );
 };

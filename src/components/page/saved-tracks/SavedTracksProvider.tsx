@@ -22,7 +22,7 @@ interface SavedTracksContextData {
     hasNextPage: boolean;
     fetchNextPage: () => void;
     handlePlay: (index?: number) => void;
-    handleRemoveTrack: (id: string, index: number) => void;
+    handleUnlikeTrack: (id: string, index: number) => void;
 }
 
 const SavedTracksContext = createContext<SavedTracksContextData>({} as SavedTracksContextData);
@@ -95,7 +95,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
         });
     };
 
-    const handleRemoveTrack = useCallback(
+    const handleUnlikeTrack = useCallback(
         async (id: string, index: number) => {
             if (!access_token) {
                 return;
@@ -130,7 +130,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
                 hasNextPage,
                 fetchNextPage,
                 handlePlay,
-                handleRemoveTrack,
+                handleUnlikeTrack,
             }}>
             {children}
         </SavedTracksContext.Provider>

@@ -29,8 +29,8 @@ interface AlbumContextData {
     hasNextPage: boolean;
     fetchNextPage: () => void;
     handlePlay: (index?: number) => void;
-    handleSaveTrack: (id: string, index: number) => void;
-    handleRemoveTrack: (id: string, index: number) => void;
+    handleLikeTrack: (id: string, index: number) => void;
+    handleUnlikeTrack: (id: string, index: number) => void;
     handleSaveAlbum: () => void;
     handleRemoveAlbum: () => void;
 }
@@ -60,8 +60,8 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
         savedTracks,
         hasNextPage,
         fetchNextPage,
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
     } = useInfiniteTracksWithSavedTracksContains<SpotifyApi.AlbumTracksResponse>({
         key: album.id,
         initialTracks: album.tracks,
@@ -148,8 +148,8 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
                 hasNextPage,
                 fetchNextPage,
                 handlePlay,
-                handleSaveTrack,
-                handleRemoveTrack,
+                handleLikeTrack,
+                handleUnlikeTrack,
                 handleSaveAlbum: () => handleSaveAlbum(album.id, 0),
                 handleRemoveAlbum: () => handleRemoveAlbum(album.id, 0),
             }}>

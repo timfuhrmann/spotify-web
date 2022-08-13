@@ -3,8 +3,14 @@ import { usePlaylist } from "./PlaylistProvider";
 import { Track } from "../../shared/Track/Track";
 import { ListInfiniteTracks } from "../../shared/ListInfiniteTracks/ListInfiniteTracks";
 import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
+import { useSession } from "@lib/context/session";
 
-export const PlaylistTracks: React.FC = () => {
+interface PlaylistTracksProps {
+    owner: SpotifyApi.UserObjectPublic;
+}
+
+export const PlaylistTracks: React.FC<PlaylistTracksProps> = ({ owner }) => {
+    const { session } = useSession();
     const { isTrackPlaying } = useCurrentTrackSelector();
     const {
         tracks,
@@ -14,9 +20,12 @@ export const PlaylistTracks: React.FC = () => {
         hasNextPage,
         fetchNextPage,
         handlePlay,
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
+        handleRemove,
     } = usePlaylist();
+
+    const isOwner = session && session.id === owner.id;
 
     return (
         <ListInfiniteTracks
@@ -43,8 +52,9 @@ export const PlaylistTracks: React.FC = () => {
                             isSaved={savedTracks[index] || false}
                             isPlaying={isTrackPlaying(track.uri)}
                             onPlay={handlePlay}
-                            onSaveTrack={handleSaveTrack}
-                            onRemoveTrack={handleRemoveTrack}
+                            onRemove={isOwner ? handleRemove : undefined}
+                            onLikeTrack={handleLikeTrack}
+                            onUnlikeTrack={handleUnlikeTrack}
                         />
                     )
             )}

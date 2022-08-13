@@ -36,8 +36,8 @@ export const AlbumTracks: React.FC = () => {
         handlePlay,
         hasNextPage,
         fetchNextPage,
-        handleSaveTrack,
-        handleRemoveTrack,
+        handleLikeTrack,
+        handleUnlikeTrack,
     } = useAlbum();
 
     const hasDisc = Object.keys(discs).length > 1;
@@ -75,8 +75,8 @@ export const AlbumTracks: React.FC = () => {
                                         isPlaying={isTrackPlaying(uri)}
                                         isSaved={savedTracks[index] || false}
                                         onPlay={handlePlay}
-                                        onSaveTrack={handleSaveTrack}
-                                        onRemoveTrack={handleRemoveTrack}
+                                        onLikeTrack={handleLikeTrack}
+                                        onUnlikeTrack={handleUnlikeTrack}
                                     />
                                 )
                             )}

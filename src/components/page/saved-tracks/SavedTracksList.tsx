@@ -9,7 +9,7 @@ const TracksWrapper = styled.div``;
 
 export const SavedTracksList: React.FC = () => {
     const { isTrackPlaying } = useCurrentTrackSelector();
-    const { tracks, total, isLoading, hasNextPage, fetchNextPage, handlePlay, handleRemoveTrack } =
+    const { tracks, total, isLoading, hasNextPage, fetchNextPage, handlePlay, handleUnlikeTrack } =
         useSavedTracks();
 
     return (
@@ -38,7 +38,7 @@ export const SavedTracksList: React.FC = () => {
                                 isPlaying={isTrackPlaying(track.uri)}
                                 isSaved={true}
                                 onPlay={handlePlay}
-                                onRemoveTrack={handleRemoveTrack}
+                                onUnlikeTrack={handleUnlikeTrack}
                             />
                         )
                 )}

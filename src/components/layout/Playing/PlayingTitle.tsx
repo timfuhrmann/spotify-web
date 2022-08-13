@@ -89,7 +89,7 @@ const ControlsUnfollow = styled(UnfollowHeart)`
 `;
 
 export const PlayingTitle: React.FC = () => {
-    const { isSaved, onSaveTrack, onRemoveTrack } = usePlaying();
+    const { isSaved, onLikeTrack, onUnlikeTrack } = usePlaying();
     const { currentTrack } = useCurrentTrackSelector();
 
     return (
@@ -121,7 +121,7 @@ export const PlayingTitle: React.FC = () => {
                                 type="button"
                                 aria-label="Remove from saved tracks"
                                 title="Remove from saved tracks"
-                                onClick={onRemoveTrack}>
+                                onClick={onUnlikeTrack}>
                                 <ControlsUnfollow />
                             </ControlsButton>
                         ) : (
@@ -129,7 +129,7 @@ export const PlayingTitle: React.FC = () => {
                                 type="button"
                                 aria-label="Add to saved tracks"
                                 title="Add to saved tracks"
-                                onClick={onSaveTrack}>
+                                onClick={onLikeTrack}>
                                 <ControlsFollow />
                             </ControlsButton>
                         )}

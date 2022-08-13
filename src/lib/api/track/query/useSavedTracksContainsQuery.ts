@@ -17,7 +17,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
         enabled: !!access_token && !!ids.length,
     });
 
-    const handleSaveTrack = useCallback(
+    const handleLikeTrack = useCallback(
         async (id: string, index: number) => {
             if (!access_token) {
                 return;
@@ -30,7 +30,7 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
         [access_token, ids]
     );
 
-    const handleRemoveTrack = useCallback(
+    const handleUnlikeTrack = useCallback(
         async (id: string, index: number) => {
             if (!access_token) {
                 return;
@@ -60,5 +60,5 @@ export const useSavedTracksContainsQuery = (ids: string[]) => {
         });
     };
 
-    return { ...data, handleSaveTrack, handleRemoveTrack };
+    return { ...data, handleLikeTrack, handleUnlikeTrack };
 };

@@ -17,7 +17,7 @@ const TracksList = styled.div`
 export const SearchOverviewTracks: React.FC = () => {
     const tracks = useSelector((state: RootState) => state.search.tracks);
     const { isTrackPlaying } = useCurrentTrackSelector();
-    const { savedTracks, handlePlay, handleSaveTrack, handleRemoveTrack } = useSearchOverview();
+    const { savedTracks, handlePlay, handleLikeTrack, handleUnlikeTrack } = useSearchOverview();
 
     return (
         <TracksList
@@ -42,8 +42,8 @@ export const SearchOverviewTracks: React.FC = () => {
                                 isPlaying={isTrackPlaying(uri)}
                                 isSaved={savedTracks[index] || false}
                                 onPlay={handlePlay}
-                                onSaveTrack={handleSaveTrack}
-                                onRemoveTrack={handleRemoveTrack}
+                                onLikeTrack={handleLikeTrack}
+                                onUnlikeTrack={handleUnlikeTrack}
                             />
                         ))}
                 </React.Fragment>
