@@ -18,6 +18,7 @@ export const GlobalStyle = createGlobalStyle`
         background-color: ${p => p.theme.gray50};
         color: ${p => p.theme.gray900};
         min-height: 60rem;
+        min-width: 100rem;
         overscroll-behavior: none;
       
         &::-webkit-scrollbar { 

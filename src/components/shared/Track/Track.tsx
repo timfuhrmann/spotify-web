@@ -28,44 +28,12 @@ const TrackNumber = styled.span<{ $isPlaying: boolean }>`
     display: ${p => p.$isPlaying && "none"};
 `;
 
-const TrackButton = styled.button`
+const TrackLikeButton = styled.button`
     display: flex;
-`;
+    opacity: 0;
 
-const TrackWrapper = styled(TrackGrid)`
-    border-radius: 0.4rem;
-    color: ${p => p.theme.gray700};
-    ${text("textSm")};
-
-    ${p => hover`
-    color: ${p.theme.gray900};
-    background-color: ${p.theme.gray100};
-
-    ${TrackPlay},
-    ${TrackButton} {
-      display: flex;
-    }
-
-    ${TrackNumber},
-    ${TrackPlaying} {
-      display: none;
-    }
-  `};
-
-    &:focus,
-    &[aria-selected="true"] {
-        color: ${p => p.theme.gray900};
-        background-color: ${p => p.theme.gray400};
-
-        ${TrackPlay},
-        ${TrackButton} {
-            display: flex;
-        }
-
-        ${TrackNumber},
-        ${TrackPlaying} {
-            display: none;
-        }
+    @media (hover: none) {
+        opacity: 1;
     }
 `;
 
@@ -103,8 +71,8 @@ const TrackSave = styled(FollowHeart)`
     color: ${p => p.theme.gray700};
 
     ${p => hover`
-    color: ${p.theme.gray900};
-  `};
+        color: ${p.theme.gray900};
+    `};
 `;
 
 const TrackRemove = styled(UnfollowHeart)`
@@ -112,13 +80,63 @@ const TrackRemove = styled(UnfollowHeart)`
     color: ${p => p.theme.primary200};
 
     ${p => hover`
-    color: ${p.theme.primary100};
-  `};
+        color: ${p.theme.primary100};
+    `};
 `;
 
 const TrackMore = styled.button`
     display: flex;
     margin: 0 auto;
+    opacity: 0;
+
+    @media (hover: none) {
+        opacity: 1;
+    }
+`;
+
+const TrackWrapper = styled(TrackGrid)`
+    border-radius: 0.4rem;
+    color: ${p => p.theme.gray700};
+    ${text("textSm")};
+
+    ${p => hover`
+        color: ${p.theme.gray900};
+        background-color: ${p.theme.gray100};
+        
+        ${TrackPlay} {
+            display: flex;
+        }
+      
+        ${TrackLikeButton},
+        ${TrackMore} {
+           opacity: 1;
+        }
+        
+        ${TrackNumber},
+        ${TrackPlaying} {
+            display: none;
+        }
+  `};
+
+    &:focus,
+    &[aria-selected="true"] {
+        color: ${p => p.theme.gray900};
+        background-color: ${p => p.theme.gray400};
+
+        ${TrackPlay} {
+            display: flex;
+        }
+
+        ${TrackLikeButton},
+        ${TrackMore} {
+            opacity: 1;
+        }
+
+        ${TrackNumber},
+        ${TrackPlaying} {
+            display: none;
+        }
+    }
 `;
 
 interface ParentComposition {
@@ -228,19 +246,19 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
                     {addedAt && <TrackTime>{dateToTimeString(addedAt)}</TrackTime>}
                     <TrackDuration>
                         {isSaved ? (
-                            <TrackButton
+                            <TrackLikeButton
                                 title="Remove from library"
                                 aria-label="Remove from library"
                                 onClick={() => onUnlikeTrack && onUnlikeTrack(id, index)}>
                                 <TrackRemove />
-                            </TrackButton>
+                            </TrackLikeButton>
                         ) : (
-                            <TrackButton
+                            <TrackLikeButton
                                 title="Add to library"
                                 aria-label="Add to library"
                                 onClick={() => onUnlikeTrack && onUnlikeTrack(id, index)}>
                                 <TrackSave />
-                            </TrackButton>
+                            </TrackLikeButton>
                         )}
                         <TrackDurationText>{msToMinutesAndSeconds(duration_ms)}</TrackDurationText>
                         <TrackMore

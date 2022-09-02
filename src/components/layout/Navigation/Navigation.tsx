@@ -4,14 +4,19 @@ import { NavigationPlaylists } from "./NavigationPlaylists";
 import { NavigationList } from "./NavigationList";
 import { LogoText } from "@icon/LogoText";
 import { Link } from "@lib/link";
+import { breakpoints } from "@css/helper/breakpoints";
 
 const NavigationWrapper = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 30rem;
+    width: 25rem;
     padding-top: 2.4rem;
     background-color: ${p => p.theme.black};
+
+    ${breakpoints().min("l")} {
+        width: 30rem;
+    }
 `;
 
 const NavigationSeparator = styled.div`

@@ -12,7 +12,7 @@ const createTypeface = (
 
 export const typefaces = {
     display3Xl: createTypeface("9.6rem", 1.15, "-0.3rem"),
-    display2Xl: createTypeface("7.2rem", 1.1, "-0.2rem"),
+    display2Xl: createTypeface("7.2rem", 1.15, "-0.2rem"),
     displayXl: createTypeface("6rem", 1.1, "-0.2rem"),
     displayLg: createTypeface("4.8rem", 1.1, "-0.2rem"),
     displayMd: createTypeface("3.6rem", 1.1, "-0.1rem"),

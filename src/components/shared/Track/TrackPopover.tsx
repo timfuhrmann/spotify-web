@@ -142,14 +142,20 @@ export const TrackPopover: React.FC<TrackPopoverProps> = ({
                         <PopoverButton
                             type="button"
                             onClick={handleRemoveTrack}
-                            onMouseEnter={() => setArtistsPopover(false)}>
+                            onMouseEnter={() => {
+                                setArtistsPopover(false);
+                                setPlaylistPopover(false);
+                            }}>
                             Remove from your liked songs
                         </PopoverButton>
                     ) : (
                         <PopoverButton
                             type="button"
                             onClick={handleSaveTrack}
-                            onMouseEnter={() => setArtistsPopover(false)}>
+                            onMouseEnter={() => {
+                                setArtistsPopover(false);
+                                setPlaylistPopover(false);
+                            }}>
                             Save to your liked songs
                         </PopoverButton>
                     )}

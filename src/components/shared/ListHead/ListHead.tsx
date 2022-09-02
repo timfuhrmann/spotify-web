@@ -6,6 +6,7 @@ import { SpotifyImage } from "@lib/image";
 import { HeaderSpacer } from "../../layout/HeaderSpacer";
 import { content } from "@css/helper/content";
 import { useDominantColor } from "@lib/hook/useDominantColor";
+import { breakpoints } from "@css/helper/breakpoints";
 
 const HeadWrapper = styled.div`
     position: relative;
@@ -52,7 +53,7 @@ const HeadButton = styled.button`
 `;
 
 const HeadName = styled.h1`
-    ${text("display3Xl", "black")};
+    ${text("display2Xl", "black")};
     margin-bottom: 0.8rem;
     white-space: nowrap;
     overflow: hidden;
@@ -60,6 +61,10 @@ const HeadName = styled.h1`
 
     &:last-child {
         margin-bottom: 0;
+    }
+
+    ${breakpoints().min("l")} {
+        ${text("display3Xl", "black")};
     }
 `;
 
