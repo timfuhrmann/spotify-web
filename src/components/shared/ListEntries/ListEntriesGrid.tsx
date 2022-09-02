@@ -7,16 +7,11 @@ import { breakpoints } from "@css/helper/breakpoints";
 
 const GridWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1.2rem;
-
-    ${breakpoints().min("m")} {
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 1fr;
-        grid-auto-rows: 0;
-        overflow-y: hidden;
-        grid-gap: 0 1.2rem;
-    }
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-auto-rows: 0;
+    overflow-y: hidden;
+    grid-gap: 0 1.2rem;
 
     ${breakpoints().min("l")} {
         grid-template-columns: repeat(5, 1fr);

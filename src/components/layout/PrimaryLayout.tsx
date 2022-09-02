@@ -17,6 +17,7 @@ const LayoutGrid = styled.div`
         "navigation main"
         "playing playing";
     height: 100%;
+    min-width: 100rem;
 `;
 
 const LayoutNavigation = styled.div`
