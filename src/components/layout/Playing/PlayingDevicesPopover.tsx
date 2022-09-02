@@ -7,6 +7,7 @@ import { useTransferPlaybackMutation } from "@lib/api/player/mutation/useTransfe
 import { queryClient } from "@lib/api";
 import { enqueueSnackbar } from "notistack";
 import { usePausedSelector } from "@lib/redux/reducer/player/hook/usePausedSelector";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 const PopoverHeadline = styled.div`
     padding: 2rem;
@@ -60,26 +61,30 @@ export const PlayingDevicesPopover: React.FC<PlayingDevicesPopoverProps> = ({ on
 
     return (
         <Popover placement="top" onClose={onClose}>
-            <PopoverHeadline>Connect to a device</PopoverHeadline>
-            <Popover.Separator />
-            {devices.map(
-                device =>
-                    device.id && (
-                        <Popover.Item key={device.id}>
-                            <PopoverButton
-                                type="button"
-                                $active={!!activeDevice && activeDevice.id === device.id}
-                                onClick={() => device.id && handleClick(device.id)}>
-                                <PopoverName>
-                                    {device.id === device_id ? `This ${device.type}` : device.name}
-                                </PopoverName>
-                                <PopoverType>
-                                    {device.id === device_id ? device.name : device.type}
-                                </PopoverType>
-                            </PopoverButton>
-                        </Popover.Item>
-                    )
-            )}
+            <OverlayScrollbarsComponent style={{ maxHeight: "60vh" }}>
+                <PopoverHeadline>Connect to a device</PopoverHeadline>
+                <Popover.Separator />
+                {devices.map(
+                    device =>
+                        device.id && (
+                            <Popover.Item key={device.id}>
+                                <PopoverButton
+                                    type="button"
+                                    $active={!!activeDevice && activeDevice.id === device.id}
+                                    onClick={() => device.id && handleClick(device.id)}>
+                                    <PopoverName>
+                                        {device.id === device_id
+                                            ? `This ${device.type}`
+                                            : device.name}
+                                    </PopoverName>
+                                    <PopoverType>
+                                        {device.id === device_id ? device.name : device.type}
+                                    </PopoverType>
+                                </PopoverButton>
+                            </Popover.Item>
+                        )
+                )}
+            </OverlayScrollbarsComponent>
         </Popover>
     );
 };
