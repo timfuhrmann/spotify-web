@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchByType } from "@lib/api/browse";
 import { objectKeys } from "@lib/util";
-import { SearchOverviewTopResultProps } from "../../../../components/search/search-overview/SearchOverviewTopResult";
+import { SearchOverviewTopResultProps } from "../../../../components/search/SearchOverview/SearchOverviewTopResult";
 
 interface BrowseState {
     loading: boolean;

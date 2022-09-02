@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { text } from "@css/helper/typography";
-import { SecondaryButton } from "../SecondaryButton";
+import { Button } from "../Button";
 import { Skeleton } from "@lib/skeleton";
 import { useListEntries } from "./ListEntriesProvider";
 import { createArray } from "@lib/util";
@@ -65,10 +65,11 @@ export const ListEntriesHead: React.FC<ListEntriesHeadProps> = ({
                 )}
                 {link && (
                     <HeadLink>
-                        <SecondaryButton
+                        <Button
                             as="a"
                             action={typeof link === "string" ? link : link(activeTag)}
                             label="See more"
+                            variant="secondary"
                         />
                     </HeadLink>
                 )}

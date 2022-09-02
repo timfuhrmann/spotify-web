@@ -5,7 +5,7 @@ import { Track } from "../../shared/Track/Track";
 import { useArtist } from "./ArtistProvider";
 import { text } from "@css/helper/typography";
 import { content } from "@css/helper/content";
-import { SecondaryButton } from "../../shared/SecondaryButton";
+import { Button } from "../../shared/Button";
 import { useCurrentTrackSelector } from "@lib/redux/reducer/player/hook/useCurrentTrackSelector";
 
 const PopularWrapper = styled.div`
@@ -79,12 +79,22 @@ export const ArtistPopular: React.FC<ArtistPopularProps> = ({ tracks }) => {
             </PopularList>
             {hasMorePopularTracks && (
                 <PopularButton>
-                    <SecondaryButton as="button" label="Show more" action={showMorePopularTracks} />
+                    <Button
+                        as="button"
+                        label="Show more"
+                        action={showMorePopularTracks}
+                        variant="secondary"
+                    />
                 </PopularButton>
             )}
             {hasLessPopularTracks && (
                 <PopularButton>
-                    <SecondaryButton as="button" label="Show less" action={showLessPopularTracks} />
+                    <Button
+                        as="button"
+                        label="Show less"
+                        action={showLessPopularTracks}
+                        variant="secondary"
+                    />
                 </PopularButton>
             )}
         </PopularWrapper>

@@ -3,7 +3,7 @@ import styled, { useTheme } from "styled-components";
 import { SpotifyImage } from "@lib/image";
 import { text } from "@css/helper/typography";
 import { fillParent, hover, square, transition } from "@css/helper";
-import { PlayButton } from "../shared/PlayButton";
+import { PlayButton } from "../PlayButton";
 import { Link } from "@lib/link";
 import { Skeleton } from "@lib/skeleton";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";

@@ -1,10 +1,13 @@
 import React, {
     createContext,
+    Dispatch,
     PropsWithChildren,
+    SetStateAction,
     useCallback,
     useContext,
     useEffect,
     useMemo,
+    useState,
 } from "react";
 import { useSession } from "@lib/context/session";
 import { useInfiniteTracksWithSavedTracksContains } from "@lib/hook/useInfiniteTracksWithSavedTracksContains";
@@ -15,8 +18,11 @@ import { request } from "@lib/api";
 import { useAppDispatch } from "@lib/redux";
 import { resetContext, setContext } from "@lib/redux/reducer/context";
 import { useRemoveTracksFromPlaylistMutation } from "@lib/api/playlist/mutation/useRemoveTracksFromPlaylistMutation";
+import { PlaylistDetails, PlaylistDetailsForm } from "../../shared/PlaylistDetails";
+import { useChangePlaylistDetailsMutation } from "@lib/api/playlist/mutation/useChangePlaylistDetailsMutation";
 
 interface PlaylistContextData {
+    isOwner: boolean;
     isFollowing: boolean;
     total: number;
     tracks: SpotifyApi.PlaylistTrackObject[];
@@ -30,6 +36,7 @@ interface PlaylistContextData {
     handleUnlikeTrack: (id: string, index: number) => void;
     handleFollowPlaylist: () => void;
     handleUnfollowPlaylist: () => void;
+    setPlaylistDetails: Dispatch<SetStateAction<boolean>>;
 }
 
 const PlaylistContext = createContext<PlaylistContextData>({} as PlaylistContextData);
@@ -41,9 +48,14 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
     children,
 }) => {
     const dispatch = useAppDispatch();
+    const { session } = useSession();
     const { access_token } = useSession();
     const { mutate: mutatePlay } = useStartResumePlaybackMutation();
     const { mutate: mutateRemove } = useRemoveTracksFromPlaylistMutation();
+    const { mutate: mutateDetails } = useChangePlaylistDetailsMutation(playlist.id);
+    const [playlistDetails, setPlaylistDetails] = useState<boolean>(false);
+
+    const isOwner = !!session && session.id === playlist.owner.id;
 
     const {
         isFollowing,
@@ -148,9 +160,18 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
         });
     };
 
+    const handleChangeDetails = ({ name, description }: PlaylistDetailsForm) => {
+        setPlaylistDetails(false);
+        mutateDetails({
+            name,
+            description: description ? description : undefined,
+        });
+    };
+
     return (
         <PlaylistContext.Provider
             value={{
+                isOwner,
                 isFollowing: isFollowing(playlist.id),
                 total: playlist.tracks.total,
                 tracks,
@@ -164,7 +185,16 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
                 handlePlay,
                 handleFollowPlaylist: () => handleFollowPlaylistQuery(playlist),
                 handleUnfollowPlaylist: () => handleUnfollowPlaylistQuery(playlist.id),
+                setPlaylistDetails,
             }}>
+            {isOwner && playlistDetails && (
+                <PlaylistDetails
+                    name={playlist.name}
+                    description={playlist.description}
+                    onSubmit={handleChangeDetails}
+                    onClose={() => setPlaylistDetails(false)}
+                />
+            )}
             {children}
         </PlaylistContext.Provider>
     );

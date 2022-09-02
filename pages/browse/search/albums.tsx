@@ -3,7 +3,7 @@ import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { HeaderSpacer } from "../../../src/components/layout/HeaderSpacer";
 import { GridEntries } from "../../../src/components/shared/GridEntries";
-import { SearchNavigation } from "../../../src/components/search/search-navigation/SearchNavigation";
+import { SearchNavigation } from "../../../src/components/search/SearchNavigation/SearchNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@lib/redux";
 

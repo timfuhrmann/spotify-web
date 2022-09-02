@@ -84,31 +84,30 @@ export interface EntryProps {
     uri?: string;
 }
 
-//@ts-ignore
-export const Entry: NamedExoticComponent<EntryProps> & ParentComposition = React.memo(
-    ({ id, uri, name, images, type }) => {
-        const { mutate: mutatePlay } = useStartResumePlaybackMutation();
+const BaseEntry: React.FC<EntryProps> = ({ id, uri, name, images, type }) => {
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
 
-        return (
-            <EntryWrapper>
-                <EntryFrame>
-                    <EntryImage $type={type}>
-                        <SpotifyImage images={images} alt={name} sizes="300px" />
-                    </EntryImage>
-                    {type !== "category" && uri && (
-                        <EntryPlay>
-                            <PlayButton onClick={() => mutatePlay({ context_uri: uri })} />
-                        </EntryPlay>
-                    )}
-                </EntryFrame>
-                <EntryName>{name}</EntryName>
-                <Link label={name} href={`/${type}/${id}`} prefetch={false}>
-                    <EntryAnchor />
-                </Link>
-            </EntryWrapper>
-        );
-    }
-);
+    return (
+        <EntryWrapper>
+            <EntryFrame>
+                <EntryImage $type={type}>
+                    <SpotifyImage images={images} alt={name} sizes="300px" />
+                </EntryImage>
+                {type !== "category" && uri && (
+                    <EntryPlay>
+                        <PlayButton onClick={() => mutatePlay({ context_uri: uri })} />
+                    </EntryPlay>
+                )}
+            </EntryFrame>
+            <EntryName>{name}</EntryName>
+            <Link label={name} href={`/${type}/${id}`} prefetch={false}>
+                <EntryAnchor />
+            </Link>
+        </EntryWrapper>
+    );
+};
+
+export const Entry = React.memo(BaseEntry) as NamedExoticComponent<EntryProps> & ParentComposition;
 
 const ListEntriesItemSkeleton: React.FC<Pick<EntryProps, "type">> = ({ type }) => {
     return (

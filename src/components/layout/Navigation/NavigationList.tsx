@@ -13,6 +13,7 @@ import { useCurrentTrackContextSelector } from "@lib/redux/reducer/player/hook/u
 import { usePausedSelector } from "@lib/redux/reducer/player/hook/usePausedSelector";
 import { useSession } from "@lib/context/session";
 import { Volume } from "@icon/Volume";
+import { useCreatePlaylistMutation } from "@lib/api/playlist/mutation/useCreatePlaylistMutation";
 
 const ListWrapper = styled.div``;
 
@@ -79,67 +80,70 @@ const ListPlaying = styled(Volume)`
 export const NavigationList: React.FC = () => {
     const { asPath } = useRouter();
     const { session } = useSession();
+    const { mutate: createPlaylist } = useCreatePlaylistMutation();
     const currentContext = useCurrentTrackContextSelector();
     const paused = usePausedSelector();
 
     return (
-        <ListWrapper>
-            <ListGroup>
-                <ListItem>
-                    <Link href="/" label="Home">
-                        <ListAnchor aria-current={asPath === "/" && "page"}>
-                            <Home width="24" active={asPath === "/"} />
-                            Home
+        <React.Fragment>
+            <ListWrapper>
+                <ListGroup>
+                    <ListItem>
+                        <Link href="/" label="Home">
+                            <ListAnchor aria-current={asPath === "/" && "page"}>
+                                <Home width="24" active={asPath === "/"} />
+                                Home
+                            </ListAnchor>
+                        </Link>
+                    </ListItem>
+                    <ListItem>
+                        <Link href="/browse" label="Search">
+                            <ListAnchor aria-current={asPath.startsWith("/browse") && "page"}>
+                                <Search width="24" active={asPath.startsWith("/browse")} />
+                                Search
+                            </ListAnchor>
+                        </Link>
+                    </ListItem>
+                    <ListItem>
+                        <Link href="/library/playlists" label="Your Library">
+                            <ListAnchor
+                                aria-current={
+                                    asPath.startsWith("/library") &&
+                                    !asPath.includes("/library/tracks") &&
+                                    "page"
+                                }>
+                                <Library width="24" active={asPath.startsWith("/library")} />
+                                Your Library
+                            </ListAnchor>
+                        </Link>
+                    </ListItem>
+                </ListGroup>
+                <ListGroup>
+                    <ListItem>
+                        <ListAnchor as="button" type="button" onClick={() => createPlaylist()}>
+                            <ListPlus>
+                                <PlusIcon />
+                            </ListPlus>
+                            Create playlist
                         </ListAnchor>
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link href="/browse" label="Search">
-                        <ListAnchor aria-current={asPath.startsWith("/browse") && "page"}>
-                            <Search width="24" active={asPath.startsWith("/browse")} />
-                            Search
-                        </ListAnchor>
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link href="/library/playlists" label="Your Library">
-                        <ListAnchor
-                            aria-current={
-                                asPath.startsWith("/library") &&
-                                !asPath.includes("/library/tracks") &&
-                                "page"
-                            }>
-                            <Library width="24" active={asPath.startsWith("/library")} />
-                            Your Library
-                        </ListAnchor>
-                    </Link>
-                </ListItem>
-            </ListGroup>
-            <ListGroup>
-                <ListItem>
-                    <ListAnchor as="div" aria-current={asPath === "/gdfd" && "page"}>
-                        <ListPlus>
-                            <PlusIcon />
-                        </ListPlus>
-                        Create playlist
-                    </ListAnchor>
-                </ListItem>
-                <ListItem>
-                    <Link href="/library/tracks" label="Liked Songs">
-                        <ListAnchor aria-current={asPath.includes("/library/tracks") && "page"}>
-                            <ListHeart>
-                                <Heart width="12" />
-                            </ListHeart>
-                            Liked Songs
-                            {session &&
-                                !paused &&
-                                currentContext === session.uri + ":collection" && (
-                                    <ListPlaying aria-hidden />
-                                )}
-                        </ListAnchor>
-                    </Link>
-                </ListItem>
-            </ListGroup>
-        </ListWrapper>
+                    </ListItem>
+                    <ListItem>
+                        <Link href="/library/tracks" label="Liked Songs">
+                            <ListAnchor aria-current={asPath.includes("/library/tracks") && "page"}>
+                                <ListHeart>
+                                    <Heart width="12" />
+                                </ListHeart>
+                                Liked Songs
+                                {session &&
+                                    !paused &&
+                                    currentContext === session.uri + ":collection" && (
+                                        <ListPlaying aria-hidden />
+                                    )}
+                            </ListAnchor>
+                        </Link>
+                    </ListItem>
+                </ListGroup>
+            </ListWrapper>
+        </React.Fragment>
     );
 };

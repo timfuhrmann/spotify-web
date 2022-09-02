@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { searchByType } from "@lib/api/browse";
 import { objectKeys } from "@lib/util";
-import { SearchOverviewTopResultProps } from "../../../../components/search/search-overview/SearchOverviewTopResult";
+import { SearchOverviewTopResultProps } from "../../../../components/search/SearchOverview/SearchOverviewTopResult";
 
 interface ContextState {
     context_uri: string | null;

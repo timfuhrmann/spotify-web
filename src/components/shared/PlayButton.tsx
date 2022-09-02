@@ -12,6 +12,8 @@ const ButtonWrapper = styled.button<{ $isSecondary?: boolean }>`
     background-color: ${p => (p.$isSecondary ? p.theme.gray900 : p.theme.primary200)};
     color: ${p => p.theme.gray50};
     border-radius: 50%;
+    backface-visibility: hidden;
+    will-change: transform;
 
     ${p => hover`
         transform: scale(1.05);

@@ -43,6 +43,14 @@ const HeadOverline = styled.div`
     text-transform: uppercase;
 `;
 
+const HeadButton = styled.button`
+    margin-bottom: 0.6rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+`;
+
 const HeadName = styled.h1`
     ${text("display3Xl", "black")};
     margin-bottom: 0.8rem;
@@ -75,6 +83,7 @@ interface PlaylistHeadProps {
     images: SpotifyApi.ImageObject[];
     description?: string | null;
     renderFooter?: React.ReactNode;
+    onDetails?: () => void;
 }
 
 export const ListHead: React.FC<PlaylistHeadProps> = ({
@@ -83,6 +92,7 @@ export const ListHead: React.FC<PlaylistHeadProps> = ({
     images,
     description,
     renderFooter,
+    onDetails,
 }) => {
     const { handleImageLoad } = useDominantColor();
 
@@ -101,9 +111,28 @@ export const ListHead: React.FC<PlaylistHeadProps> = ({
                 </HeadCover>
                 <HeadGroup>
                     <HeadOverline>{overline}</HeadOverline>
-                    <HeadName>{name}</HeadName>
-                    {description && (
-                        <HeadDescription dangerouslySetInnerHTML={{ __html: description }} />
+                    {onDetails ? (
+                        <HeadButton
+                            type="button"
+                            aria-label="Edit details"
+                            title="Edit details"
+                            onClick={onDetails}>
+                            <HeadName>{name}</HeadName>
+                            {description && (
+                                <HeadDescription
+                                    dangerouslySetInnerHTML={{ __html: description }}
+                                />
+                            )}
+                        </HeadButton>
+                    ) : (
+                        <React.Fragment>
+                            <HeadName>{name}</HeadName>
+                            {description && (
+                                <HeadDescription
+                                    dangerouslySetInnerHTML={{ __html: description }}
+                                />
+                            )}
+                        </React.Fragment>
                     )}
                     {renderFooter && <HeadInfo>{renderFooter}</HeadInfo>}
                 </HeadGroup>

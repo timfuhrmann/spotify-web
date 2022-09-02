@@ -1,7 +1,7 @@
 import { NextPageWithLayout } from "@type/page";
 import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { useRouter } from "next/router";
-import { Album } from "../../src/components/page/album/Album";
+import { Album } from "../../src/components/page/Album/Album";
 import { useAlbumQuery } from "@lib/api/album/query/useAlbumQuery";
 import { getIdFromQuery } from "@lib/util";
 

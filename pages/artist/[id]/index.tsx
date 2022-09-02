@@ -2,7 +2,7 @@ import React from "react";
 import { PrimaryLayout } from "../../../src/components/layout/PrimaryLayout";
 import { NextPageWithLayout } from "@type/page";
 import { useRouter } from "next/router";
-import { Artist as ArtistComponent } from "../../../src/components/page/artist/Artist";
+import { Artist as ArtistComponent } from "../../../src/components/page/Artist/Artist";
 import { useArtistQuery } from "@lib/api/artist/query/useArtistQuery";
 import { getIdFromQuery } from "@lib/util";
 import { useArtistsTopTracksQuery } from "@lib/api/artist/query/useArtistsTopTracksQuery";
