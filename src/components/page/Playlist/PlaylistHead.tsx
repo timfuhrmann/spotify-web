@@ -1,11 +1,11 @@
 import React from "react";
-import { ListHead } from "../../shared/ListHead/ListHead";
+import { ListHead } from "../../shared/ListHead";
 import { PlaylistHeadFooter } from "./PlaylistHeadFooter";
 import { PlaylistProps } from "./Playlist";
 import { usePlaylist } from "./PlaylistProvider";
 
 export const PlaylistHead: React.FC<PlaylistProps> = ({ playlist }) => {
-    const { setPlaylistDetails } = usePlaylist();
+    const { isOwner, setPlaylistDetails } = usePlaylist();
 
     return (
         <ListHead
@@ -13,7 +13,7 @@ export const PlaylistHead: React.FC<PlaylistProps> = ({ playlist }) => {
             name={playlist.name}
             images={playlist.images}
             description={playlist.description}
-            onDetails={() => setPlaylistDetails(true)}
+            onDetails={isOwner ? () => setPlaylistDetails(true) : undefined}
             renderFooter={
                 <PlaylistHeadFooter
                     owner={playlist.owner}

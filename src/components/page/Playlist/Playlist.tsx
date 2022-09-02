@@ -8,12 +8,10 @@ export interface PlaylistProps {
 }
 
 export const Playlist: React.FC<PlaylistProps> = props => {
-    const { playlist } = props;
-
     return (
         <PlaylistProvider {...props}>
             <PlaylistHead {...props} />
-            <PlaylistBody owner={playlist.owner} />
+            <PlaylistBody {...props} />
         </PlaylistProvider>
     );
 };

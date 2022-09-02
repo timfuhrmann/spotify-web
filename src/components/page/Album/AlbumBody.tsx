@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ListBody } from "../../shared/ListBody";
-import { ListControls } from "../../shared/ListControls/ListControls";
+import { ListControls } from "../../shared/ListControls";
 import { AlbumTracks } from "./AlbumTracks";
 import { useAlbum } from "./AlbumProvider";
 import { ListEntries } from "../../shared/ListEntries/ListEntries";

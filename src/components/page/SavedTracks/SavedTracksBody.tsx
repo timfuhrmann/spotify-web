@@ -1,6 +1,6 @@
 import React from "react";
 import { ListBody } from "../../shared/ListBody";
-import { ListControls } from "../../shared/ListControls/ListControls";
+import { ListControls } from "../../shared/ListControls";
 import { SavedTracksList } from "./SavedTracksList";
 import { useSavedTracks } from "./SavedTracksProvider";
 

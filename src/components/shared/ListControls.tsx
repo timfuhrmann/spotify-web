@@ -1,5 +1,5 @@
 import React from "react";
-import { PlayButton } from "../PlayButton";
+import { PlayButton } from "./PlayButton";
 import styled from "styled-components";
 import { FollowHeart } from "@icon/FollowHeart";
 import { hover, square } from "@css/helper";

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { square } from "@css/helper";
 import { text } from "@css/helper/typography";
 import { SpotifyImage } from "@lib/image";
-import { HeaderSpacer } from "../../layout/HeaderSpacer";
+import { HeaderSpacer } from "../layout/HeaderSpacer";
 import { content } from "@css/helper/content";
 import { useDominantColor } from "@lib/hook/useDominantColor";
 import { breakpoints } from "@css/helper/breakpoints";

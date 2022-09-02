@@ -1,6 +1,6 @@
 import React from "react";
 import { SavedTracksProvider } from "./SavedTracksProvider";
-import { ListHead } from "../../shared/ListHead/ListHead";
+import { ListHead } from "../../shared/ListHead";
 import { SavedTracksHeadFooter } from "./SavedTracksHeadFooter";
 import { SavedTracksBody } from "./SavedTracksBody";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ListHead } from "../../shared/ListHead/ListHead";
+import { ListHead } from "../../shared/ListHead";
 import { AlbumHeadFooter } from "./AlbumHeadFooter";
 import { AlbumProvider } from "./AlbumProvider";
 import { AlbumBody } from "./AlbumBody";

@@ -1,5 +1,5 @@
 import React from "react";
-import { ListHead } from "../../shared/ListHead/ListHead";
+import { ListHead } from "../../shared/ListHead";
 import { formatNumber } from "@lib/format";
 import { ArtistProvider } from "./ArtistProvider";
 import { ArtistBody } from "./ArtistBody";
