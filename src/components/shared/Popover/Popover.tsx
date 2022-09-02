@@ -7,6 +7,7 @@ import { useOverlayScroll } from "@lib/context/overlay-scroll";
 import { PopoverItem } from "./PopoverItem";
 import { PopoverSeparator } from "./PopoverSeparator";
 import { PopoverList } from "./PopoverList";
+import ReactDOM from "react-dom";
 
 const PopoverWrapper = styled.div`
     position: relative;
@@ -66,9 +67,12 @@ export const Popover: React.FC<PropsWithChildren<PopoverProps>> & ParentComposit
 
     return (
         <PopoverWrapper ref={setReferenceElement}>
-            <PopoverFrame ref={setPopperElement} style={styles.popper} {...attributes}>
-                {children}
-            </PopoverFrame>
+            {ReactDOM.createPortal(
+                <PopoverFrame ref={setPopperElement} style={styles.popper} {...attributes}>
+                    {children}
+                </PopoverFrame>,
+                document.body
+            )}
         </PopoverWrapper>
     );
 };

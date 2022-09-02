@@ -26,8 +26,12 @@ export const PlaylistHeadFooter: React.FC<PlaylistHeadFooterProps> = ({
     return (
         <React.Fragment>
             <HeadUser>{owner.display_name}</HeadUser>
-            <Bullet />
-            <HeadFollowers>{formatNumber(followers.total)} likes</HeadFollowers>
+            {followers.total > 0 && (
+                <React.Fragment>
+                    <Bullet />
+                    <HeadFollowers>{formatNumber(followers.total)} likes</HeadFollowers>
+                </React.Fragment>
+            )}
             <Bullet />
             <HeadSongs>{getTotalSongsString(totalTracks)}</HeadSongs>
         </React.Fragment>

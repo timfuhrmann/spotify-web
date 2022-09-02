@@ -13,6 +13,7 @@ const BulletWrapper = styled.span`
     &::after {
         content: "";
         ${square("0.4rem")};
+        margin-top: 0.2rem;
         border-radius: 50%;
         background-color: currentColor;
     }
