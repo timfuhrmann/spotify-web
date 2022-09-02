@@ -18,15 +18,15 @@ const ProgressCircle = styled.circle`
 
 export const OpenerCarouselProgress: React.FC = () => {
     const ref = useRef<SVGCircleElement | null>(null);
-    const { primary100, primary300 } = useTheme();
+    const { gray300, primary200 } = useTheme();
     const { hovered } = useOpener();
 
     return (
         <svg viewBox="0 0 90 90" width="80" height="80">
-            <circle stroke={primary100} strokeWidth="2" fill="none" cx="45" cy="47.5" r="37" />
+            <circle stroke={gray300} strokeWidth="2" fill="none" cx="45" cy="47.5" r="37" />
             <ProgressCircle
                 ref={ref}
-                stroke={primary300}
+                stroke={primary200}
                 strokeWidth="3"
                 fill="none"
                 cx="42.5"
