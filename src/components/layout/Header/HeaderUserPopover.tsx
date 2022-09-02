@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { Popover } from "../../shared/Popover/Popover";
 import { Link } from "@lib/link";
 import { ExternalLink } from "@icon/ExternalLink";
-import { useRouter } from "next/router";
-import { usePlayer } from "@lib/player";
 
 const UserAnchor = styled.a`
     display: flex;
@@ -18,17 +16,6 @@ interface HeaderUserPopoverProps {
 }
 
 export const HeaderUserPopover: React.FC<HeaderUserPopoverProps> = ({ onClose }) => {
-    const { push } = useRouter();
-    const { player } = usePlayer();
-
-    const handeLogout = () => {
-        if (player) {
-            player.disconnect();
-        }
-
-        return push("/api/auth/logout");
-    };
-
     return (
         <Popover placement="bottom-end" onClose={onClose}>
             <Popover.Item>
@@ -40,9 +27,7 @@ export const HeaderUserPopover: React.FC<HeaderUserPopoverProps> = ({ onClose })
                 </Link>
             </Popover.Item>
             <Popover.Item>
-                <UserAnchor as="button" type="button" onClick={handeLogout}>
-                    Logout
-                </UserAnchor>
+                <UserAnchor href="/api/auth/logout">Logout</UserAnchor>
             </Popover.Item>
         </Popover>
     );

@@ -6,6 +6,8 @@ import { Link } from "@lib/link";
 import { hover } from "@css/helper";
 
 const ButtonPrimaryStyles = css`
+    display: inline-flex;
+    align-items: center;
     height: 4rem;
     padding: 0 2rem;
     ${text("textSm", "medium")};
@@ -16,7 +18,7 @@ const ButtonPrimaryStyles = css`
     will-change: transform;
 
     ${p => hover`
-        transform: scale(1.05);
+        transform: scale(1.02);
         background-color: ${p.theme.gray800};
     `};
 
