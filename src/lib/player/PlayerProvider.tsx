@@ -15,13 +15,9 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
             return null;
         }
 
-        return devicesData.devices.sort((a, b) => {
-            if (b.id && b.id === device_id) {
-                return 1;
-            }
-
-            return a.name.localeCompare(b.name);
-        });
+        return devicesData.devices
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => (a.id && a.id === device_id ? -1 : 0));
     }, [devicesData, device_id]);
 
     const activeDevice = useMemo<SpotifyApi.UserDevice | null>(() => {

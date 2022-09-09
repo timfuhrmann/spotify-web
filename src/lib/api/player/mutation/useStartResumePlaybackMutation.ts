@@ -35,7 +35,8 @@ export const useStartResumePlaybackMutation = () => {
 
             return request(access_token, {
                 url: "/me/player/play",
-                params: { device_id: targetDeviceId },
+                // @todo force playback on this device, because of issues keeping the state up-to-date with spotify connect
+                params: { device_id },
                 data: { context_uri, uris, offset, position_ms },
                 method: "PUT",
             });
@@ -43,7 +44,12 @@ export const useStartResumePlaybackMutation = () => {
         {
             onSettled: () => {
                 if (targetDeviceId !== device_id) {
-                    queryClient.refetchQueries(["playback-state"]);
+                    setTimeout(() => {
+                        queryClient.refetchQueries({
+                            predicate: ({ queryKey }) =>
+                                queryKey.includes("devices") || queryKey.includes("playback-state"),
+                        });
+                    }, 1000);
                 }
             },
         }

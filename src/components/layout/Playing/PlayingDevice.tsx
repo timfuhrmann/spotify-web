@@ -1,5 +1,4 @@
 import React from "react";
-import { usePlaying } from "./PlayingProvider";
 import styled from "styled-components";
 import { text } from "@css/helper/typography";
 import { content } from "@css/helper/content";

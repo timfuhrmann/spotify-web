@@ -22,42 +22,39 @@ export const useSpotifyPlayback = (): SpotifyPlayback => {
     const dispatch = useAppDispatch();
     const { access_token } = useSession();
     const playerRef = useRef<Spotify.Player | null>(null);
+    const [webPlaybackSDKReady, setWebPlaybackSDKReady] = useState<boolean>(false);
     const [deviceId, setDeviceId] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!access_token || playerRef.current) {
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            setWebPlaybackSDKReady(true);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!webPlaybackSDKReady || !access_token) {
             return;
         }
 
-        if (window.Spotify) {
-            initializePlayer();
-        } else {
-            window.onSpotifyWebPlaybackSDKReady = () => {
-                initializePlayer();
-            };
-        }
-    }, [access_token]);
-
-    const initializePlayer = () => {
-        if (!access_token) {
-            return;
-        }
-
-        playerRef.current = new window.Spotify.Player({
+        const player = new window.Spotify.Player({
             name: "Spotify Web Demo",
             getOAuthToken: cb => {
                 cb(access_token);
             },
         });
 
-        playerRef.current.addListener("ready", handleReady);
-        playerRef.current.addListener("account_error", handleAuthenticationError);
-        playerRef.current.addListener("initialization_error", handleAuthenticationError);
-        playerRef.current.addListener("authentication_error", handleAuthenticationError);
-        playerRef.current.addListener("player_state_changed", handlePlayerStateChanged);
+        playerRef.current = player;
 
-        playerRef.current.connect();
-    };
+        player.addListener("ready", handleReady);
+        player.addListener("account_error", handleAuthenticationError);
+        player.addListener("initialization_error", handleAuthenticationError);
+        player.addListener("authentication_error", handleAuthenticationError);
+        player.addListener("player_state_changed", handlePlayerStateChanged);
+
+        player.connect();
+
+        return () => player.disconnect();
+    }, [webPlaybackSDKReady, access_token]);
 
     const handleReady = ({ device_id }: Spotify.WebPlaybackInstance) => {
         setDeviceId(device_id);
@@ -70,6 +67,7 @@ export const useSpotifyPlayback = (): SpotifyPlayback => {
 
     const handleAuthenticationError = (e: Spotify.Error) => {
         console.log(e);
+        window.location.href = "/api/auth/login";
     };
 
     const handlePlayerStateChanged = (playbackState: Spotify.PlaybackState) => {
