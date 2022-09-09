@@ -256,7 +256,7 @@ export const Track: NamedExoticComponent<TrackProps> & ParentComposition = React
                             <TrackLikeButton
                                 title="Add to library"
                                 aria-label="Add to library"
-                                onClick={() => onUnlikeTrack && onUnlikeTrack(id, index)}>
+                                onClick={() => onLikeTrack && onLikeTrack(id, index)}>
                                 <TrackSave />
                             </TrackLikeButton>
                         )}
