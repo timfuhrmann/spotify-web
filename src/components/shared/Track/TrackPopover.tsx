@@ -10,10 +10,11 @@ import { useRootPlaylistsQuery } from "@lib/api/playlist/query/useRootPlaylistsQ
 import { useAddTracksToPlaylistMutation } from "@lib/api/playlist/mutation/useAddTracksToPlaylistMutation";
 import { useSession } from "@lib/context/session";
 import { useRouter } from "next/router";
+import { zIndex } from "@css/helper/hierarchy";
 
 const PopoverWrapper = styled.div`
     position: fixed;
-    z-index: 20;
+    z-index: ${zIndex.popover};
     top: 0;
     left: 0;
 `;

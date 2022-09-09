@@ -7,14 +7,14 @@ import { useOverlayScroll } from "@lib/context/overlay-scroll";
 import { PopoverItem } from "./PopoverItem";
 import { PopoverSeparator } from "./PopoverSeparator";
 import { PopoverList } from "./PopoverList";
+import { zIndex } from "@css/helper/hierarchy";
 
 const PopoverWrapper = styled.div`
     position: relative;
 `;
 
-//@todo handle zindex
 const PopoverFrame = styled.div`
-    z-index: 20;
+    z-index: ${zIndex.popover};
     min-width: 20rem;
     background-color: ${p => p.theme.gray100};
     padding: 0.4rem;

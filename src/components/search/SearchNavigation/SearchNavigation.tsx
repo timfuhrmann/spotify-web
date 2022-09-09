@@ -5,11 +5,11 @@ import { fillParent, transition } from "@css/helper";
 import { SearchNavigationItem } from "./SearchNavigationItem";
 import { useSelector } from "react-redux";
 import { RootState } from "@lib/redux";
+import { zIndex } from "@css/helper/hierarchy";
 
-//@todo organize z-indexes
 const NavigationWrapper = styled.nav`
     position: sticky;
-    z-index: 4;
+    z-index: ${zIndex.header};
     top: ${p => p.theme.sizes.headerHeight / 10}rem;
 
     &::after {

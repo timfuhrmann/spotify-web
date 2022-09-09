@@ -8,11 +8,12 @@ import { Input } from "./Input";
 import { Textarea } from "./Textarea";
 import { X } from "@icon/X";
 import { Button } from "./Button";
+import { zIndex } from "@css/helper/hierarchy";
 
 const DetailsWrapper = styled.div`
     ${fillParent};
     position: fixed;
-    z-index: 100000;
+    z-index: ${zIndex.popover};
     display: flex;
     justify-content: center;
     align-items: center;

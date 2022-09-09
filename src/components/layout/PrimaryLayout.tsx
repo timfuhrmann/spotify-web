@@ -8,6 +8,7 @@ import { withOverlayScroll } from "@lib/context/overlay-scroll/OverlayScrollProv
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
 import { pathnameFromAsPath } from "@lib/util";
 import { Playing } from "./Playing/Playing";
+import { zIndex } from "@css/helper/hierarchy";
 
 const LayoutGrid = styled.div`
     display: grid;
@@ -28,7 +29,7 @@ const LayoutNavigation = styled.div`
 
 const LayoutHeader = styled.div`
     grid-area: main;
-    z-index: 1;
+    z-index: ${zIndex.header};
     height: ${p => p.theme.sizes.headerHeight / 10}rem;
     min-height: 0;
     pointer-events: none;
@@ -42,7 +43,7 @@ const LayoutMain = styled.div`
 
 const LayoutPlaying = styled.div`
     grid-area: playing;
-    z-index: 4;
+    z-index: ${zIndex.playing};
 `;
 
 interface PrimaryLayoutProps {
