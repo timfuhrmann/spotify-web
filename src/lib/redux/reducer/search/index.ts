@@ -27,7 +27,7 @@ export const searchByTypeThunk = createAsyncThunk<SpotifyApi.SearchResponse, Thu
 
 const initialState: BrowseState = {
     loading: true,
-    types: ["tracks", "artists", "albums", "playlists"],
+    types: ["albums", "artists", "playlists"],
     topArtist: null,
     playlists: null,
     albums: null,
@@ -62,10 +62,16 @@ const searchSlice = createSlice({
             state.albums = albums && albums.items.length > 0 ? albums : null;
             state.playlists = playlists && playlists.items.length > 0 ? playlists : null;
 
-            state.types = objectKeys(action.payload).filter(type => {
-                const result = action.payload[type];
-                return result && result.items.length > 0;
-            });
+            state.types = objectKeys(action.payload)
+                .filter(type => {
+                    if (type === "tracks") {
+                        return false;
+                    }
+
+                    const result = action.payload[type];
+                    return result && result.items.length > 0;
+                })
+                .sort((a, b) => a.localeCompare(b));
 
             //@todo use any result
             if (artists && artists.items.length > 0) {

@@ -48,7 +48,7 @@ export const PopoverList: React.FC<ListProps> = ({
                 </ListButton>
             </PopoverItem>
             {options && open && (
-                <Popover placement="right-end" onClose={onClose}>
+                <Popover placement="right-end" onClose={onClose} isSecondary>
                     <OverlayScrollbarsComponent style={{ maxHeight: "50vh" }}>
                         {Object.keys(options).map(optionKey => (
                             <PopoverItem key={optionKey}>

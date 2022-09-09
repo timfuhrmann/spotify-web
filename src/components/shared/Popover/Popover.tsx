@@ -31,6 +31,7 @@ interface ParentComposition {
 interface PopoverProps {
     placement?: Placement;
     strategy?: PositioningStrategy;
+    isSecondary?: boolean;
     onClose: () => void;
 }
 
@@ -38,12 +39,14 @@ export const Popover: React.FC<PropsWithChildren<PopoverProps>> & ParentComposit
     onClose,
     strategy,
     placement = "bottom-start",
+    isSecondary,
     children,
 }) => {
     const { events } = useRouter();
     const { stopScroll, resumeScroll } = useOverlayScroll();
     const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
     const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
+
     const { styles, attributes } = usePopper(referenceElement, popperElement, {
         strategy,
         placement,
@@ -51,9 +54,20 @@ export const Popover: React.FC<PropsWithChildren<PopoverProps>> & ParentComposit
     });
 
     useEffect(() => {
+        if (isSecondary) {
+            return;
+        }
+
         stopScroll();
-        return () => resumeScroll();
-    }, []);
+
+        return () => {
+            if (isSecondary) {
+                return;
+            }
+
+            resumeScroll();
+        };
+    }, [isSecondary]);
 
     useEffect(() => {
         const onRouteChange = () => {
