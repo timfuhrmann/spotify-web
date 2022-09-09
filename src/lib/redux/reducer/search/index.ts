@@ -73,7 +73,7 @@ const searchSlice = createSlice({
                 })
                 .sort((a, b) => a.localeCompare(b));
 
-            //@todo use any result
+            //@todo use different types
             if (artists && artists.items.length > 0) {
                 state.topArtist = artists.items[0];
             }
