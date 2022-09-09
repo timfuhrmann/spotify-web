@@ -28,7 +28,7 @@ export const useChangePlaylistDetailsMutation = (id: string) => {
             onSuccess: () => {
                 queryClient.invalidateQueries({
                     predicate: ({ queryKey }) =>
-                        queryKey.includes(id) || queryKey === "root-playlists",
+                        queryKey.includes(id) || queryKey.includes("root-playlists"),
                 });
             },
         }
