@@ -1,7 +1,6 @@
+import React from "react";
 import styled from "styled-components";
 import { square } from "@css/helper";
-import React from "react";
-import { displayValue } from "react-query/types/devtools/utils";
 
 const BulletWrapper = styled.span`
     position: relative;

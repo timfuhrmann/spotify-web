@@ -73,7 +73,7 @@ export const AlbumProvider: React.FC<PropsWithChildren<AlbumProps>> = ({ album, 
                 params: { offset: pageParam * ALBUM_TRACKS_OFFSET, limit: ALBUM_TRACKS_OFFSET },
             }),
         idsFn: page => page.items.flatMap(item => item.id),
-        getNextPageParam: (data, allPages) => {
+        getNextPageParam: (_, allPages) => {
             const lastPage = allPages[allPages.length - 1];
 
             return lastPage && album.tracks.total > lastPage.offset + lastPage.limit

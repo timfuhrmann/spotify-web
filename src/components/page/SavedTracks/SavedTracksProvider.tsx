@@ -42,7 +42,7 @@ export const SavedTracksProvider: React.FC<PropsWithChildren<SavedTracksProps>> 
             initialTracks,
             enabled: !!access_token,
             queryFn: ({ pageParam = 1 }) => getSavedTracks(access_token!, pageParam),
-            getNextPageParam: (data, allPages) => {
+            getNextPageParam: (_, allPages) => {
                 const lastPage = allPages[allPages.length - 1];
 
                 return lastPage && initialTracks.total > lastPage.offset + lastPage.limit

@@ -2,11 +2,9 @@ import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import { Navigation } from "./Navigation/Navigation";
 import { Header } from "./Header/Header";
-import { useRouter } from "next/router";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { withOverlayScroll } from "@lib/context/overlay-scroll/OverlayScrollProvider";
 import { useOverlayScroll } from "@lib/context/overlay-scroll";
-import { pathnameFromAsPath } from "@lib/util";
 import { Playing } from "./Playing/Playing";
 import { zIndex } from "@css/helper/hierarchy";
 

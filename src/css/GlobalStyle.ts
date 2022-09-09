@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import { reset } from "./reset";
 import { hover } from "@css/helper";
-import { text } from "@css/helper/typography";
 
 export const GlobalStyle = createGlobalStyle`
     ${reset};

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled, { useTheme } from "styled-components";
 import { SpotifyImage } from "@lib/image";
 import { text } from "@css/helper/typography";

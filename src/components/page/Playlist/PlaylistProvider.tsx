@@ -86,7 +86,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren<PlaylistProps>> = ({
                 },
             }),
         idsFn: page => page.items.flatMap(item => (item.track ? item.track.id : [])),
-        getNextPageParam: (data, allPages) => {
+        getNextPageParam: (_, allPages) => {
             const lastPage = allPages[allPages.length - 1];
 
             return lastPage && lastPage.total > lastPage.offset + lastPage.limit

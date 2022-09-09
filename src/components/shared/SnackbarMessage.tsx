@@ -20,3 +20,5 @@ export const SnackbarMessage = forwardRef<HTMLDivElement, SnackbarMessageProps>(
         return <MessageWrapper ref={ref}>{message}</MessageWrapper>;
     }
 );
+
+SnackbarMessage.displayName = "SnackbarMessage";

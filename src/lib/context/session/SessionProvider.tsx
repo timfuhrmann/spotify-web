@@ -5,7 +5,7 @@ import { getCurrentUser } from "@lib/api/user";
 import { useQuery } from "react-query";
 
 export const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const { data: session, refetch } = useQuery("session", async () => {
+    const { data: session } = useQuery("session", async () => {
         const { data } = await axios.get("/api/auth/session");
 
         if (!data || !data.access_token) {
