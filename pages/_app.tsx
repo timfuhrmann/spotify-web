@@ -13,6 +13,7 @@ import { queryClient } from "@lib/api";
 import { Provider as ReduxProvider } from "react-redux";
 import { PlayerProvider } from "@lib/player/PlayerProvider";
 import { SnackbarProvider } from "notistack";
+import { SnackbarMessage } from "../src/components/shared/SnackbarMessage";
 
 interface AppPropsWithLayout extends AppProps {
     Component: NextPageWithLayout;
@@ -28,6 +29,13 @@ const App: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
                     <ReduxProvider store={store}>
                         <PlayerProvider>
                             <SnackbarProvider
+                                Components={{
+                                    default: SnackbarMessage,
+                                }}
+                                classes={{
+                                    root: "snackbar-root",
+                                    containerAnchorOriginBottomCenter: "snackbar-container-root",
+                                }}
                                 maxSnack={1}
                                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
                                 <GlobalStyle />

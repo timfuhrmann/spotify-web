@@ -17,6 +17,8 @@ export const theme = {
     primary200: "#1ed760",
     primary300: "#169c46",
 
+    blue300: "#2e77d0",
+
     likedSongsGradient: "linear-gradient(135deg, #450af5, #c4efd9)",
     //endregion
 

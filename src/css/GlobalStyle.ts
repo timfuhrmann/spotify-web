@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { reset } from "./reset";
 import { hover } from "@css/helper";
+import { text } from "@css/helper/typography";
 
 export const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -35,5 +36,13 @@ export const GlobalStyle = createGlobalStyle`
         &.active {
             background-color: ${p => p.theme.gray800};
         }
+    }
+    
+    .snackbar-container-root {
+        bottom: 10rem !important;
+    }
+    
+    .snackbar-root {
+      min-width: auto !important;
     }
 `;
