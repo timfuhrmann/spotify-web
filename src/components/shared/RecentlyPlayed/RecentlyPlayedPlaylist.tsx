@@ -8,6 +8,7 @@ import { Link } from "@lib/link";
 import { Skeleton } from "@lib/skeleton";
 import { SkeletonWrapper } from "@lib/skeleton/wrapper";
 import { useDominantColor } from "@lib/hook/useDominantColor";
+import { useStartResumePlaybackMutation } from "@lib/api/player/mutation/useStartResumePlaybackMutation";
 
 const PlaylistPlay = styled.div`
     position: relative;
@@ -77,15 +78,18 @@ interface ParentComposition {
 
 interface RecentlyPlayedPlaylistProps {
     id: string;
+    uri: string;
     name: string;
     images: SpotifyApi.ImageObject[];
 }
 
 export const RecentlyPlayedPlaylist: React.FC<RecentlyPlayedPlaylistProps> & ParentComposition = ({
     id,
+    uri,
     name,
     images,
 }) => {
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
     const { handleImageLoad, setDominantColor, removeDominantColor } = useDominantColor(true);
 
     const handleMouseEnter = () => {
@@ -104,7 +108,7 @@ export const RecentlyPlayedPlaylist: React.FC<RecentlyPlayedPlaylistProps> & Par
             <PlaylistBody>
                 <PlaylistName>{name}</PlaylistName>
                 <PlaylistPlay>
-                    <PlayButton />
+                    <PlayButton onClick={() => mutatePlay({ context_uri: uri })} />
                 </PlaylistPlay>
             </PlaylistBody>
             <Link href={"/playlist/" + id} label={name} prefetch={false}>

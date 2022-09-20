@@ -27,10 +27,11 @@ export const RecentlyPlayed: React.FC = () => {
                 <PlayedGrid>
                     {playlists ? (
                         <React.Fragment>
-                            {playlists.slice(0, 6).map(({ id, name, images }) => (
+                            {playlists.slice(0, 6).map(({ id, uri, name, images }) => (
                                 <RecentlyPlayedPlaylist
                                     key={id}
                                     id={id}
+                                    uri={uri}
                                     name={name}
                                     images={images}
                                 />
