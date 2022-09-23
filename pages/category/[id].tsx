@@ -7,6 +7,8 @@ import { useCategoriesPlaylistsQuery } from "@lib/api/browse/query/useCategories
 import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { useCategoryQuery } from "@lib/api/browse/query/useCategoryQuery";
+import { Meta } from "@lib/meta";
+import React from "react";
 
 const CategoryWrapper = styled.div`
     padding: 2.4rem 0;
@@ -22,6 +24,7 @@ const Category: NextPageWithLayout = () => {
 
     return (
         <CategoryWrapper>
+            <Meta title={category ? category.name : "Category"} />
             <HeaderSpacer />
             <GridEntries
                 type="playlist"

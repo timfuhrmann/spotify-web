@@ -6,6 +6,8 @@ import { GridEntries } from "../../../src/components/shared/GridEntries";
 import { SearchNavigation } from "../../../src/components/search/SearchNavigation/SearchNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@lib/redux";
+import { Meta } from "@lib/meta";
+import React from "react";
 
 const PlaylistsWrapper = styled.div`
     padding: 2.4rem 0;
@@ -16,6 +18,7 @@ const Playlists: NextPageWithLayout = () => {
 
     return (
         <PlaylistsWrapper>
+            <Meta title="Browse Playlists" />
             <GridEntries
                 type="playlist"
                 headline="Playlists"

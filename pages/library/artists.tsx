@@ -4,6 +4,8 @@ import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
 import { useFollowedArtistsQuery } from "@lib/api/artist/query/useFollowedArtistsQuery";
+import { Meta } from "@lib/meta";
+import React from "react";
 
 const ArtistsWrapper = styled.div`
     padding: 2.4rem 0;
@@ -14,6 +16,7 @@ const Artists: NextPageWithLayout = () => {
 
     return (
         <ArtistsWrapper>
+            <Meta title="Artists" />
             <HeaderSpacer />
             <GridEntries
                 headline="Artists"

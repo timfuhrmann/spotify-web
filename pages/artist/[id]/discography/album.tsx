@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
 import { AlbumGroup } from "@type/album";
+import { Meta } from "@lib/meta";
 
 const AlbumWrapper = styled.div`
     padding: 2.4rem 0;
@@ -20,6 +21,7 @@ const Album: NextPageWithLayout = () => {
 
     return (
         <AlbumWrapper>
+            <Meta title="Albums" />
             <HeaderSpacer />
             <GridEntries entries={artistAlbums ? artistAlbums.items : null} type="album" />
         </AlbumWrapper>

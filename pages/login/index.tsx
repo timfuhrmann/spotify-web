@@ -6,6 +6,7 @@ import { getSpotifyToken } from "@lib/api/auth";
 import { SpotifyTrackObjectCustomized } from "../../src/components/shared/Opener/OpenerProvider";
 import { getEditorsPick } from "@lib/api/server/editiors-pick";
 import { domAnimation, LazyMotion } from "framer-motion";
+import { Meta } from "@lib/meta";
 
 interface LoginProps {
     editorsPick: SpotifyTrackObjectCustomized[];
@@ -14,6 +15,7 @@ interface LoginProps {
 const Login: NextPageWithLayout<LoginProps> = ({ editorsPick }) => {
     return (
         <LazyMotion features={domAnimation}>
+            <Meta title="Login" />
             <Opener tracks={editorsPick} />
         </LazyMotion>
     );

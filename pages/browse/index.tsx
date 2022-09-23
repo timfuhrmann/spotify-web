@@ -4,10 +4,11 @@ import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { useMultipleCategoriesQuery } from "@lib/api/browse/query/useMultipleCategoriesQuery";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { EntryProps } from "../../src/components/shared/Entry";
 import { useAppDispatch } from "@lib/redux";
 import { resetSearch } from "@lib/redux/reducer/search";
+import { Meta } from "@lib/meta";
 
 const BrowseWrapper = styled.div`
     padding: 2.4rem 0;
@@ -35,6 +36,7 @@ const Browse: NextPageWithLayout = () => {
 
     return (
         <BrowseWrapper>
+            <Meta title="Browse" />
             <HeaderSpacer />
             <GridEntries headline="Browse all" type="category" entries={entries} />
         </BrowseWrapper>

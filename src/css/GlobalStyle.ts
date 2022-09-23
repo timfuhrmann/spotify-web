@@ -38,10 +38,10 @@ export const GlobalStyle = createGlobalStyle`
     }
     
     .snackbar-container-root {
-        bottom: 10rem !important;
+        bottom: var(--snackbar-bottom, 10rem) !important;
     }
     
     .snackbar-root {
-      min-width: auto !important;
+        min-width: auto !important;
     }
 `;

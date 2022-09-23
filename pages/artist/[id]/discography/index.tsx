@@ -7,6 +7,7 @@ import { useArtistsAlbumsQuery } from "@lib/api/artist/query/useArtistsAlbumsQue
 import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
+import { Meta } from "@lib/meta";
 
 const DiscographyWrapper = styled.div`
     padding: 2.4rem 0;
@@ -19,6 +20,7 @@ const Discography: NextPageWithLayout = () => {
 
     return (
         <DiscographyWrapper>
+            <Meta title="Discography" />
             <HeaderSpacer />
             <GridEntries entries={artistAlbums ? artistAlbums.items : null} type="album" />
         </DiscographyWrapper>

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
 import { AlbumGroup } from "@type/album";
+import { Meta } from "@lib/meta";
 
 const CompilationWrapper = styled.div`
     padding: 2.4rem 0;
@@ -22,6 +23,7 @@ const Compilation: NextPageWithLayout = () => {
 
     return (
         <CompilationWrapper>
+            <Meta title="Compilations" />
             <HeaderSpacer />
             <GridEntries
                 entries={artistCompilations ? artistCompilations.items : null}

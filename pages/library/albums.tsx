@@ -4,8 +4,9 @@ import { PrimaryLayout } from "../../src/components/layout/PrimaryLayout";
 import { GridEntries } from "../../src/components/shared/GridEntries";
 import { HeaderSpacer } from "../../src/components/layout/HeaderSpacer";
 import { useSavedAlbumsQuery } from "@lib/api/album/query/useSavedAlbumsQuery";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { EntryProps } from "../../src/components/shared/Entry";
+import { Meta } from "@lib/meta";
 
 const AlbumsWrapper = styled.div`
     padding: 2.4rem 0;
@@ -24,6 +25,7 @@ const Albums: NextPageWithLayout = () => {
 
     return (
         <AlbumsWrapper>
+            <Meta title="Albums" />
             <HeaderSpacer />
             <GridEntries headline="Albums" entries={entries} type="album" />
         </AlbumsWrapper>

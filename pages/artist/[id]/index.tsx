@@ -6,6 +6,7 @@ import { Artist as ArtistComponent } from "../../../src/components/page/Artist/A
 import { useArtistQuery } from "@lib/api/artist/query/useArtistQuery";
 import { getIdFromQuery } from "@lib/util";
 import { useArtistsTopTracksQuery } from "@lib/api/artist/query/useArtistsTopTracksQuery";
+import { Meta } from "@lib/meta";
 
 const Artist: NextPageWithLayout = () => {
     const { query } = useRouter();
@@ -19,7 +20,12 @@ const Artist: NextPageWithLayout = () => {
         return null;
     }
 
-    return <ArtistComponent artist={artist} topTracks={artistTopTracks} />;
+    return (
+        <React.Fragment>
+            <Meta title={artist.name} />
+            <ArtistComponent artist={artist} topTracks={artistTopTracks} />
+        </React.Fragment>
+    );
 };
 
 // eslint-disable-next-line react/display-name

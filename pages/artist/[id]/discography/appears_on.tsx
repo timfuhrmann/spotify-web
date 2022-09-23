@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { getIdFromQuery } from "@lib/util";
 import { HeaderSpacer } from "../../../../src/components/layout/HeaderSpacer";
 import { AlbumGroup } from "@type/album";
+import { Meta } from "@lib/meta";
 
 const AppearsOnWrapper = styled.div`
     padding: 2.4rem 0;
@@ -22,6 +23,7 @@ const AppearsOn: NextPageWithLayout = () => {
 
     return (
         <AppearsOnWrapper>
+            <Meta title="Appears On" />
             <HeaderSpacer />
             <GridEntries entries={artistAppearsOn ? artistAppearsOn.items : null} type="album" />
         </AppearsOnWrapper>

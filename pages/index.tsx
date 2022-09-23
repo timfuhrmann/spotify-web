@@ -10,6 +10,7 @@ import { useNewReleasesQuery } from "@lib/api/album/query/useNewReleasesQuery";
 import { RecentlyPlayed } from "../src/components/shared/RecentlyPlayed/RecentlyPlayed";
 import { text } from "@css/helper/typography";
 import { transition } from "@css/helper";
+import { Meta } from "@lib/meta";
 
 const HomeWrapper = styled.div`
     ${content()};
@@ -45,6 +46,7 @@ const Home: NextPageWithLayout = () => {
 
     return (
         <HomeWrapper>
+            <Meta title="Home" />
             <HeaderSpacer />
             <HomeBackground />
             <HomeHeadline>Yo, what&apos;s up</HomeHeadline>
