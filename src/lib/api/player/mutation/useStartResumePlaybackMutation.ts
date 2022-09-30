@@ -17,7 +17,7 @@ interface StartResumePlaybackProps {
     position_ms?: number;
 }
 
-export const useStartResumePlaybackMutation = () => {
+export const useStartResumePlaybackMutation = (considerTargetDevice?: boolean) => {
     const dispatch = useAppDispatch();
     const { access_token } = useSession();
     const { player, targetDeviceId, device_id } = usePlayer();
@@ -36,7 +36,7 @@ export const useStartResumePlaybackMutation = () => {
             return request(access_token, {
                 url: "/me/player/play",
                 // force playback on this device, because of issues keeping the state up-to-date with spotify connect
-                params: { device_id },
+                params: { device_id: considerTargetDevice ? targetDeviceId : device_id },
                 data: { context_uri, uris, offset, position_ms },
                 method: "PUT",
             });

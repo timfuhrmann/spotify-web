@@ -44,7 +44,7 @@ export const PlayingProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const shuffle = useShuffleSelector();
     const duration = useDurationSelector();
     const { currentTrack, paused } = useCurrentTrackSelector();
-    const { mutate: mutatePlay } = useStartResumePlaybackMutation();
+    const { mutate: mutatePlay } = useStartResumePlaybackMutation(true);
     const { mutate: mutatePause } = usePlaybackPauseMutation();
     const { mutate: mutateShuffle } = usePlaybackShuffleMutation();
     const { mutate: mutateNext } = usePlaybackNextMutation();
