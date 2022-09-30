@@ -4,22 +4,20 @@ Check it out: https://demo-spotify-web.vercel.app/ - since this isn't a public a
 
 This is not a 1:1 clone. Due to api restrictions and time reasons, some features haven’t been implemented at all, differently or not thoroughly.
 
-----
+
 
 ![Preview](public/preview.png)
 
----
+
 
 ## Known issues
 - **Spotify Connect**: Since there is no access to a websocket whatsoever, the application uses invalidating and refetching queries in the right moments to update the active track - this is far from perfect, which is why I force playing on this device when connect is active. **For the best experience don't use Spotify Connect.**
 - **Mobile Support**: The web sdk's mobile support isn't great yet, which is why this demo is not optimized for mobile usage.
 - **Repeat track**
 
----
 
 ![Preview Playlist](public/preview-playlist.png)
 
----
 
 ## Getting Started
 
