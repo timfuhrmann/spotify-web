@@ -11,6 +11,7 @@ import { useRepeatModeSelector } from "@lib/redux/reducer/player/hook/useRepeatM
 import { Shuffle } from "@icon/Shuffle";
 import { useShuffleSelector } from "@lib/redux/reducer/player/hook/useShuffleSelector";
 import { usePlaying } from "./PlayingProvider";
+import { usePlayer } from "@lib/player";
 
 const ControlsWrapper = styled.div`
     display: flex;
@@ -48,14 +49,8 @@ export const PlayingControls: React.FC = () => {
     const paused = usePausedSelector();
     const shuffle = useShuffleSelector();
     const repeatMode = useRepeatModeSelector();
-    const {
-        isDisabled,
-        handlePlay,
-        handleShuffle,
-        handleRepeat,
-        handlePreviousTrack,
-        handleNextTrack,
-    } = usePlaying();
+    const { isDisabled, handleShuffle, handleRepeat } = usePlaying();
+    const { togglePlay, nextTrack, previousTrack } = usePlayer();
 
     return (
         <ControlsWrapper>
@@ -72,14 +67,14 @@ export const PlayingControls: React.FC = () => {
                     type="button"
                     aria-label="Previous Track"
                     disabled={isDisabled}
-                    onClick={handlePreviousTrack}>
+                    onClick={previousTrack}>
                     <PreviousTrack width="16" aria-hidden />
                 </ControlsButton>
                 <ControlsPlay>
                     <PlayButton
                         playing={!paused}
                         disabled={isDisabled}
-                        onClick={handlePlay}
+                        onClick={togglePlay}
                         isSecondary
                     />
                 </ControlsPlay>
@@ -87,7 +82,7 @@ export const PlayingControls: React.FC = () => {
                     type="button"
                     aria-label="Next Track"
                     disabled={isDisabled}
-                    onClick={handleNextTrack}>
+                    onClick={nextTrack}>
                     <NextTrack width="16" aria-hidden />
                 </ControlsButton>
                 <ControlsButton

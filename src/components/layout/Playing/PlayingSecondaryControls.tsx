@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { PlayingVolume } from "./PlayingVolume";
-import { PlayingDevices } from "./PlayingDevices";
 
 const ControlsWrapper = styled.div`
     flex: 1 1 0;
@@ -16,7 +15,6 @@ const ControlsWrapper = styled.div`
 export const PlayingSecondaryControls: React.FC = () => {
     return (
         <ControlsWrapper>
-            <PlayingDevices />
             <PlayingVolume />
         </ControlsWrapper>
     );
