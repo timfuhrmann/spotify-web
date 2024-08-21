@@ -1,3 +1,5 @@
+**Last Update: 12.10.2022**
+
 Check it out: https://demo-spotify-web.vercel.app/ - since this isn't a public application, you need a Spotify developer account to be able to access this demo.
 
 This is not a 1:1 clone. Due to api restrictions and time reasons, some features haven’t been implemented at all, differently or not thoroughly.
