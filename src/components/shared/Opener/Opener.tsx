@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { OpenerProvider, SpotifyTrackObjectCustomized } from "./OpenerProvider";
 import { OpenerCover } from "./OpenerCover";
 import { content } from "@css/helper/content";
-import { columns } from "@css/helper/columns";
 import { text } from "@css/helper/typography";
 import { OpenerTrack } from "./OpenerTrack";
 import { OpenerCarousel } from "./OpenerCarousel";
@@ -25,21 +24,21 @@ const OpenerWrapper = styled.div`
 `;
 
 const OpenerInner = styled.div`
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
     align-items: center;
     flex-wrap: wrap;
     gap: 2.4rem 6.2rem;
     ${content()};
     width: 100%;
 
-    ${breakpoints().min("m")} {
+    ${breakpoints().min("l")} {
         gap: 10rem 6.2rem;
+        grid-template-columns: 2fr 3fr;
     }
 `;
 
-const OpenerColumn = styled.div`
-    ${columns({ m: 10, l: 9, xl: 6, xxl: 5 })};
-
+const OpenerContent = styled.div`
     ${breakpoints().max("s")} {
         text-align: center;
     }
@@ -51,7 +50,7 @@ const OpenerHeadline = styled.h1`
 
     ${breakpoints().min("l")} {
         margin-bottom: 3.2rem;
-        ${text("display3Xl", "bold")};
+        ${text("display2Xl", "bold")};
     }
 `;
 
@@ -61,7 +60,6 @@ const OpenerText = styled.p`
 
     ${breakpoints().min("l")} {
         margin-bottom: 5.6rem;
-        ${text("displayMd", "light")};
     }
 `;
 
@@ -101,7 +99,7 @@ export const Opener: React.FC<OpenerProps> = props => {
         <OpenerProvider {...props}>
             <OpenerWrapper>
                 <OpenerInner>
-                    <OpenerColumn>
+                    <OpenerContent>
                         <OpenerReveal>
                             <OpenerHeadline>
                                 Login to <Highlight delay={0.1}>Spotify Web*</Highlight>
@@ -116,7 +114,7 @@ export const Opener: React.FC<OpenerProps> = props => {
                         <OpenerReveal delay={0.2}>
                             <OpenerButton />
                         </OpenerReveal>
-                    </OpenerColumn>
+                    </OpenerContent>
                     <OpenerFrame>
                         <OpenerCoverWrapper>
                             <OpenerCover />
