@@ -1,4 +1,5 @@
-**Last Update: 12.10.2022**
+> [!WARNING] 
+> Vintage alert! This repo hasn't been maintained in years, so some things might have stopped working by now - API calls failing or similar. Also, just like everyone else, if I started today, I'd probably do everything differently.
 
 Check it out: https://demo-spotify-web.vercel.app/ - since this isn't a public application, you need a Spotify developer account to be able to access this demo.
 
